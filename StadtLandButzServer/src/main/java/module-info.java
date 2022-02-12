@@ -4,4 +4,6 @@ module com.example.stadtlandbutzserver {
 
     opens com.example.stadtlandbutzserver.gui to javafx.fxml;
     exports com.example.stadtlandbutzserver.gui;
+    exports com.example.stadtlandbutzserver.game;
+    exports com.example.stadtlandbutzserver;
 }
