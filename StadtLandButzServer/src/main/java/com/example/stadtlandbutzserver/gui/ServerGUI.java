@@ -28,6 +28,7 @@ public class ServerGUI extends Application {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         this.stage.setOnCloseRequest(windowEvent -> Game.exit());
+        Game.setGui(this);
         selectionStage();
     }
 
