@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -77,12 +78,12 @@ public class ServerGUI extends Application {
         });
 
         TextField additionalCategory = new TextField();
+        additionalCategory.setPromptText("neue Kategorie");
 
         Button add = new Button("Hinzufügen");
         add.setOnAction(e -> {
-            categoriesList.getItems().add(additionalCategory.getText());
+            containsAdd(categoriesList, additionalCategory.getText(), checkBoxes);
             additionalCategory.setText("");
-            categoriesListEmptyTest(categoriesList);
         });
 
         VBox checkBoxesL = new VBox(15);
@@ -125,11 +126,13 @@ public class ServerGUI extends Application {
         // last polish
         confirmButtonBox.setStyle("-fx-alignment: center; -fx-padding: 40");
         topTextBox.setStyle("-fx-alignment: center; -fx-padding: 20");
+        checkBoxAll.setStyle("-fx-padding: 20; -fx-background-color: #399f97; -fx-border-color: #021C1D; -fx-border-width: 2px");
+        categoriesList.setStyle("-fx-border-color: #021C1D; -fx-border-width: 2px");
         categoriesList.getSelectionModel().clearSelection();
 
 
         Group root = new Group(selection);
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(root, Color.LIGHTCORAL));
         stage.setTitle("Kategorien");
         stage.show();
     }
@@ -141,6 +144,23 @@ public class ServerGUI extends Application {
             categoriesList.getItems().remove("");
         }
         categoriesList.getSelectionModel().clearSelection();
+    }
+
+    private void containsAdd(ListView<String> categoriesList, String additionalCategory, CheckBox[] checkBoxes) {
+        if (!additionalCategory.equals("")) {
+            if (!categoriesList.getItems().contains(additionalCategory)) {
+                for (CheckBox box : checkBoxes) {
+                    if (additionalCategory.equals(box.getText()) && !box.isSelected()) {
+                        categoriesList.getItems().add(additionalCategory);
+                        box.setSelected(true);
+                        categoriesListEmptyTest(categoriesList);
+                        return;
+                    }
+                }
+                categoriesList.getItems().add(additionalCategory);
+                categoriesListEmptyTest(categoriesList);
+            }
+        }
     }
 
     private void joinStage() {
