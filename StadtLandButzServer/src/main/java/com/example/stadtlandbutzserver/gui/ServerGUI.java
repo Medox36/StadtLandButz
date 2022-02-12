@@ -1,16 +1,19 @@
 package com.example.stadtlandbutzserver.gui;
 
+import com.example.stadtlandbutzserver.Client;
 import com.example.stadtlandbutzserver.game.Game;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -19,11 +22,12 @@ public class ServerGUI extends Application {
     private Stage stage;
     private final ArrayList<String> categories = new ArrayList<>();
 
+    private FlowPane flow;
+
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        this.stage.setMinWidth(200);
-        this.stage.setMinHeight(300);
+        this.stage.setOnCloseRequest(windowEvent -> Game.exit());
         selectionStage();
     }
 
@@ -113,7 +117,11 @@ public class ServerGUI extends Application {
             categories.addAll(categoriesList.getItems());
             Game.setCategories(categories);
             System.out.println(Game.getCategories());
-            joinStage();
+            try {
+                joinStage();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
         startButton.setScaleX(1.5);
         startButton.setScaleY(1.5);
@@ -134,6 +142,8 @@ public class ServerGUI extends Application {
         Group root = new Group(selection);
         stage.setScene(new Scene(root, Color.LIGHTCORAL));
         stage.setTitle("Kategorien");
+        stage.setMinHeight(300);
+        stage.setMinWidth(200);
         stage.show();
     }
 
@@ -163,38 +173,149 @@ public class ServerGUI extends Application {
         }
     }
 
-    private void joinStage() {
+    private void joinStage() throws IOException {
+        stage.hide();
+        Game.startServer();
 
-        Group root = new Group();
+        String hostAdd = "IP-Adresse konnte nicht gefunden werden";
+        try {
+            hostAdd = InetAddress.getLocalHost().getHostAddress();
+            System.out.println("ip-gui: " + hostAdd);
+            System.out.println("port: " + Game.getServerPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        Label title = new Label("Beitreten über:");
+        Label ip = new Label("IP: " + hostAdd);
+        Label port = new Label("Port: " + Game.getServerPort());
+        title.setStyle("-fx-font-size: 60; -fx-font-style: italic; -fx-padding: 10");
+        ip.setStyle("-fx-font-size: 36; -fx-font-style: italic; -fx-padding: 5");
+        port.setStyle("-fx-font-size: 36; -fx-font-style: italic; -fx-padding: 5");
+
+        VBox w1 = new VBox(1,ip, port);
+        VBox w2 = new VBox(15, title, w1);
+        w2.setStyle("-fx-background-color: #dbefef");
+
+        HBox topText = new HBox(w2);
+        topText.setStyle("-fx-alignment: center; -fx-padding: 20; -fx-background-color: #6ebdb5");
+
+
+        flow = new FlowPane(Orientation.HORIZONTAL);
+        flow.setPadding(new Insets(10));
+        flow.setVgap(10);
+        flow.setHgap(20);
+        flow.setAlignment(Pos.TOP_CENTER);
+        flow.setStyle("-fx-background-color: #4aada2");
+
+        ScrollPane scroll = new ScrollPane();
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setMaxWidth(900);
+        scroll.setPrefWidth(900);
+        scroll.setMaxHeight(350);
+        scroll.setPrefHeight(350);
+        scroll.setContent(flow);
+        scroll.viewportBoundsProperty().addListener((ov, oldBounds, bounds) -> {
+            flow.setPrefWidth(bounds.getWidth());
+            flow.setPrefHeight(bounds.getHeight());
+        });
+        scroll.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/css/joinStage.css")).toString());
+
+        VBox players = new VBox(scroll);
+        players.setStyle("-fx-alignment: center; -fx-padding: 10");
+
+        Button start = new Button("Starten");
+        start.setScaleX(1.6);
+        start.setScaleY(1.6);
+        start.setOnAction(e -> {
+            Game.getServer().letClientsConnect(false);
+            roundStage();
+        });
+
+        HBox confirmButtonBox = new HBox(start);
+        confirmButtonBox.setStyle("-fx-alignment: center; -fx-padding: 40");
+
+        VBox join = new VBox(topText, players, confirmButtonBox);
+        join.setStyle("-fx-background-color: #4aada2");
+
+        // last polish
+
+        Group root = new Group(join);
+
         stage.setScene(new Scene(root));
+        stage.setTitle("Beitreten");
+        stage.setMinHeight(300);
+        stage.setMinWidth(200);
         stage.show();
     }
 
-    private void roundStage() {
+    public void addPlayer(Client client) {
+        Label label = new Label(client.getPlayerName());
+        label.setTextFill(Color.WHITE);
+        label.setMinSize(80, 30);
+        label.setAlignment(Pos.CENTER);
+        label.setStyle("-fx-padding: 10; -fx-background-color: #23076a; -fx-font-size: 24");
+        flow.getChildren().add(label);
+    }
 
-        Group root = new Group();
+    private void roundStage() {
+        stage.hide();
+        Game.incRoundNumber();
+
+        Button end = new Button("Runde beenden");
+        end.setOnAction(e -> {
+            //TODO fire on round-time elapsed
+            checkStage();
+        });
+
+        Group root = new Group(new Label("Runde"));
         stage.setScene(new Scene(root));
+        stage.setTitle("Runde " + Game.getRoundNumber());
+        stage.setMinHeight(300);
+        stage.setMinWidth(200);
         stage.show();
     }
 
     private void checkStage() {
+        stage.hide();
+
+        Button confirm = new Button("Runde beenden");
+        confirm.setOnAction(e -> {
+            //TODO check if all answers from clients have been checked
+            scoreStage();
+        });
 
         Group root = new Group();
         stage.setScene(new Scene(root));
+        stage.setMinHeight(300);
+        stage.setMinWidth(200);
         stage.show();
     }
 
     private void scoreStage() {
+        stage.hide();
+
+        Button confirm = new Button();
+        confirm.setOnAction(e -> {
+            //TODO check if last round
+            roundStage();
+        });
 
         Group root = new Group();
         stage.setScene(new Scene(root));
+        stage.setMinHeight(300);
+        stage.setMinWidth(200);
         stage.show();
     }
 
     private void winnerStage() {
+        stage.hide();
 
         Group root = new Group();
         stage.setScene(new Scene(root));
+        stage.setMinHeight(300);
+        stage.setMinWidth(200);
         stage.show();
     }
 }
