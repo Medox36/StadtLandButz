@@ -1,4 +1,4 @@
-package com.example.stadtlandbutzserver;
+package com.example.stadtlandbutzserver.gui;
 
 import javafx.scene.control.Label;
 

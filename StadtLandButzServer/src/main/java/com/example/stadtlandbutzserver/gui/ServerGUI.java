@@ -1,7 +1,6 @@
 package com.example.stadtlandbutzserver.gui;
 
 import com.example.stadtlandbutzserver.Client;
-import com.example.stadtlandbutzserver.TimeLabel;
 import com.example.stadtlandbutzserver.game.Game;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -38,7 +37,7 @@ public class ServerGUI extends Application {
     private void selectionStage() {
         ListView<String> categoriesList = new ListView<>();
         categoriesList.setEditable(false);
-        categoriesListEmptyTest(categoriesList);
+        emptyListTest(categoriesList);
 
         CheckBox[] checkBoxes = new CheckBox[20];
         checkBoxes[0] = new CheckBox("Stadt");
@@ -68,7 +67,7 @@ public class ServerGUI extends Application {
                 } else {
                     categoriesList.getItems().remove(box.getText());
                 }
-                categoriesListEmptyTest(categoriesList);
+                emptyListTest(categoriesList);
             });
         }
 
@@ -81,7 +80,7 @@ public class ServerGUI extends Application {
                         box.setSelected(false);
                     }
                 }
-                categoriesListEmptyTest(categoriesList);
+                emptyListTest(categoriesList);
             }
         });
 
@@ -155,13 +154,13 @@ public class ServerGUI extends Application {
         stage.show();
     }
 
-    private void categoriesListEmptyTest(ListView<String> categoriesList) {
-        if (categoriesList.getItems().isEmpty()) {
-            categoriesList.getItems().add("");
+    private void emptyListTest(ListView<String> listView) {
+        if (listView.getItems().isEmpty()) {
+            listView.getItems().add("");
         } else {
-            categoriesList.getItems().remove("");
+            listView.getItems().remove("");
         }
-        categoriesList.getSelectionModel().clearSelection();
+        listView.getSelectionModel().clearSelection();
     }
 
     private void containsAdd(ListView<String> categoriesList, String additionalCategory, CheckBox[] checkBoxes) {
@@ -171,12 +170,12 @@ public class ServerGUI extends Application {
                     if (additionalCategory.equals(box.getText()) && !box.isSelected()) {
                         categoriesList.getItems().add(additionalCategory);
                         box.setSelected(true);
-                        categoriesListEmptyTest(categoriesList);
+                        emptyListTest(categoriesList);
                         return;
                     }
                 }
                 categoriesList.getItems().add(additionalCategory);
-                categoriesListEmptyTest(categoriesList);
+                emptyListTest(categoriesList);
             }
         }
     }
