@@ -4,11 +4,13 @@ import com.example.stadtlandbutzserver.Client;
 import com.example.stadtlandbutzserver.gui.ServerGUI;
 import javafx.application.Platform;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Vector;
 
 public class Game {
     private static ArrayList<String> categories = new ArrayList<>();
+    private static Vector<Character> letters = new Vector<>();
     private static Vector<Client> clients = new Vector<>();
     private static Server server;
     private static String serverPort;
@@ -65,6 +67,17 @@ public class Game {
 
     public static int getRoundNumber() {
         return roundNumber;
+    }
+
+    public static String nextLetter() {
+        SecureRandom s = new SecureRandom();
+        Character letter = (char) (s.nextInt(26) + 'a');
+        while (letters.contains(letter)) {
+            letter = (char) (s.nextInt(26) + 'a');
+            //TODO check if all letters already have been used
+        }
+        letters.add(letter);
+        return String.valueOf(letter).toUpperCase();
     }
 
     public static void exit() {
