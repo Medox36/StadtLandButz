@@ -31,7 +31,6 @@ public class ServerGUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        this.stage.setOnCloseRequest(windowEvent -> Platform.runLater(Game::exit));
         Game.setGui(this);
         selectionStage();
     }
@@ -144,10 +143,15 @@ public class ServerGUI extends Application {
 
 
         Group root = new Group(selection);
+        stage.setOnCloseRequest(windowEvent -> {
+            Thread t = new Thread(Game::exit, "Exit Thread");
+            t.setPriority(10);
+            t.start();
+        });
         stage.setScene(new Scene(root, Color.LIGHTCORAL));
         stage.setTitle("Kategorien");
-        stage.setMinHeight(300);
-        stage.setMinWidth(200);
+        stage.setMinHeight(702);
+        stage.setMinWidth(553);
         stage.show();
     }
 
@@ -233,10 +237,16 @@ public class ServerGUI extends Application {
         join.setStyle("-fx-background-color: #4aada2");
 
         Group root = new Group(join);
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> {
+            Thread t = new Thread(Game::exit, "Exit Thread");
+            t.setPriority(10);
+            t.start();
+        });
         stage.setScene(new Scene(root));
         stage.setTitle("Beitreten");
-        stage.setMinHeight(300);
-        stage.setMinWidth(200);
+        stage.setMinHeight(804);
+        stage.setMinWidth(936);
         stage.show();
 
         //show IP and Port
@@ -316,11 +326,17 @@ public class ServerGUI extends Application {
         round.setPadding(new Insets(10));
 
         Group root = new Group(round);
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> {
+            Thread t = new Thread(Game::exit, "Exit Thread");
+            t.setPriority(10);
+            t.start();
+        });
         stage.setScene(new Scene(root, Color.web("#004445")));
         stage.setTitle("Runde " + Game.getRoundNumber());
-        stage.setMinHeight(650);
-        stage.setMinWidth(435);
         stage.sizeToScene();
+        stage.setMinHeight(630);
+        stage.setMinWidth(436);
         stage.show();
     }
 
@@ -334,6 +350,12 @@ public class ServerGUI extends Application {
         });
 
         Group root = new Group();
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> {
+            Thread t = new Thread(Game::exit, "Exit Thread");
+            t.setPriority(10);
+            t.start();
+        });
         stage.setScene(new Scene(root));
         stage.setMinHeight(300);
         stage.setMinWidth(200);
@@ -350,6 +372,12 @@ public class ServerGUI extends Application {
         });
 
         Group root = new Group();
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> {
+            Thread t = new Thread(Game::exit, "Exit Thread");
+            t.setPriority(10);
+            t.start();
+        });
         stage.setScene(new Scene(root));
         stage.setMinHeight(300);
         stage.setMinWidth(200);
@@ -360,6 +388,12 @@ public class ServerGUI extends Application {
         stage.hide();
 
         Group root = new Group();
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> {
+            Thread t = new Thread(Game::exit, "Exit Thread");
+            t.setPriority(10);
+            t.start();
+        });
         stage.setScene(new Scene(root));
         stage.setMinHeight(300);
         stage.setMinWidth(200);
