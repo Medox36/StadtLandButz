@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class Game {
+    private static final Vector<Character> letters = new Vector<>();
     private static ArrayList<String> categories = new ArrayList<>();
-    private static Vector<Character> letters = new Vector<>();
     private static Vector<Client> clients = new Vector<>();
     private static Server server;
     private static String serverPort;
@@ -83,6 +83,7 @@ public class Game {
     public static void exit() {
         categories = null;
         clients = null;
+        server.exit();
         server = null;
         serverPort = null;
         Platform.exit();

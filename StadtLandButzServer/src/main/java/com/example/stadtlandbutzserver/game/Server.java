@@ -71,4 +71,12 @@ public class Server {
     public synchronized String getPort() {
         return String.valueOf(serverSocket.getLocalPort());
     }
+
+    public void exit() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
