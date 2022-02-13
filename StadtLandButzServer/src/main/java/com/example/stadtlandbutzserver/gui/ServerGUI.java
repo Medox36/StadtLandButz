@@ -1,8 +1,10 @@
 package com.example.stadtlandbutzserver.gui;
 
 import com.example.stadtlandbutzserver.Client;
+import com.example.stadtlandbutzserver.TimeLabel;
 import com.example.stadtlandbutzserver.game.Game;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,6 +18,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ServerGUI extends Application {
 
@@ -27,7 +31,7 @@ public class ServerGUI extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        this.stage.setOnCloseRequest(windowEvent -> Game.exit());
+        this.stage.setOnCloseRequest(windowEvent -> Platform.runLater(Game::exit));
         Game.setGui(this);
         selectionStage();
     }
@@ -35,7 +39,7 @@ public class ServerGUI extends Application {
     private void selectionStage() {
         ListView<String> categoriesList = new ListView<>();
         categoriesList.setEditable(false);
-        categoriesList.getItems().add("");
+        categoriesListEmptyTest(categoriesList);
 
         CheckBox[] checkBoxes = new CheckBox[20];
         checkBoxes[0] = new CheckBox("Stadt");
@@ -88,7 +92,7 @@ public class ServerGUI extends Application {
         Button add = new Button("Hinzufügen");
         add.setOnAction(e -> {
             containsAdd(categoriesList, additionalCategory.getText(), checkBoxes);
-            additionalCategory.setText("");
+            additionalCategory.clear();
         });
 
         VBox checkBoxesL = new VBox(15);
@@ -117,7 +121,7 @@ public class ServerGUI extends Application {
         startButton.setOnAction(e -> {
             categories.addAll(categoriesList.getItems());
             Game.setCategories(categories);
-            System.out.println(Game.getCategories());
+            System.out.println("(origin=GUI) categories: " + Game.getCategories());
             try {
                 joinStage();
             } catch (IOException ex) {
@@ -137,7 +141,6 @@ public class ServerGUI extends Application {
         topTextBox.setStyle("-fx-alignment: center; -fx-padding: 20");
         checkBoxAll.setStyle("-fx-padding: 20; -fx-background-color: #399f97; -fx-border-color: #021C1D; -fx-border-width: 2px");
         categoriesList.setStyle("-fx-border-color: #021C1D; -fx-border-width: 2px");
-        categoriesList.getSelectionModel().clearSelection();
 
 
         Group root = new Group(selection);
@@ -176,20 +179,10 @@ public class ServerGUI extends Application {
 
     private void joinStage() throws IOException {
         stage.hide();
-        Game.startServer();
-
-        String hostAdd = "IP-Adresse konnte nicht gefunden werden";
-        try {
-            hostAdd = InetAddress.getLocalHost().getHostAddress();
-            System.out.println("ip-gui: " + hostAdd);
-            System.out.println("port: " + Game.getServerPort());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
         Label title = new Label("Beitreten über:");
-        Label ip = new Label("IP: " + hostAdd);
-        Label port = new Label("Port: " + Game.getServerPort());
+        Label ip = new Label("IP: Server initializing");
+        Label port = new Label("Port: Server initializing");
         title.setStyle("-fx-font-size: 60; -fx-font-style: italic; -fx-padding: 10");
         ip.setStyle("-fx-font-size: 36; -fx-font-style: italic; -fx-padding: 5");
         port.setStyle("-fx-font-size: 36; -fx-font-style: italic; -fx-padding: 5");
@@ -200,7 +193,6 @@ public class ServerGUI extends Application {
 
         HBox topText = new HBox(w2);
         topText.setStyle("-fx-alignment: center; -fx-padding: 20; -fx-background-color: #6ebdb5");
-
 
         flow = new FlowPane(Orientation.HORIZONTAL);
         flow.setPadding(new Insets(10));
@@ -240,19 +232,35 @@ public class ServerGUI extends Application {
         VBox join = new VBox(topText, players, confirmButtonBox);
         join.setStyle("-fx-background-color: #4aada2");
 
-        // last polish
-
         Group root = new Group(join);
-
         stage.setScene(new Scene(root));
         stage.setTitle("Beitreten");
         stage.setMinHeight(300);
         stage.setMinWidth(200);
         stage.show();
+
+        //show IP and Port
+        Game.startServer();
+
+        String hostAdd = "IP-Adresse konnte nicht gefunden werden";
+        try {
+            hostAdd = InetAddress.getLocalHost().getHostAddress();
+            System.out.println("(origin=GUI) ip: " + hostAdd);
+            System.out.println("(origin=GUI) port: " + Game.getServerPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        ip.setText("IP: " + hostAdd);
+        port.setText("Port: " + Game.getServerPort());
     }
 
     public void addPlayer(Client client) {
-        Label label = new Label(client.getPlayerName());
+        addPlayer(client.getPlayerName());
+    }
+
+    public void addPlayer(String str) {
+        Label label = new Label(str);
         label.setTextFill(Color.WHITE);
         label.setMinSize(80, 30);
         label.setAlignment(Pos.CENTER);
@@ -265,23 +273,61 @@ public class ServerGUI extends Application {
         Game.incRoundNumber();
 
         Button end = new Button("Runde beenden");
+        end.setDefaultButton(true);
+        end.setScaleX(1.6);
+        end.setScaleY(1.6);
         end.setOnAction(e -> {
             //TODO fire on round-time elapsed
             checkStage();
         });
 
-        Group root = new Group(new Label("Runde"));
-        stage.setScene(new Scene(root));
+        TimeLabel timeLabel = new TimeLabel(0, 0);
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(timeLabel::incr);
+            }
+        };
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(task, 1000L, 1000L);
+
+        Label letterTitle = new Label("Buchstabe:");
+        letterTitle.setTextFill(Color.WHITE);
+        letterTitle.setStyle("-fx-font-size: 48");
+
+        Label letter = new Label(Game.nextLetter());
+        letter.setTextFill(Color.WHITE);
+        letter.setStyle("-fx-font-size: 120; -fx-font-weight: bold;");
+
+        VBox top = new VBox(timeLabel);
+        top.setPadding(new Insets(15, 40, 40, 40));
+        top.setStyle("-fx-alignment: center; -fx-background-color: #2c7973");
+
+        VBox middle = new VBox(letterTitle, letter);
+        middle.setPadding(new Insets(20));
+        middle.setStyle("-fx-alignment: center");
+
+        VBox bottom = new VBox(end);
+        bottom.setPadding(new Insets(20));
+        bottom.setStyle("-fx-alignment: center");
+
+        VBox round = new VBox(5, top, middle, bottom);
+        round.setPadding(new Insets(10));
+
+        Group root = new Group(round);
+        stage.setScene(new Scene(root, Color.web("#004445")));
         stage.setTitle("Runde " + Game.getRoundNumber());
-        stage.setMinHeight(300);
-        stage.setMinWidth(200);
+        stage.setMinHeight(650);
+        stage.setMinWidth(435);
+        stage.sizeToScene();
         stage.show();
     }
 
     private void checkStage() {
         stage.hide();
 
-        Button confirm = new Button("Runde beenden");
+        Button confirm = new Button();
         confirm.setOnAction(e -> {
             //TODO check if all answers from clients have been checked
             scoreStage();
