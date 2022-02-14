@@ -346,6 +346,7 @@ public class ServerGUI extends Application {
         stage.hide();
 
         Button continueButton = new Button("Spiel fortsetzen");
+        continueButton.setDefaultButton(true);
         continueButton.setScaleX(1.6);
         continueButton.setScaleY(1.6);
         continueButton.setOnAction(e -> {
