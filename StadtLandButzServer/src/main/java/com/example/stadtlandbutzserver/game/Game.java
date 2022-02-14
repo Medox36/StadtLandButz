@@ -83,9 +83,7 @@ public class Game {
     public static void exit() {
         categories = null;
         clients = null;
-        if (server != null) {
-            server.exit();
-        }
+        if (server != null) server.exit();
         server = null;
         serverPort = null;
         Platform.exit();

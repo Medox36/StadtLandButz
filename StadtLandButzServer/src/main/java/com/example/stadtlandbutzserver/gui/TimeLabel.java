@@ -17,7 +17,7 @@ public class TimeLabel extends Label {
     }
 
     private void setTime(String minutes, String seconds) {
-        this.setText(zeroFill(minutes) + ":" + zeroFill(seconds));
+        setText(zeroFill(minutes) + ":" + zeroFill(seconds));
     }
 
     public void incr() {
