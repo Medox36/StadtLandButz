@@ -88,6 +88,6 @@ public class Game {
         serverPort = null;
         Platform.exit();
         System.gc();
-        System.exit(0);
+        //System.exit(0);
     }
 }
