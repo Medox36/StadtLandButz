@@ -10,9 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -25,7 +26,12 @@ public class ServerGUI extends Application {
     private Stage stage;
     private final ArrayList<String> categories = new ArrayList<>();
 
+    //joinStage
     private FlowPane flow;
+
+    //checkStage
+    private Text checkStageCategory;
+    private ListView<String> checkStagePlayerNames;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -120,11 +126,7 @@ public class ServerGUI extends Application {
             categories.addAll(categoriesList.getItems());
             Game.setCategories(categories);
             System.out.println("(origin=GUI) categories: " + Game.getCategories());
-            try {
-                joinStage();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            joinStage();
         });
         startButton.setScaleX(1.5);
         startButton.setScaleY(1.5);
@@ -139,7 +141,7 @@ public class ServerGUI extends Application {
         topTextBox.setStyle("-fx-alignment: center; -fx-padding: 20");
         checkBoxAll.setStyle("-fx-padding: 20; -fx-background-color: #399f97; -fx-border-color: #021C1D; -fx-border-width: 2px");
         categoriesList.setStyle("-fx-border-color: #021C1D; -fx-border-width: 2px");
-
+        selection.setStyle("-fx-background-color: #F08080FF");
 
         Group root = new Group(selection);
         stage.setOnCloseRequest(windowEvent -> {
@@ -147,7 +149,7 @@ public class ServerGUI extends Application {
             t.setPriority(10);
             t.start();
         });
-        stage.setScene(new Scene(root, Color.LIGHTCORAL));
+        stage.setScene(new Scene(root, Color.web("#da6060")));
         stage.setTitle("Kategorien");
         stage.setMinHeight(702);
         stage.setMinWidth(553);
@@ -180,7 +182,7 @@ public class ServerGUI extends Application {
         }
     }
 
-    private void joinStage() throws IOException {
+    private void joinStage() {
         stage.hide();
 
         Label title = new Label("Beitreten über:");
@@ -242,7 +244,7 @@ public class ServerGUI extends Application {
             t.setPriority(10);
             t.start();
         });
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(root, Color.web("#28988b")));
         stage.setTitle("Beitreten");
         stage.setMinHeight(804);
         stage.setMinWidth(936);
@@ -307,7 +309,7 @@ public class ServerGUI extends Application {
 
         Label letter = new Label(Game.nextLetter());
         letter.setTextFill(Color.WHITE);
-        letter.setStyle("-fx-font-size: 120; -fx-font-weight: bold;");
+        letter.setStyle("-fx-font-size: 120; -fx-font-weight: bold; -fx-font-family: 'Malgun Gothic'");
 
         VBox top = new VBox(timeLabel);
         top.setPadding(new Insets(15, 40, 40, 40));
@@ -323,6 +325,7 @@ public class ServerGUI extends Application {
 
         VBox round = new VBox(5, top, middle, bottom);
         round.setPadding(new Insets(10));
+        round.setStyle("-fx-background-color: #004445");
 
         Group root = new Group(round);
         stage = new Stage();
@@ -331,10 +334,10 @@ public class ServerGUI extends Application {
             t.setPriority(10);
             t.start();
         });
-        stage.setScene(new Scene(root, Color.web("#004445")));
+        stage.setScene(new Scene(root, Color.web("#00292a")));
         stage.setTitle("Runde " + Game.getRoundNumber());
         stage.sizeToScene();
-        stage.setMinHeight(630);
+        stage.setMinHeight(624);
         stage.setMinWidth(436);
         stage.show();
     }
@@ -342,23 +345,127 @@ public class ServerGUI extends Application {
     private void checkStage() {
         stage.hide();
 
-        Button confirm = new Button();
-        confirm.setOnAction(e -> {
+        Button continueButton = new Button("Spiel fortsetzen");
+        continueButton.setScaleX(1.6);
+        continueButton.setScaleY(1.6);
+        continueButton.setOnAction(e -> {
             //TODO check if all answers from clients have been checked
             scoreStage();
         });
 
-        Group root = new Group();
+        Button finishButton = new Button("Spiel abschliessen");
+        finishButton.setScaleX(1.6);
+        finishButton.setScaleY(1.6);
+        finishButton.setOnAction(e -> {
+            //TODO check if all answers from clients have been checked
+            winnerStage();
+        });
+
+        Button accept = new Button("Wort akzeptieren");
+        accept.setScaleX(1.6);
+        accept.setScaleY(1.6);
+        accept.setOnMouseEntered(mouseEvent -> accept.setStyle("-fx-background-color: #bbd9a2"));
+        accept.setOnMouseExited(mouseEvent -> accept.setStyle(""));
+        accept.setOnMousePressed(mouseEvent -> accept.setStyle("-fx-background-color: #91b457"));
+        accept.setOnMouseReleased(mouseEvent -> accept.setStyle(accept.isHover() ? "-fx-background-color: #bbd9a2" : ""));
+
+        Button reject = new Button("Wort ablehnen");
+        reject.setScaleX(1.6);
+        reject.setScaleY(1.6);
+        reject.setOnMouseEntered(mouseEvent -> reject.setStyle("-fx-background-color: #d08e83"));
+        reject.setOnMouseExited(mouseEvent -> reject.setStyle(""));
+        reject.setOnMousePressed(mouseEvent -> reject.setStyle("-fx-background-color: #af6a62"));
+        reject.setOnMouseReleased(mouseEvent -> reject.setStyle(accept.isHover() ? "-fx-background-color: #d08e83" : ""));
+
+        VBox buttons1 = new VBox(50, accept, reject);
+        buttons1.setStyle("-fx-alignment: center");
+
+        VBox buttons2 = new VBox(40, continueButton, finishButton);
+        buttons2.setStyle("-fx-alignment: center");
+        buttons2.setPadding(new Insets(30, 50, 0, 50));
+
+        Text txt = new Text("Wort der Kategorie ");
+        checkStageCategory = new Text("Nahrungsmittel");
+        checkStageCategory.setStyle("-fx-font-style: italic");
+        Text col = new Text(":");
+
+        Label wordTitle = new Label("", new TextFlow(txt, checkStageCategory, col));
+        wordTitle.setStyle("-fx-font-size: 36");
+
+        Label clientWord = new Label("Fluss");
+        clientWord.setMinWidth(965.0);
+        AnchorPane.setLeftAnchor(clientWord, 0.0);
+        AnchorPane.setRightAnchor(clientWord, 0.0);
+        clientWord.setAlignment(Pos.CENTER);
+        clientWord.setStyle("-fx-font-size: 60");
+
+        VBox word = new VBox(20, wordTitle, clientWord);
+        word.setStyle("-fx-alignment: center");
+        word.setPadding(new Insets(20, 40, 40, 40));
+
+        checkStagePlayerNames = new ListView<>();
+        checkStagePlayerNames.setEditable(false);
+        checkStagePlayerNames.setMaxHeight(240);
+        checkStagePlayerNames.setScaleX(1.5);
+        checkStagePlayerNames.setScaleY(1.5);
+        emptyListTest(checkStagePlayerNames);
+
+        VBox label = new VBox(word);
+        label.setStyle("-fx-alignment: center");
+
+        Label playerTitle = new Label("Spieler mit diesem Wort:");
+        playerTitle.setStyle("-fx-font-size: 24");
+        playerTitle.setMinWidth(300);
+
+        VBox list = new VBox(60, playerTitle, checkStagePlayerNames);
+        list.setStyle("-fx-alignment: center");
+        list.setPadding(new Insets(0, 60, 0, 0));
+        list.setMaxWidth(368);
+
+        HBox wordChoice = new HBox(80, list, buttons1);
+        wordChoice.setStyle("-fx-alignment: center");
+        wordChoice.setPadding(new Insets(20, 0, 100, 0));
+
+        VBox top = new VBox(20, label, wordChoice);
+        top.setStyle("-fx-alignment: center; -fx-background-color: #fdc009; -fx-border-color: #2a2200; -fx-border-width: 2px");
+
+        VBox bottom = new VBox(buttons2);
+        bottom.setStyle("-fx-alignment: center");
+        bottom.setPadding(new Insets(0, 20, 20, 20));
+
+        VBox check = new VBox(top, bottom);
+        check.setPadding(new Insets(20));
+        check.setStyle("-fx-alignment: center; -fx-background-color: #ffa603");
+
+        Group root = new Group(check);
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> {
             Thread t = new Thread(Game::exit, "Exit Thread");
             t.setPriority(10);
             t.start();
         });
-        stage.setScene(new Scene(root));
-        stage.setMinHeight(300);
-        stage.setMinWidth(200);
+        stage.setScene(new Scene(root, Color.web("#d89e00")));
+        stage.setTitle("Auswertung");
+        stage.setMinHeight(910);
+        stage.setMinWidth(1101);
         stage.show();
+    }
+
+    public void setCheckStageCategory(String categoryName) {
+        checkStageCategory.setText(categoryName);
+    }
+
+    public void setCheckStagePlayerNames(ArrayList<String> playerNames) {
+        checkStagePlayerNames.getItems().clear();
+        emptyListTest(checkStagePlayerNames);
+        for (String str : playerNames) {
+            checkStagePlayerNames.getItems().add(str);
+        }
+    }
+
+    public void setCheckStageCategoryAndPlayerNames(String categoryName, ArrayList<String> playerNames) {
+        setCheckStageCategory(categoryName);
+        setCheckStagePlayerNames(playerNames);
     }
 
     private void scoreStage() {
