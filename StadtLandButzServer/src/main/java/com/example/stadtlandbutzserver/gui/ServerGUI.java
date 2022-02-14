@@ -33,6 +33,9 @@ public class ServerGUI extends Application {
     private Text checkStageCategory;
     private ListView<String> checkStagePlayerNames;
 
+    //scoreStage
+    private ListView<BorderPane> scoreboard;
+
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -472,23 +475,81 @@ public class ServerGUI extends Application {
     private void scoreStage() {
         stage.hide();
 
-        Button confirm = new Button();
-        confirm.setOnAction(e -> {
-            //TODO check if last round
-            roundStage();
-        });
+        Button confirm = new Button("fortsetzen");
+        confirm.setDefaultButton(true);
+        confirm.setScaleX(1.6);
+        confirm.setScaleY(1.6);
+        confirm.setOnAction(e -> roundStage());
 
-        Group root = new Group();
+        Label title = new Label("Rangliste");
+        title.setStyle("-fx-font-size: 72; -fx-font-style: italic; -fx-font-weight: bold");
+
+        VBox label = new VBox(title);
+        label.setPadding(new Insets(40));
+        label.setStyle("-fx-alignment: center");
+
+        scoreboard = new ListView<>();
+        scoreboard.setEditable(false);
+        scoreboard.setMinWidth(900);
+        scoreboard.setMaxHeight(307);
+        scoreboard.getItems().add(new BorderPane());
+        scoreboard.setStyle("-fx-font-size: 30; -fx-font-weight: bold");
+        scoreboard.getSelectionModel().clearSelection();
+
+        VBox board = new VBox(scoreboard);
+        board.setStyle("-fx-alignment: center");
+
+        VBox top = new VBox(120, label, board);
+        top.setPadding(new Insets(20));
+        top.setStyle("-fx-alignment: center; -fx-border-width: 2px; -fx-border-color: #032556; -fx-background-color: #44a3e5");
+
+        VBox button = new VBox(confirm);
+        button.setPadding(new Insets(40));
+        button.setStyle("-fx-alignment: center");
+
+        VBox all = new VBox(20, top, button);
+        all.setPadding(new Insets(20));
+        all.setStyle("-fx-background-color: #1168ce; -fx-alignment: center");
+
+        Group root = new Group(all);
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> {
             Thread t = new Thread(Game::exit, "Exit Thread");
             t.setPriority(10);
             t.start();
         });
-        stage.setScene(new Scene(root));
-        stage.setMinHeight(300);
-        stage.setMinWidth(200);
+        stage.setScene(new Scene(root, Color.web("#0341b9")));
+        stage.setTitle("Punktestand");
+        stage.setMinHeight(860);
+        stage.setMinWidth(1000);
         stage.show();
+    }
+
+    /**
+     *
+     * @param pos position on leaderboard (0-based)
+     * @param name name of the player
+     * @param score score of the player
+     */
+    public void showTopFive(int pos, String name, String score) {
+        BorderPane b = new BorderPane();
+        b.setLeft(new Label(name));
+        b.setRight(new Label(score));
+        scoreboard.getItems().add(pos, b);
+        if (scoreboard.getItems().size() > 5) {
+            scoreboard.getItems().remove(5);
+        }
+        scoreboard.getSelectionModel().clearSelection();
+    }
+
+    /**
+     *
+     * @param pos position on leaderboard (0-based)
+     * @param name of the player
+     * @param score score of the player
+     */
+    public void showTopFive(int pos, String name, int score) {
+        showTopFive(pos, name, String.valueOf(score));
     }
 
     private void winnerStage() {
