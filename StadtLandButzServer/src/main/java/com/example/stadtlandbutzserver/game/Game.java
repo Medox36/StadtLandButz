@@ -95,6 +95,6 @@ public class Game {
         letters = null;
         categories = null;
         System.gc();
-        if (explicit) System.exit(2);
+        if (explicit) System.exit(3);
     }
 }
