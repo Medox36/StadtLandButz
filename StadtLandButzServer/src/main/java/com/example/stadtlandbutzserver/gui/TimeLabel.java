@@ -9,7 +9,7 @@ public class TimeLabel extends Label {
 
     public TimeLabel(int mins, int secs) {
         setTime(String.valueOf(mins), String.valueOf(secs));
-        setStyle("-fx-font-family: Gadugi; -fx-font-size: 130; -fx-text-fill: white; -fx-background-color: #2c7973; -fx-text-alignment: center");
+        setStyle("-fx-font-family: Gadugi; -fx-font-size: 130; -fx-text-fill: white; -fx-background-color: #2c7973; -fx-alignment: center");
         setMinSize(320, 150);
         setPrefSize(320,150);
         this.mins = mins;
