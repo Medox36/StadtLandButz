@@ -8,6 +8,8 @@ import javafx.geometry.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -35,6 +37,14 @@ public class ServerGUI extends Application {
 
     //scoreStage
     private ListView<BorderPane> scoreboard;
+
+    //winnerStage
+    private Label first;
+    private Label second;
+    private Label third;
+    private Label firstPoints;
+    private Label secondPoints;
+    private Label thirdPoints;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -535,12 +545,139 @@ public class ServerGUI extends Application {
     private void winnerStage() {
         stage.hide();
 
-        Group root = new Group();
+        Label title = new Label("Podium");
+        title.setTextFill(Color.WHITE);
+        title.setStyle("-fx-font-size: 72px; -fx-font-weight: bold; -fx-font-style: italic");
+
+        VBox podiumText = new VBox(title);
+        podiumText.setPadding(new Insets(30));
+        podiumText.setStyle("-fx-alignment: center");
+
+        first = new Label("placeholder");
+        first.setTextFill(Color.WHITE);
+        first.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-alignment: center");
+        first.setWrapText(true);
+        first.setMaxWidth(280);
+
+        second = new Label("placeholder");
+        second.setTextFill(Color.WHITE);
+        second.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-alignment: center");
+        second.setWrapText(true);
+        second.setMaxWidth(280);
+
+        third = new Label("placeholder");
+        third.setTextFill(Color.WHITE);
+        third.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-alignment: center");
+        third.setWrapText(true);
+        third.setMaxWidth(280);
+
+        firstPoints = new Label("0 Pt.");
+        firstPoints.setTextFill(Color.WHITE);
+        firstPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+
+        secondPoints = new Label("0 Pt.");
+        secondPoints.setTextFill(Color.WHITE);
+        secondPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+
+        thirdPoints = new Label("0 Pt.");
+        thirdPoints.setTextFill(Color.WHITE);
+        thirdPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+
+        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/images/first.png"))));
+        i1.setFitHeight(150);
+        i1.setFitWidth(150);
+        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/images/second.png"))));
+        i2.setFitHeight(150);
+        i2.setFitWidth(150);
+        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/images/third.png"))));
+        i3.setFitHeight(150);
+        i3.setFitWidth(150);
+
+        VBox pod1 = new VBox(20, new Label(), firstPoints, i1);
+        pod1.setMinSize(300, 500);
+        pod1.setMaxSize(300, 500);
+        pod1.setAlignment(Pos.TOP_CENTER);
+        pod1.setStyle("-fx-background-color: #864bbf; -fx-border-color: #302177; -fx-border-width: 2px");
+
+        VBox pod2 = new VBox(20, new Label(), secondPoints, i2);
+        pod2.setMinSize(300, 400);
+        pod2.setMaxSize(300, 400);
+        pod2.setAlignment(Pos.TOP_CENTER);
+        pod2.setStyle("-fx-background-color: #864bbf; -fx-border-color: #302177; -fx-border-width: 2px");
+
+        VBox pod3 = new VBox(20, new Label(), thirdPoints, i3);
+        pod3.setMinSize(300, 300);
+        pod3.setMaxSize(300, 300);
+        pod3.setAlignment(Pos.TOP_CENTER);
+        pod3.setStyle("-fx-background-color: #864bbf; -fx-border-color: #302177; -fx-border-width: 2px");
+
+        Button restart = new Button("Neues Spiel");
+        restart.setDefaultButton(true);
+        restart.setScaleX(1.6);
+        restart.setScaleY(1.6);
+        restart.setOnAction(e -> {
+            Game.stopServer();
+            selectionStage();
+        });
+
+        Button close = new Button("Spiel beenden");
+        close.setScaleX(1.6);
+        close.setScaleY(1.6);
+        close.setOnMouseEntered(mouseEvent -> close.setStyle("-fx-background-color: #d08e83"));
+        close.setOnMouseExited(mouseEvent -> close.setStyle(""));
+        close.setOnMousePressed(mouseEvent -> close.setStyle("-fx-background-color: #af6a62"));
+        close.setOnMouseReleased(mouseEvent -> close.setStyle(close.isHover() ? "-fx-background-color: #d08e83" : ""));
+        close.setOnAction(e -> Game.exit());
+
+        HBox buttons = new HBox(100, restart, close);
+        buttons.setStyle("-fx-alignment: center");
+
+        VBox topFirst = new VBox(20, first, pod1);
+        topFirst.setAlignment(Pos.BOTTOM_CENTER);
+
+        VBox topSecond = new VBox(20, second, pod2);
+        topSecond.setAlignment(Pos.BOTTOM_CENTER);
+
+        VBox topThird = new VBox(20, third, pod3);
+        topThird.setAlignment(Pos.BOTTOM_CENTER);
+
+        HBox podium = new HBox(0, topSecond, topFirst, topThird);
+        podium.setAlignment(Pos.BOTTOM_CENTER);
+
+
+        VBox top = new VBox(70, podiumText, podium);
+        top.setStyle("-fx-alignment: center");
+
+        VBox bottom = new VBox(buttons);
+        bottom.setPadding(new Insets(50, 30, 30, 30));
+        bottom.setStyle("-fx-alignment: center");
+
+        VBox all = new VBox(top, bottom);
+        all.setStyle("-fx-background-color: #55309b");
+        all.setPadding(new Insets(20));
+
+        Group root = new Group(all);
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit());
-        stage.setScene(new Scene(root));
-        stage.setMinHeight(300);
-        stage.setMinWidth(200);
+        stage.setScene(new Scene(root, Color.web("#24066b")));
+        stage.setTitle("Rangliste");
+        stage.setMinHeight(979);
+        stage.setMinWidth(956);
         stage.show();
+    }
+
+    public void setFirst(Client client) {
+        first.setText(client.getPlayerName());
+        firstPoints.setText(client.getPoints() + " Pt.");
+    }
+
+    public void setSecond(Client client) {
+        second.setText(client.getPlayerName());
+        secondPoints.setText(client.getPoints() + " Pt.");
+    }
+
+    public void setThird(Client client) {
+        third.setText(client.getPlayerName());
+        thirdPoints.setText(client.getPoints() + " Pt.");
     }
 }
