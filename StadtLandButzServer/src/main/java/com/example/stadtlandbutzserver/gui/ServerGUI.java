@@ -291,15 +291,6 @@ public class ServerGUI extends Application {
         stage.hide();
         Game.incRoundNumber();
 
-        Button end = new Button("Runde beenden");
-        end.setDefaultButton(true);
-        end.setScaleX(1.6);
-        end.setScaleY(1.6);
-        end.setOnAction(e -> {
-            //TODO fire on round-time elapsed
-            checkStage();
-        });
-
         TimeLabel timeLabel = new TimeLabel(0, 0);
 
         TimerTask task = new TimerTask() {
@@ -310,6 +301,16 @@ public class ServerGUI extends Application {
         };
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(task, 1000L, 1000L);
+
+        Button end = new Button("Runde beenden");
+        end.setDefaultButton(true);
+        end.setScaleX(1.6);
+        end.setScaleY(1.6);
+        end.setOnAction(e -> {
+            //TODO fire on round-time elapsed
+            timer.cancel();
+            checkStage();
+        });
 
         Label letterTitle = new Label("Buchstabe:");
         letterTitle.setTextFill(Color.WHITE);
