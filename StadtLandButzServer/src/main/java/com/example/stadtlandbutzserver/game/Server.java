@@ -72,6 +72,10 @@ public class Server {
         return String.valueOf(serverSocket.getLocalPort());
     }
 
+    public boolean isClosed() {
+        return serverSocket.isClosed();
+    }
+
     public void exit() {
         try {
             serverSocket.close();

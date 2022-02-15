@@ -14,6 +14,7 @@ public class Game {
     private static Vector<Client> clients = new Vector<>();
     private static Server server;
     private static String serverPort;
+    private static Thread serverThread;
     private static ServerGUI gui;
     private static int roundNumber;
 
@@ -21,8 +22,17 @@ public class Game {
         if (server == null) {
             server = new Server();
             serverPort = server.getPort();
-            new Thread(() -> server.start()).start();
+            serverThread = new Thread(() -> server.start());
+            serverThread.start();
         }
+    }
+
+    public static void stopServer() {
+        if (server != null && !server.isClosed()) server.exit();
+        serverThread.interrupt();
+        serverThread = null;
+        server = null;
+        serverPort = null;
     }
 
     public static String getServerPort() {
@@ -81,11 +91,15 @@ public class Game {
     }
 
     public static void exit() {
+        Thread t = new Thread(Game::exiting, "Exit Thread");
+        t.setPriority(10);
+        t.start();
+    }
+
+    private static void exiting() {
         categories = null;
         clients = null;
-        if (server != null) server.exit();
-        server = null;
-        serverPort = null;
+        stopServer();
         Platform.exit();
         System.gc();
         //System.exit(0);
