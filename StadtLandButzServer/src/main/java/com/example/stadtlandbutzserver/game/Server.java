@@ -27,7 +27,7 @@ public class Server {
                 ex.printStackTrace();
                 System.out.println("WARN: No Port found for the Server");
             } finally {
-                Game.exit();
+                Game.exit(true);
             }
         }
         await = true;
@@ -47,7 +47,7 @@ public class Server {
         do {
             try {
                 Socket socket = serverSocket.accept();
-                Game.addClient(new Client(socket));
+                Game.getClients().add(new Client(socket));
                 //TODO implement Client Threads with sockets
             } catch (IOException e) {
                 //e.printStackTrace();

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class Game {
-    private static final ArrayList<Character> letters = new ArrayList<>();
+    private static ArrayList<Character> letters = new ArrayList<>();
     private static ArrayList<String> categories = new ArrayList<>();
     private static Vector<Client> clients = new Vector<>();
     private static Server server;
@@ -29,10 +29,13 @@ public class Game {
 
     public static void stopServer() {
         if (server != null && !server.isClosed()) server.exit();
-        serverThread.interrupt();
+        if (serverThread != null) serverThread.interrupt();
         serverThread = null;
         server = null;
         serverPort = null;
+        letters.clear();
+        categories.clear();
+        roundNumber = 0;
     }
 
     public static String getServerPort() {
@@ -51,24 +54,12 @@ public class Game {
         gui.addPlayer(client);
     }
 
-    public static void setCategories(ArrayList<String> categories) {
-        Game.categories = categories;
-    }
-
     public static ArrayList<String> getCategories() {
         return categories;
     }
 
     public static Vector<Client> getClients() {
         return clients;
-    }
-
-    public static void addClient(Client client) {
-        clients.add(client);
-    }
-
-    public static void removeClient(Client client) {
-        clients.remove(client);
     }
 
     public static void incRoundNumber() {
@@ -90,18 +81,20 @@ public class Game {
         return String.valueOf(letter).toUpperCase();
     }
 
-    public static void exit() {
-        Thread t = new Thread(Game::exiting, "Exit Thread");
+    public static void exit(boolean explicit) {
+        Thread t = new Thread(() -> exiting(explicit), "Exit Thread");
         t.setPriority(10);
         t.start();
     }
 
-    private static void exiting() {
-        categories = null;
-        clients = null;
+    private static void exiting(boolean explicit) {
         stopServer();
         Platform.exit();
+        gui = null;
+        clients = null;
+        letters = null;
+        categories = null;
         System.gc();
-        //System.exit(0);
+        if (explicit) System.exit(2);
     }
 }

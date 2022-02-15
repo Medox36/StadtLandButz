@@ -26,7 +26,6 @@ import java.util.TimerTask;
 public class ServerGUI extends Application {
 
     private Stage stage;
-    private final ArrayList<String> categories = new ArrayList<>();
 
     //joinStage
     private FlowPane flow;
@@ -138,8 +137,7 @@ public class ServerGUI extends Application {
         Button startButton = new Button("Bestätigen");
         startButton.setDefaultButton(true);
         startButton.setOnAction(e -> {
-            categories.addAll(categoriesList.getItems());
-            Game.setCategories(categories);
+            Game.getCategories().addAll(categoriesList.getItems());
             System.out.println("(origin=GUI) categories: " + Game.getCategories());
             joinStage();
         });
@@ -160,7 +158,7 @@ public class ServerGUI extends Application {
 
         Group root = new Group(selection);
         stage = new Stage();
-        stage.setOnCloseRequest(windowEvent -> Game.exit());
+        stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root, Color.web("#da6060")));
         stage.setTitle("Kategorien");
         stage.setMinHeight(702);
@@ -251,7 +249,7 @@ public class ServerGUI extends Application {
 
         Group root = new Group(join);
         stage = new Stage();
-        stage.setOnCloseRequest(windowEvent -> Game.exit());
+        stage.setOnCloseRequest(windowEvent -> Game.exit(true));
         stage.setScene(new Scene(root, Color.web("#28988b")));
         stage.setTitle("Beitreten");
         stage.setMinHeight(804);
@@ -338,7 +336,7 @@ public class ServerGUI extends Application {
 
         Group root = new Group(round);
         stage = new Stage();
-        stage.setOnCloseRequest(windowEvent -> Game.exit());
+        stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root, Color.web("#00292a")));
         stage.setTitle("Runde " + Game.getRoundNumber());
         stage.sizeToScene();
@@ -445,7 +443,7 @@ public class ServerGUI extends Application {
 
         Group root = new Group(check);
         stage = new Stage();
-        stage.setOnCloseRequest(windowEvent -> Game.exit());
+        stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root, Color.web("#d89e00")));
         stage.setTitle("Auswertung");
         stage.setMinHeight(920);
@@ -511,7 +509,7 @@ public class ServerGUI extends Application {
 
         Group root = new Group(all);
         stage = new Stage();
-        stage.setOnCloseRequest(windowEvent -> Game.exit());
+        stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root, Color.web("#0341b9")));
         stage.setTitle("Punktestand");
         stage.setMinHeight(860);
@@ -631,7 +629,7 @@ public class ServerGUI extends Application {
         close.setOnMouseExited(mouseEvent -> close.setStyle(""));
         close.setOnMousePressed(mouseEvent -> close.setStyle("-fx-background-color: #af6a62"));
         close.setOnMouseReleased(mouseEvent -> close.setStyle(close.isHover() ? "-fx-background-color: #d08e83" : ""));
-        close.setOnAction(e -> Game.exit());
+        close.setOnAction(e -> Game.exit(false));
 
         HBox buttons = new HBox(100, restart, close);
         buttons.setStyle("-fx-alignment: center");
@@ -662,7 +660,7 @@ public class ServerGUI extends Application {
 
         Group root = new Group(all);
         stage = new Stage();
-        stage.setOnCloseRequest(windowEvent -> Game.exit());
+        stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root, Color.web("#24066b")));
         stage.setTitle("Rangliste");
         stage.setMinHeight(979);
