@@ -54,6 +54,8 @@ public class ServerGUI extends Application {
     }
 
     private void selectionStage() {
+        stage.hide();
+
         ListView<String> categoriesList = new ListView<>();
         categoriesList.setEditable(false);
         emptyListTest(categoriesList);
@@ -157,6 +159,7 @@ public class ServerGUI extends Application {
         selection.setStyle("-fx-background-color: #F08080FF");
 
         Group root = new Group(selection);
+        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit());
         stage.setScene(new Scene(root, Color.web("#da6060")));
         stage.setTitle("Kategorien");
@@ -384,7 +387,7 @@ public class ServerGUI extends Application {
 
         VBox buttons2 = new VBox(40, continueButton, finishButton);
         buttons2.setStyle("-fx-alignment: center");
-        buttons2.setPadding(new Insets(30, 50, 0, 50));
+        buttons2.setPadding(new Insets(40, 50, 0, 50));
 
         Text txt = new Text("Wort der Kategorie ");
         checkStageCategory = new Text("Nahrungsmittel");
@@ -444,7 +447,7 @@ public class ServerGUI extends Application {
         stage.setOnCloseRequest(windowEvent -> Game.exit());
         stage.setScene(new Scene(root, Color.web("#d89e00")));
         stage.setTitle("Auswertung");
-        stage.setMinHeight(910);
+        stage.setMinHeight(920);
         stage.setMinWidth(1101);
         stage.show();
     }
