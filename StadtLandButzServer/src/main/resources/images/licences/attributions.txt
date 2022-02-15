@@ -1,0 +1,14 @@
+first.png:
+    Medal icons created by Freepik - Flaticon
+    https://www.flaticon.com/free-icons/medal
+    https://www.flaticon.com/free-icon/medal_2583344
+
+second.png:
+    Medal icons created by Freepik - Flaticon
+    https://www.flaticon.com/free-icons/medal
+    https://www.flaticon.com/free-icon/medal_2583319
+
+third.png:
+    Medal icons created by Freepik - Flaticon
+    https://www.flaticon.com/free-icons/medal
+    https://www.flaticon.com/free-icon/medal_2583434
