@@ -1,0 +1,49 @@
+symbol for separating two values, when two values are sent in one package in the information attribute of type String: @
+
+0000:
+    testing connection
+
+0001:
+    sending player name
+
+0010:
+    sending categories
+
+0011:
+    sending current round number + letter
+
+0100:
+    sending "enable client-user input" instruction
+
+0101:
+    sending "block client-user inputs" instruction
+
+0110:
+    sending client-words of current round
+
+0111:
+    sending made points in round + round number
+
+1000:
+
+
+1001:
+
+
+1010:
+
+
+1011:
+
+
+1100:
+
+
+1101:
+
+
+1110:
+
+
+1111:
+
