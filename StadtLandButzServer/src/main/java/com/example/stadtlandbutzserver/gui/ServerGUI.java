@@ -89,7 +89,9 @@ public class ServerGUI extends Application {
                 }
                 emptyListTest(categoriesList);
             });
+            box.setStyle("-fx-font-size: 16");
         }
+
 
         categoriesList.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
@@ -153,7 +155,7 @@ public class ServerGUI extends Application {
         confirmButtonBox.setStyle("-fx-alignment: center; -fx-padding: 40");
         topTextBox.setStyle("-fx-alignment: center; -fx-padding: 20");
         checkBoxAll.setStyle("-fx-padding: 20; -fx-background-color: #399f97; -fx-border-color: #021C1D; -fx-border-width: 2px");
-        categoriesList.setStyle("-fx-border-color: #021C1D; -fx-border-width: 2px");
+        categoriesList.setStyle("-fx-border-color: #021C1D; -fx-border-width: 2px; -fx-font-size: 16; -fx-wrap-text: true");
         selection.setStyle("-fx-background-color: #F08080FF");
 
         Group root = new Group(selection);
