@@ -4,7 +4,7 @@ symbol for separating two values, when two values are sent in one package in the
     testing connection
 
 0001:
-    requesting key
+    requesting id
 
 0010:
     sending player name
