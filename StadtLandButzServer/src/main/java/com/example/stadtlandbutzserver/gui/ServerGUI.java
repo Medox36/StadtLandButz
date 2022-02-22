@@ -139,9 +139,17 @@ public class ServerGUI extends Application {
         Button startButton = new Button("Bestätigen");
         startButton.setDefaultButton(true);
         startButton.setOnAction(e -> {
-            Game.getCategories().addAll(categoriesList.getItems());
-            System.out.println("(origin=GUI) categories: " + Game.getCategories());
-            joinStage();
+            if (categoriesList.getItems().contains("")) {
+                Alert a = new Alert(Alert.AlertType.WARNING);
+                a.setTitle("Kategorien");
+                a.setHeaderText("Keine Kategorien");
+                a.setContentText("Bitte wählen Sie mindestens eine Kategorie, um das Spiel zu starten.");
+                a.showAndWait();
+            } else {
+                Game.getCategories().addAll(categoriesList.getItems());
+                System.out.println("(origin=GUI) categories: " + Game.getCategories());
+                joinStage();
+            }
         });
         startButton.setScaleX(1.5);
         startButton.setScaleY(1.5);
