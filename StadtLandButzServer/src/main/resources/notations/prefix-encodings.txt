@@ -4,28 +4,28 @@ symbol for separating two values, when two values are sent in one package in the
     testing connection
 
 0001:
-    sending player name
+    requesting key
 
 0010:
-    sending categories
+    sending player name
 
 0011:
-    sending current round number + letter
+    sending categories
 
 0100:
-    sending "enable client-user input" instruction
+    sending current round number + letter
 
 0101:
-    sending "block client-user inputs" instruction
+    sending "enable client-user input" instruction
 
 0110:
-    sending client-words of current round
+    sending "block client-user inputs" instruction
 
 0111:
-    sending made points in round + round number
+    sending client-words of current round
 
 1000:
-
+    sending made points in round + round number
 
 1001:
 
