@@ -53,8 +53,6 @@ public class ServerGUI extends Application {
     }
 
     private void selectionStage() {
-        stage.hide();
-
         ListView<String> categoriesList = new ListView<>();
         categoriesList.setEditable(false);
         emptyListTest(categoriesList);
@@ -166,13 +164,17 @@ public class ServerGUI extends Application {
         categoriesList.setStyle("-fx-border-color: #021C1D; -fx-border-width: 2px; -fx-font-size: 16; -fx-wrap-text: true");
         selection.setStyle("-fx-background-color: #F08080FF");
 
-        Group root = new Group(selection);
+        Group group = new Group(selection);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #da6060");
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root, Color.web("#da6060")));
+        stage.setScene(new Scene(root));
         stage.setTitle("Kategorien");
         stage.setMinHeight(702);
         stage.setMinWidth(553);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -203,8 +205,6 @@ public class ServerGUI extends Application {
     }
 
     private void joinStage() {
-        stage.hide();
-
         Label title = new Label("Beitreten über:");
         Label ip = new Label("IP: Server initializing");
         Label port = new Label("Port: Server initializing");
@@ -257,13 +257,17 @@ public class ServerGUI extends Application {
         VBox join = new VBox(topText, players, confirmButtonBox);
         join.setStyle("-fx-background-color: #4aada2");
 
-        Group root = new Group(join);
+        Group group = new Group(join);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #28988b");
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(true));
-        stage.setScene(new Scene(root, Color.web("#28988b")));
+        stage.setScene(new Scene(root));
         stage.setTitle("Beitreten");
         stage.setMinHeight(804);
         stage.setMinWidth(936);
+        stage.setMaximized(true);
         stage.show();
 
         //show IP and Port
@@ -296,7 +300,6 @@ public class ServerGUI extends Application {
     }
 
     private void roundStage() {
-        stage.hide();
         Game.incRoundNumber();
 
         TimeLabel timeLabel = new TimeLabel(0, 0);
@@ -344,20 +347,21 @@ public class ServerGUI extends Application {
         round.setPadding(new Insets(10));
         round.setStyle("-fx-background-color: #004445");
 
-        Group root = new Group(round);
+        Group group = new Group(round);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #00292a");
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root, Color.web("#00292a")));
+        stage.setScene(new Scene(root));
         stage.setTitle("Runde " + Game.getRoundNumber());
-        stage.sizeToScene();
         stage.setMinHeight(624);
         stage.setMinWidth(436);
+        stage.setMaximized(true);
         stage.show();
     }
 
     private void checkStage() {
-        stage.hide();
-
         Button continueButton = new Button("Spiel fortsetzen");
         continueButton.setDefaultButton(true);
         continueButton.setScaleX(1.6);
@@ -451,13 +455,17 @@ public class ServerGUI extends Application {
         check.setPadding(new Insets(20));
         check.setStyle("-fx-alignment: center; -fx-background-color: #ffa603");
 
-        Group root = new Group(check);
+        Group group = new Group(check);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #d89e00");
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root, Color.web("#d89e00")));
+        stage.setScene(new Scene(root));
         stage.setTitle("Auswertung");
         stage.setMinHeight(920);
         stage.setMinWidth(1101);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -479,8 +487,6 @@ public class ServerGUI extends Application {
     }
 
     private void scoreStage() {
-        stage.hide();
-
         Button confirm = new Button("fortsetzen");
         confirm.setDefaultButton(true);
         confirm.setScaleX(1.6);
@@ -517,13 +523,17 @@ public class ServerGUI extends Application {
         all.setPadding(new Insets(20));
         all.setStyle("-fx-background-color: #1168ce; -fx-alignment: center");
 
-        Group root = new Group(all);
+        Group group = new Group(all);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #0341b9");
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root, Color.web("#0341b9")));
+        stage.setScene(new Scene(root));
         stage.setTitle("Punktestand");
         stage.setMinHeight(860);
         stage.setMinWidth(1000);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -555,8 +565,6 @@ public class ServerGUI extends Application {
     }
 
     private void winnerStage() {
-        stage.hide();
-
         Label title = new Label("Podium");
         title.setTextFill(Color.WHITE);
         title.setStyle("-fx-font-size: 72px; -fx-font-weight: bold; -fx-font-style: italic");
@@ -668,13 +676,17 @@ public class ServerGUI extends Application {
         all.setStyle("-fx-background-color: #55309b");
         all.setPadding(new Insets(20));
 
-        Group root = new Group(all);
+        Group group = new Group(all);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #24066b");
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root, Color.web("#24066b")));
+        stage.setScene(new Scene(root));
         stage.setTitle("Rangliste");
         stage.setMinHeight(979);
         stage.setMinWidth(956);
+        stage.setMaximized(true);
         stage.show();
     }
 
