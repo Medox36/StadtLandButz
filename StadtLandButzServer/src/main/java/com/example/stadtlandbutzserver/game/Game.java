@@ -6,12 +6,14 @@ import javafx.application.Platform;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.Vector;
 
 public class Game {
     private static ArrayList<Character> letters = new ArrayList<>();
     private static ArrayList<String> categories = new ArrayList<>();
     private static Vector<Client> clients = new Vector<>();
+    private static Vector<UUID> uuids = new Vector<>();
     private static Server server;
     private static String serverPort;
     private static Thread serverThread;
@@ -33,6 +35,7 @@ public class Game {
         serverThread = null;
         server = null;
         serverPort = null;
+        uuids.clear();
         letters.clear();
         categories.clear();
         roundNumber = 0;
@@ -70,6 +73,15 @@ public class Game {
         return roundNumber;
     }
 
+    public static UUID getNewUUID() {
+        UUID uuid = UUID.randomUUID();
+        while (uuids.contains(uuid)) {
+            uuid = UUID.randomUUID();
+        }
+        uuids.add(uuid);
+        return uuid;
+    }
+
     public static String nextLetter() {
         SecureRandom s = new SecureRandom();
         Character letter = (char) (s.nextInt(26) + 'a');
@@ -91,6 +103,7 @@ public class Game {
         stopServer();
         Platform.exit();
         gui = null;
+        uuids = null;
         clients = null;
         letters = null;
         categories = null;
