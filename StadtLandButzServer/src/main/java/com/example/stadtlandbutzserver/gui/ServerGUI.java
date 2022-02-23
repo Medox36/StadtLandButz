@@ -238,7 +238,7 @@ public class ServerGUI extends Application {
             flow.setPrefWidth(bounds.getWidth());
             flow.setPrefHeight(bounds.getHeight());
         });
-        scroll.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/css/joinStage.css")).toString());
+        scroll.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/com/example/stadtlandbutzserver/css/joinStage.css")).toString());
 
         VBox players = new VBox(scroll);
         players.setStyle("-fx-alignment: center; -fx-padding: 10");
@@ -595,13 +595,13 @@ public class ServerGUI extends Application {
         thirdPoints.setTextFill(Color.WHITE);
         thirdPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
 
-        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/images/first.png"))));
+        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/com/example/stadtlandbutzserver/images/first.png"))));
         i1.setFitHeight(150);
         i1.setFitWidth(150);
-        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/images/second.png"))));
+        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/com/example/stadtlandbutzserver/images/second.png"))));
         i2.setFitHeight(150);
         i2.setFitWidth(150);
-        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/images/third.png"))));
+        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/com/example/stadtlandbutzserver/images/third.png"))));
         i3.setFitHeight(150);
         i3.setFitWidth(150);
 
