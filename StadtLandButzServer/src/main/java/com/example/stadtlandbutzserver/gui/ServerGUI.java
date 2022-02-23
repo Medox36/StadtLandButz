@@ -168,6 +168,7 @@ public class ServerGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #da6060");
+        stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
@@ -261,6 +262,7 @@ public class ServerGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #28988b");
+        stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(true));
         stage.setScene(new Scene(root));
@@ -351,6 +353,7 @@ public class ServerGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #00292a");
+        stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
@@ -459,6 +462,7 @@ public class ServerGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #d89e00");
+        stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
@@ -527,6 +531,7 @@ public class ServerGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #0341b9");
+        stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
@@ -680,6 +685,7 @@ public class ServerGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #24066b");
+        stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
