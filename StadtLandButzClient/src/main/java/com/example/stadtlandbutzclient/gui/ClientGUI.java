@@ -19,7 +19,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -27,17 +30,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.UnaryOperator;
 
 public class ClientGUI extends Application {
 
     private Stage stage;
 
     private final String ipRegex = "^(([01]?[0-9]{0,2})|(2[0-4][0-9])|(25[0-5]))?(\\.(([01]?[0-9]{0,2})|(2[0-4][0-9])|(25[0-5]))){0,3}";
-    private final String nameRegex = "^(?=[a-zA-Z0-9._]{0,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
+    private final String validateIpRegex = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+    private final String nameRegex = "^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
+    private final String validateNameRegex = "^[a-zA-Z0-9._]{0,20}$";
 
     private TableView<Row> categories;
     private TableView<Point> points;
+
+    private TextField totalPoints;
 
 
     @Override
@@ -46,8 +52,15 @@ public class ClientGUI extends Application {
         Game.setGui(this);
         //joinStage();
 
+        //test
         Game.setCategories(new ArrayList<>(List.of("Stadt,Land,Gewässer,Nahrungsmittel,Gebirge,Beruf,Modemarke,Sportart".split(","))));
-        gameStage();
+        testInit();
+
+        //
+        joinStage();
+
+        //test
+        test();
     }
 
     private void joinStage() {
@@ -56,15 +69,14 @@ public class ClientGUI extends Application {
         ip.setMaxWidth(120);
         ip.setTooltip(new Tooltip("IP-Adresse"));
 
-        final UnaryOperator<TextFormatter.Change> ipAddressFilter = c -> {
-            String text = c.getControlNewText();
+        ip.setTextFormatter(new TextFormatter<>(change -> {
+            String text = change.getControlNewText();
             if  (text.matches(ipRegex)) {
-                return c ;
+                return change ;
             } else {
                 return null ;
             }
-        };
-        ip.setTextFormatter(new TextFormatter<>(ipAddressFilter));
+        }));
 
         Spinner<Integer> port = new Spinner<>(0, 65535, 24452, 1);
         port.setEditable(true);
@@ -74,30 +86,43 @@ public class ClientGUI extends Application {
         TextField playerName = new TextField();
         playerName.setPromptText("Spielername");
 
-        final UnaryOperator<TextFormatter.Change> playerNameFilter = c -> {
-            String text = c.getControlNewText();
-            if  (text.matches(nameRegex)) {
-                return c ;
+        playerName.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches(validateNameRegex)) {
+                return change;
             } else {
-                return null ;
+                return null;
             }
-        };
-        playerName.setTextFormatter(new TextFormatter<>(playerNameFilter));
+        }));
 
         Button confirm = new Button("Eingeben");
         confirm.setScaleX(1.4);
         confirm.setScaleY(1.4);
         confirm.setDefaultButton(true);
         confirm.setOnAction(e -> {
-            if (!Game.createClient(ip.getText(), port.getValue(), playerName.getText())) {
-                //TODO show that connection can't be made
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setTitle("Verbindung");
-                a.setHeaderText("Keine Verbindung möglich");
-                a.setContentText("Es konte keine Verbindung zum Server hergestellt werden.");
-                a.showAndWait();
+            if (ip.getText().matches(validateIpRegex)) {
+                if (playerName.getText().matches(nameRegex)) {
+                    if (!Game.createClient(ip.getText(), port.getValue(), playerName.getText())) {
+                        //TODO show that connection can't be made
+                        Alert a = new Alert(Alert.AlertType.ERROR);
+                        a.setTitle("Verbindung");
+                        a.setHeaderText("Keine Verbindung möglich");
+                        a.setContentText("Es konte keine Verbindung zum Server hergestellt werden.");
+                        a.showAndWait();
+                    } else {
+                        waitStage();
+                    }
+                } else {
+                    Alert a = new Alert(Alert.AlertType.WARNING);
+                    a.setTitle("Spielername");
+                    a.setHeaderText("Ungültiger Spielername");
+                    a.setContentText("Kein \"_\" und \".\" am Anfang sowei am Schluss.\nKein \"__\" oder \"_.\" oder \"._\" oder \"..\" mitten drin.");
+                    a.showAndWait();
+                }
             } else {
-                waitStage();
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setTitle("IP-Adresse");
+                a.setHeaderText("Ungültige IP-Adresse");
+                a.showAndWait();
             }
         });
 
@@ -294,10 +319,13 @@ public class ClientGUI extends Application {
 
     }
 
+    private void testInit() {
+        Game.createClient("192.168.0.4", 24452, "ABC");
+        Game.getClient().setUUID(UUID.randomUUID());
+    }
+
     private void test() {
         Platform.runLater(() -> new Thread(() -> {
-            Game.createClient("192.168.0.4", 24452, "ABC");
-            Game.getClient().setUuid(UUID.randomUUID());
             ClientInterpreter.interpret(new Package("0100", "0@L", Game.getClient().getUUID()));
             ClientInterpreter.interpret(new Package("0101", "", Game.getClient().getUUID()));
             try {
