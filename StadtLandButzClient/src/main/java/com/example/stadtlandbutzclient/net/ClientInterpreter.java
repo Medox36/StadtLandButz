@@ -1,5 +1,12 @@
 package com.example.stadtlandbutzclient.net;
 
+import com.example.stadtlandbutzclient.game.Game;
+import javafx.application.Platform;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
+
 public class ClientInterpreter {
 
     public static void interpret(Package p) {
@@ -35,27 +42,32 @@ public class ClientInterpreter {
     }
 
     private static void receivingId(Package p) {
-
+        Game.getClient().setUuid(UUID.fromString(p.information));
     }
 
     private static void receivingCategories(Package p) {
-
+        Game.setCategories(new ArrayList<>(Arrays.asList(p.information.split(","))));
+        Platform.runLater(() -> Game.getGui().gameStage());
     }
 
     private static void roundNumberAndLetter(Package p) {
+        String[] str = p.information.split("@");
 
+        Game.setRoundNumber(Integer.parseInt(str[0]));
+        Game.getGui().addRound(str[1].charAt(0));
     }
 
     private static void enableUserInput() {
-
+        Game.allowEditInCurrRow(true);
     }
 
     private static void blockUserInput() {
-
+        Game.allowEditInCurrRow(false);
     }
 
     private static void madePointsInRound(Package p) {
-
+        String[] str = p.information.split("@");
+        Game.getGui().setMadePointsInRound(Integer.parseInt(str[0]), Integer.parseInt(str[1]));
     }
 
     private static void invalidPackage() {
