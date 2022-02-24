@@ -357,7 +357,7 @@ public class ServerGUI extends Application {
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
-        stage.setTitle("Runde " + Game.getRoundNumber());
+        stage.setTitle("Runde " + Game.getVisualRoundNumber());
         stage.setMinHeight(624);
         stage.setMinWidth(436);
         stage.setMaximized(true);

@@ -18,7 +18,7 @@ public class Game {
     private static String serverPort;
     private static Thread serverThread;
     private static ServerGUI gui;
-    private static int roundNumber;
+    private static int roundNumber = -1;
 
     public static void startServer() {
         if (server == null) {
@@ -38,7 +38,7 @@ public class Game {
         uuids.clear();
         letters.clear();
         categories.clear();
-        roundNumber = 0;
+        roundNumber = -1;
     }
 
     public static String getServerPort() {
@@ -71,6 +71,10 @@ public class Game {
 
     public static int getRoundNumber() {
         return roundNumber;
+    }
+
+    public static int getVisualRoundNumber() {
+        return roundNumber + 1;
     }
 
     public static UUID getNewUUID() {
