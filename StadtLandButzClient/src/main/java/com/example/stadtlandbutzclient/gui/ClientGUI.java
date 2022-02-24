@@ -211,7 +211,7 @@ public class ClientGUI extends Application {
         for (int i = 0; i < strs.size(); i++) {
             TableColumn<Row, String> cat = new TableColumn<>(strs.get(i));
             cat.setEditable(true);
-            cat.setResizable(false);
+            cat.setResizable(true);
             cat.setSortable(false);
             cat.setReorderable(false);
             cat.setCellValueFactory(new PropertyValueFactory<>("cat" + i));
@@ -231,8 +231,7 @@ public class ClientGUI extends Application {
                             TableView<Row> table = getTableView();
                             if (table != null) {
                                 TableColumn<Row, String> column = getTableColumn();
-                                TableColumn.CellEditEvent<Row, String> event = new TableColumn.CellEditEvent<>(table,
-                                        new TablePosition<>(table, getIndex(), column), TableColumn.editCommitEvent(), item);
+                                TableColumn.CellEditEvent<Row, String> event = new TableColumn.CellEditEvent<>(table, new TablePosition<>(table, getIndex(), column), TableColumn.editCommitEvent(), item);
                                 Event.fireEvent(column, event);
                             }
                         }
@@ -243,6 +242,8 @@ public class ClientGUI extends Application {
                 }
             });
             cat.setPrefWidth(200);
+            cat.setMinWidth(100);
+            cat.setMaxWidth(400);
             categories.getColumns().add(cat);
         }
         categories.setEditable(true);
@@ -257,29 +258,113 @@ public class ClientGUI extends Application {
 
         points = new TableView<>();
         points.getColumns().add(point);
-        points.setMaxWidth(82);
+        points.setMaxWidth(83);
 
         HBox tables = new HBox(categories, points);
         tables.setAlignment(Pos.CENTER);
 
-        VBox all = new VBox(tables);
+        ImageView stadt = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/com/example/stadtlandbutzclient/images/stadt.png"))));
+        stadt.setFitHeight(100);
+        stadt.setFitWidth(300);
+
+        ImageView land = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/com/example/stadtlandbutzclient/images/land.png"))));
+        land.setRotate(-90);
+        land.setFitHeight(50);
+        land.setFitWidth(150);
+
+        ImageView butz = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/com/example/stadtlandbutzclient/images/butz.png"))));
+        butz.setFitHeight(100);
+        butz.setFitWidth(300);
+
+        ImageView reachablePoints = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/com/example/stadtlandbutzclient/images/points.png"))));
+        reachablePoints.setFitHeight(100);
+        reachablePoints.setFitWidth(270);
+
+        VBox pointImage = new VBox(reachablePoints);
+        pointImage.setAlignment(Pos.CENTER);
+        pointImage.setPadding(new Insets(0, 50, 0, 50));
+
+        HBox split1 = new HBox(new Rectangle(3, 80, Color.WHITE));
+        split1.setAlignment(Pos.CENTER);
+        split1.setPadding(new Insets(0, 0, 0, 40));
+
+        HBox split2 = new HBox(new Rectangle(3, 80, Color.WHITE));
+        split2.setAlignment(Pos.CENTER);
+        split2.setPadding(new Insets(0, 40, 0, 0));
+
+        HBox butzImage = new HBox(butz);
+        butzImage.setAlignment(Pos.CENTER);
+        butzImage.setPadding(new Insets(0, 50, 0, 0));
+
+        HBox stadtLandButz = new HBox(stadt, split1, land, split2, butzImage, reachablePoints);
+        stadtLandButz.setAlignment(Pos.CENTER);
+
+        Text name = new Text("NAME:\n");
+        name.setStyle("-fx-font-size: 36; -fx-font-weight: bold");
+        name.setFill(Color.WHITE);
+
+        Text playerName = new Text(Game.getClient().getPlayerName());
+        playerName.setStyle("-fx-font-style: italic; -fx-font-size: 30");
+        playerName.setFill(Color.WHITE);
+
+        Label nameAll = new Label("", new TextFlow(name, playerName));
+
+        BorderPane header = new BorderPane();
+        header.setLeft(stadtLandButz);
+        header.setRight(nameAll);
+
+        totalPoints = new TextField("0");
+        totalPoints.setMinWidth(points.getMaxWidth());
+        totalPoints.setMaxWidth(points.getMaxWidth());
+        totalPoints.setEditable(false);
+        totalPoints.setStyle("-fx-alignment: center");
+
+        Label totalText = new Label("TOTAL:");
+        totalText.setTextFill(Color.WHITE);
+        totalText.setStyle("-fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
+
+        VBox totalWrap = new VBox(totalText, totalPoints);
+        totalWrap.setPadding(new Insets(10, 0, 0, 0));
+
+        HBox total = new HBox(totalWrap);
+        total.setAlignment(Pos.CENTER_RIGHT);
+
+        //the number 100 is just a placeholder
+        Rectangle r1 = new Rectangle(100, 3, Color.WHITE);
+
+        HBox sep1 = new HBox(r1);
+        sep1.setPadding(new Insets(40, 0, 40, 0));
+        sep1.setAlignment(Pos.CENTER);
+
+        //the number 100 is just a placeholder
+        Rectangle r2 = new Rectangle(100, 3, Color.WHITE);
+
+        HBox sep2 = new HBox(r2);
+        sep2.setPadding(new Insets(20, 0, 20, 0));
+        sep2.setAlignment(Pos.CENTER);
+
+        VBox all = new VBox(header, sep1, tables, total, sep2);
         all.setAlignment(Pos.CENTER);
 
         Group group = new Group(all);
         BorderPane root = new BorderPane();
         root.setCenter(group);
-        root.setStyle("-fx-background-color: #015657");
+        root.setStyle("-fx-background-color: #131313"); //#015657
         stage.hide();
         stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Stadt Land Butz");
-        stage.setMinHeight(Screen.getPrimary().getBounds().getHeight());
-        stage.setMinWidth(Screen.getPrimary().getBounds().getWidth());
         stage.setAlwaysOnTop(true);
         stage.show();
         stage.setMaximized(true);
         stage.setResizable(false);
+
+        tables.setMaxWidth(stage.getWidth() - point.getWidth() - 100);
+        header.setMaxWidth(stage.getWidth() - point.getWidth() - 100);
+        all.setMaxWidth(stage.getWidth() - point.getWidth() - 100);
+        r1.setWidth(categories.getWidth() + points.getMaxWidth());
+        r2.setWidth(categories.getWidth() + points.getMaxWidth());
     }
 
     public static class Point {
@@ -309,6 +394,7 @@ public class ClientGUI extends Application {
     public void setMadePointsInRound(int points, int round) {
         this.points.getItems().add(new Point());
         this.points.getItems().get(round).setPoint(points);
+        totalPoints.setText(String.valueOf(Game.getClient().getPoints()));
     }
 
     public void addRound(Character letter) {
