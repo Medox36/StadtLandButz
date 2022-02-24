@@ -255,20 +255,6 @@ public class ClientGUI extends Application {
         stage.show();
         stage.setMaximized(true);
         stage.setResizable(false);
-
-        Platform.runLater(() -> new Thread(() -> {
-            Game.createClient("192.168.0.4", 24452, "ABC");
-            Game.getClient().setUuid(UUID.randomUUID());
-            ClientInterpreter.interpret(new Package("0100", "0@L", Game.getClient().getUUID()));
-            ClientInterpreter.interpret(new Package("0101", "", Game.getClient().getUUID()));
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ClientInterpreter.interpret(new Package("0110", "", Game.getClient().getUUID()));
-            ClientInterpreter.interpret(new Package("1000", "15@0", Game.getClient().getUUID()));
-        }).start());
     }
 
     public static class Point {
@@ -306,6 +292,22 @@ public class ClientGUI extends Application {
 
     private void resultStage() {
 
+    }
+
+    private void test() {
+        Platform.runLater(() -> new Thread(() -> {
+            Game.createClient("192.168.0.4", 24452, "ABC");
+            Game.getClient().setUuid(UUID.randomUUID());
+            ClientInterpreter.interpret(new Package("0100", "0@L", Game.getClient().getUUID()));
+            ClientInterpreter.interpret(new Package("0101", "", Game.getClient().getUUID()));
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ClientInterpreter.interpret(new Package("0110", "", Game.getClient().getUUID()));
+            ClientInterpreter.interpret(new Package("1000", "15@0", Game.getClient().getUUID()));
+        }).start());
     }
 
 }
