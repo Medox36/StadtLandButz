@@ -102,7 +102,6 @@ public class ClientGUI extends Application {
             if (ip.getText().matches(validateIpRegex)) {
                 if (playerName.getText().matches(nameRegex)) {
                     if (!Game.createClient(ip.getText(), port.getValue(), playerName.getText())) {
-                        //TODO show that connection can't be made
                         Alert a = new Alert(Alert.AlertType.ERROR);
                         a.setTitle("Verbindung");
                         a.setHeaderText("Keine Verbindung möglich");
