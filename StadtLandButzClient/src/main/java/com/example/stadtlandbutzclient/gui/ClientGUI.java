@@ -258,6 +258,7 @@ public class ClientGUI extends Application {
         points = new TableView<>();
         points.getColumns().add(point);
         points.setMaxWidth(83);
+        points.setMinWidth(83);
 
         HBox tables = new HBox(categories, points);
         tables.setAlignment(Pos.CENTER);
@@ -359,11 +360,14 @@ public class ClientGUI extends Application {
         stage.setMaximized(true);
         stage.setResizable(false);
 
-        tables.setMaxWidth(stage.getWidth() - point.getWidth() - 100);
-        header.setMaxWidth(stage.getWidth() - point.getWidth() - 100);
-        all.setMaxWidth(stage.getWidth() - point.getWidth() - 100);
-        r1.setWidth(categories.getWidth() + points.getMaxWidth());
-        r2.setWidth(categories.getWidth() + points.getMaxWidth());
+        categories.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
+        tables.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
+        header.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
+        all.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
+        r1.setWidth(stage.getWidth() - points.getWidth() - 100);
+        r2.setWidth(stage.getWidth() - points.getWidth() - 100);
+        sep1.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
+        sep2.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
     }
 
     public static class Point {
