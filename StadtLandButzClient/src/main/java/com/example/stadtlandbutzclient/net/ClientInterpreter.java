@@ -67,6 +67,7 @@ public class ClientInterpreter {
 
     private static void madePointsInRound(Package p) {
         String[] str = p.information.split("@");
+        Game.getClient().addPoints(Integer.parseInt(str[0]));
         Game.getGui().setMadePointsInRound(Integer.parseInt(str[0]), Integer.parseInt(str[1]));
     }
 
