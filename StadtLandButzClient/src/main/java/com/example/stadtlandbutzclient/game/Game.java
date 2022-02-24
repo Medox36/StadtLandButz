@@ -25,14 +25,12 @@ public class Game {
 
     public static boolean createClient(String ip, Integer port, String playerName) {
         client = new Client(playerName);
-        /*
         try {
             client.createConnection(ip, port);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        */
         return true;
     }
 
