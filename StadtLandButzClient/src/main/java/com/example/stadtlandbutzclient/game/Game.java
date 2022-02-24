@@ -12,13 +12,15 @@ public class Game {
     private static ArrayList<String> categories = new ArrayList<>();
     private static Client client;
     private static ClientGUI gui;
-    private static int roundNumber;
+    private static int roundNumber = -1;
+    private static boolean editAllowed;
 
     public static void newGame() {
-        if (client != null && !client.getSocket().isClosed()) client.exit();
+        if (client != null) client.exit();
         client = null;
         categories.clear();
-        roundNumber = 0;
+        roundNumber = -1;
+        editAllowed = false;
     }
 
     public static boolean createClient(String ip, Integer port, String playerName) {
@@ -58,6 +60,19 @@ public class Game {
 
     public static int getRoundNumber() {
         return roundNumber;
+    }
+
+    public static int getVisualRoundNumber() {
+        return roundNumber + 1;
+    }
+
+    public static void allowEditInCurrRow(boolean editAllowed) {
+        Game.editAllowed = editAllowed;
+        gui.setTableEditable(editAllowed, roundNumber);
+    }
+
+    public static boolean isEditAllowed() {
+        return editAllowed;
     }
 
     public static void exit(boolean explicit) {
