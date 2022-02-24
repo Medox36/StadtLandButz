@@ -4,6 +4,7 @@ module com.example.stadtlandbutzclient {
 
     opens com.example.stadtlandbutzclient.gui to javafx.fxml;
     exports com.example.stadtlandbutzclient.gui;
+    exports com.example.stadtlandbutzclient.game;
     exports com.example.stadtlandbutzclient.net;
     exports com.example.stadtlandbutzclient;
 }
