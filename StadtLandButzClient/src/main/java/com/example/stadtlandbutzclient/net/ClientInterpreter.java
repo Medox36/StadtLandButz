@@ -42,7 +42,7 @@ public class ClientInterpreter {
     }
 
     private static void receivingId(Package p) {
-        Game.getClient().setUuid(UUID.fromString(p.information));
+        Game.getClient().setUUID(UUID.fromString(p.information));
     }
 
     private static void receivingCategories(Package p) {
