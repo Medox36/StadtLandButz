@@ -269,7 +269,7 @@ public class ClientGUI extends Application {
 
         ImageView land = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/com/example/stadtlandbutzclient/images/land.png"))));
         land.setRotate(-90);
-        land.setFitHeight(50);
+        land.setFitHeight(40);
         land.setFitWidth(150);
 
         ImageView butz = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/com/example/stadtlandbutzclient/images/butz.png"))));
@@ -284,19 +284,11 @@ public class ClientGUI extends Application {
         pointImage.setAlignment(Pos.CENTER);
         pointImage.setPadding(new Insets(0, 50, 0, 50));
 
-        HBox split1 = new HBox(new Rectangle(3, 80, Color.WHITE));
-        split1.setAlignment(Pos.CENTER);
-        split1.setPadding(new Insets(0, 0, 0, 40));
-
-        HBox split2 = new HBox(new Rectangle(3, 80, Color.WHITE));
-        split2.setAlignment(Pos.CENTER);
-        split2.setPadding(new Insets(0, 40, 0, 0));
-
         HBox butzImage = new HBox(butz);
         butzImage.setAlignment(Pos.CENTER);
-        butzImage.setPadding(new Insets(0, 50, 0, 0));
+        butzImage.setPadding(new Insets(0, 40, 0, 0));
 
-        HBox stadtLandButz = new HBox(stadt, split1, land, split2, butzImage, reachablePoints);
+        HBox stadtLandButz = new HBox(stadt, land, butzImage, reachablePoints);
         stadtLandButz.setAlignment(Pos.CENTER);
 
         Text name = new Text("NAME:\n");
@@ -361,7 +353,7 @@ public class ClientGUI extends Application {
         stage.setResizable(false);
 
         // calc widths
-        double MAX = 2000;
+        double MAX = 1865;
         double MARGIN = 100;
         double STAGEWIDTH = stage.getWidth();
         double POINTS = points.getWidth();
