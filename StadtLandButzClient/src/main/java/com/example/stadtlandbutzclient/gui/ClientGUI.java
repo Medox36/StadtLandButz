@@ -80,7 +80,7 @@ public class ClientGUI extends Application {
 
         Spinner<Integer> port = new Spinner<>(0, 65535, 24452, 1);
         port.setEditable(true);
-        port.setMaxWidth(70);
+        port.setMaxWidth(72);
         port.setTooltip(new Tooltip("Port"));
 
         TextField playerName = new TextField();
@@ -360,14 +360,34 @@ public class ClientGUI extends Application {
         stage.setMaximized(true);
         stage.setResizable(false);
 
-        categories.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
-        tables.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
-        header.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
-        all.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
-        r1.setWidth(stage.getWidth() - points.getWidth() - 100);
-        r2.setWidth(stage.getWidth() - points.getWidth() - 100);
-        sep1.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
-        sep2.setMaxWidth(stage.getWidth() - points.getWidth() - 100);
+        // calc widths
+        double MAX = 2000;
+        double MARGIN = 100;
+        double STAGEWIDTH = stage.getWidth();
+        double POINTS = points.getWidth();
+        double MAXWIDTH = MAX - MARGIN;
+        double CORRECTION;
+
+        if (STAGEWIDTH < MAX) {
+            CORRECTION = MAXWIDTH - STAGEWIDTH + MARGIN;
+            MAXWIDTH -= CORRECTION;
+        }
+
+        double MAXCATEGORIES = MAXWIDTH - POINTS;
+        double RECTANGLELINES = MAXWIDTH;
+        double MAXTABLES = MAXCATEGORIES + POINTS;
+        //
+
+        categories.setMaxWidth(MAXCATEGORIES);
+        tables.setMaxWidth(MAXTABLES);
+        header.setMaxWidth(MAXTABLES);
+        all.setMaxWidth(MAXWIDTH);
+        r1.setWidth(RECTANGLELINES);
+        r2.setWidth(RECTANGLELINES);
+        sep1.setMaxWidth(MAXTABLES);
+        sep2.setMaxWidth(MAXTABLES);
+
+        // originally: stage.getWidth() - points.getWidth() - 100
     }
 
     public static class Point {
@@ -391,7 +411,7 @@ public class ClientGUI extends Application {
     }
 
     public void setTableEditable(boolean editable, int row) {
-        categories.getColumns().get(row).getTableView().getItems().get(0).getEditableProperty().setValue(editable);
+        categories.getColumns().get(row).getTableView().getItems().get(row).getEditableProperty().setValue(editable);
     }
 
     public void setMadePointsInRound(int points, int round) {
