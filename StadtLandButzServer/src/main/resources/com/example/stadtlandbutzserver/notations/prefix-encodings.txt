@@ -28,7 +28,7 @@ symbol for separating two values, when two values are sent in one package in the
     sending made points in round + round number
 
 1001:
-
+    sending place on scoreboard
 
 1010:
 

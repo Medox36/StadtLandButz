@@ -32,6 +32,9 @@ public class ClientInterpreter {
             case "1000":
                 madePointsInRound(p);
                 break;
+            case "1001":
+                placeOnScoreboard(p);
+                break;
             default:
                 invalidPackage();
         }
@@ -69,6 +72,10 @@ public class ClientInterpreter {
         String[] str = p.information.split("@");
         Game.getClient().addPoints(Integer.parseInt(str[0]));
         Game.getGui().setMadePointsInRound(Integer.parseInt(str[0]), Integer.parseInt(str[1]));
+    }
+
+    private static void placeOnScoreboard(Package p) {
+        Game.getGui().resultStage(p.information);
     }
 
     private static void invalidPackage() {

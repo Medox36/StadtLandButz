@@ -54,13 +54,13 @@ public class ClientGUI extends Application {
 
         //test
         Game.setCategories(new ArrayList<>(List.of("Stadt,Land,Gewässer,Nahrungsmittel,Gebirge,Beruf,Modemarke,Sportart".split(","))));
-        testInit();
+        //testInit();
 
         //
         joinStage();
 
         //test
-        test();
+        //test();
     }
 
     private void joinStage() {
@@ -416,8 +416,8 @@ public class ClientGUI extends Application {
         categories.getItems().add(new Row(letter));
     }
 
-    private void resultStage() {
-
+    public void resultStage(String place) {
+        //TODO show the place and made points and maybe the name
     }
 
     private void testInit() {
