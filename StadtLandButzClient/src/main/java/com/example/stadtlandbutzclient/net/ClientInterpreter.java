@@ -41,7 +41,7 @@ public class ClientInterpreter {
     }
 
     private static void testingConnection(Package p) {
-
+        //TODO after th socket is connected wait until the server sends back this package
     }
 
     private static void receivingId(Package p) {

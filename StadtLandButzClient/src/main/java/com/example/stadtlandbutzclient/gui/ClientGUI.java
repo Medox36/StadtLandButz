@@ -114,7 +114,7 @@ public class ClientGUI extends Application {
                     Alert a = new Alert(Alert.AlertType.WARNING);
                     a.setTitle("Spielername");
                     a.setHeaderText("Ungültiger Spielername");
-                    a.setContentText("Kein \"_\" und \".\" am Anfang sowei am Schluss.\nKein \"__\" oder \"_.\" oder \"._\" oder \"..\" mitten drin.");
+                    a.setContentText("Kein \"_\" und \".\" am Anfang sowie am Schluss.\nKein \"__\" oder \"_.\" oder \"._\" oder \"..\" mitten drin.");
                     a.showAndWait();
                 }
             } else {

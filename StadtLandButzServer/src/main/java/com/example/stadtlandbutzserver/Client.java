@@ -17,6 +17,7 @@ public class Client {
         uuid = Game.getNewUUID();
         //wait for Data of Client
         Game.addClientToGUI(this);
+        System.out.println("(origin=client) client connected");
     }
 
     public Socket getSocket() {

@@ -21,7 +21,7 @@ public class ServerNetInterpreter {
     }
 
     private static void testingConnection(Package p) {
-
+        //TODO send package with same prefix back for confirmation
     }
 
     private static void sendingPlayerName(Package p) {
