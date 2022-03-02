@@ -54,7 +54,7 @@ public class Game {
     }
 
     public static void addClientToGUI(Client client) {
-        gui.addPlayer(client);
+        Platform.runLater(() -> gui.addPlayer(client));
     }
 
     public static ArrayList<String> getCategories() {
