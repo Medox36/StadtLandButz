@@ -68,7 +68,7 @@ public class Game {
 
     public static void allowEditInCurrRow(boolean editAllowed) {
         Game.editAllowed = editAllowed;
-        gui.setTableEditable(editAllowed, roundNumber);
+        Platform.runLater(() -> gui.setTableEditable(editAllowed, roundNumber));
     }
 
     public static boolean isEditAllowed() {
