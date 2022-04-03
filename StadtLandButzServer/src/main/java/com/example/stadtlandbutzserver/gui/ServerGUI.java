@@ -1,6 +1,6 @@
 package com.example.stadtlandbutzserver.gui;
 
-import com.example.stadtlandbutzserver.Client;
+import com.example.stadtlandbutzserver.net.Client;
 import com.example.stadtlandbutzserver.game.Game;
 import javafx.application.Application;
 import javafx.application.Platform;

@@ -1,6 +1,6 @@
 package com.example.stadtlandbutzserver.game;
 
-import com.example.stadtlandbutzserver.Client;
+import com.example.stadtlandbutzserver.net.Client;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -38,7 +38,7 @@ public class Server {
         await();
     }
 
-    private synchronized void await() {
+    private void await() {
         try {
             serverSocket.setSoTimeout(30000);
         } catch (SocketException e) {
@@ -48,7 +48,6 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 Game.getClients().add(new Client(socket));
-                //TODO implement Client Threads with sockets
             } catch (IOException e) {
                 //e.printStackTrace();
             }

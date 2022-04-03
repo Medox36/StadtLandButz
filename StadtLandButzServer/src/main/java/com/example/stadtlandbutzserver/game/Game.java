@@ -1,9 +1,10 @@
 package com.example.stadtlandbutzserver.game;
 
-import com.example.stadtlandbutzserver.Client;
+import com.example.stadtlandbutzserver.net.Client;
 import com.example.stadtlandbutzserver.gui.ServerGUI;
 import javafx.application.Platform;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -35,6 +36,8 @@ public class Game {
         serverThread = null;
         server = null;
         serverPort = null;
+        closeAllSockets();
+        clients = null;
         uuids.clear();
         letters.clear();
         categories.clear();
@@ -63,6 +66,15 @@ public class Game {
 
     public static Vector<Client> getClients() {
         return clients;
+    }
+
+    public static Client getClientByUUID(UUID uuid) {
+        for (Client client : clients) {
+            if (client.getUUID().equals(uuid)) {
+                return client;
+            }
+        }
+        return null;
     }
 
     public static void incRoundNumber() {
@@ -97,6 +109,16 @@ public class Game {
         return String.valueOf(letter).toUpperCase();
     }
 
+    private static void closeAllSockets() {
+        for (Client client : clients) {
+            try {
+                client.closeSocketIfOpen();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void exit(boolean explicit) {
         Thread t = new Thread(() -> exiting(explicit), "Exit Thread");
         t.setPriority(10);
@@ -108,7 +130,6 @@ public class Game {
         Platform.exit();
         gui = null;
         uuids = null;
-        clients = null;
         letters = null;
         categories = null;
         System.gc();

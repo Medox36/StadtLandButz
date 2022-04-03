@@ -1,39 +1,63 @@
 package com.example.stadtlandbutzserver.net;
 
+import com.example.stadtlandbutzserver.game.Game;
+
+import java.io.IOException;
+
 public class ServerNetInterpreter {
 
-    public static void interpret(Package p) {
+    public static void interpretForClient(Package p, Client client) {
         switch (p.prefix) {
             case "0000":
-                testingConnection(p);
+                testingConnection(p, client);
                 break;
             case "0010":
-                sendingPlayerName(p);
+                sendingPlayerName(p, client);
                 break;
             case "0111":
-                clientWordsOfCurrRound(p);
+                clientWordsOfCurrRound(p, client);
                 break;
             case "1000":
-                clientPointsOfCurrRound(p);
+                clientPointsOfCurrRound(p, client);
+                break;
+            case "1111":
+                checkHash(p, client);
+                break;
             default:
                 invalidPackage();
         }
     }
 
-    private static void testingConnection(Package p) {
+    private static void testingConnection(Package p, Client client) {
         //TODO send package with same prefix back for confirmation
+        client.getConnectionHolder().setTested(true);
     }
 
-    private static void sendingPlayerName(Package p) {
+    private static void sendingPlayerName(Package p, Client client) {
+        client.setPlayerName(p.information);
+        Game.addClientToGUI(client);
+    }
+
+    private static void clientWordsOfCurrRound(Package p, Client client) {
 
     }
 
-    private static void clientWordsOfCurrRound(Package p) {
+    private static void clientPointsOfCurrRound(Package p, Client client) {
 
     }
 
-    private static void clientPointsOfCurrRound(Package p) {
-
+    private static void checkHash(Package p, Client client) {
+        ConnectionHolder connectionHolder = client.getConnectionHolder();
+        if (connectionHolder.checkHash(p.information)) {
+            connectionHolder.setApproved(true);
+        } else {
+            //TODO close socket for security reason
+            try {
+                client.getSocket().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void invalidPackage() {

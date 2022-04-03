@@ -3,6 +3,7 @@ package com.example.stadtlandbutzclient.net;
 import com.example.stadtlandbutzclient.game.Game;
 import javafx.application.Platform;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
@@ -35,6 +36,9 @@ public class ClientInterpreter {
             case "1001":
                 placeOnScoreboard(p);
                 break;
+            case "1111":
+                checkHash(p);
+                break;
             default:
                 invalidPackage();
         }
@@ -42,10 +46,12 @@ public class ClientInterpreter {
 
     private static void testingConnection(Package p) {
         //TODO after th socket is connected wait until the server sends back this package
+        ConnectionHolder.setTested(true);
     }
 
     private static void receivingId(Package p) {
         Game.getClient().setUUID(UUID.fromString(p.information));
+        ConnectionHolder.setReceivedUUID(true);
     }
 
     private static void receivingCategories(Package p) {
@@ -76,6 +82,20 @@ public class ClientInterpreter {
 
     private static void placeOnScoreboard(Package p) {
         Game.getGui().resultStage(p.information);
+    }
+
+    private static void checkHash(Package p) {
+        if (ConnectionHolder.checkHash(p.information)) {
+            ConnectionHolder.setApproved(true);
+        } else {
+            //TODO close socket for security reason
+            try {
+                Game.getClient().getSocket().close();
+                Game.newGame(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void invalidPackage() {

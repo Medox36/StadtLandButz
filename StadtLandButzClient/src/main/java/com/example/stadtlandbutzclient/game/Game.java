@@ -1,7 +1,9 @@
 package com.example.stadtlandbutzclient.game;
 
-import com.example.stadtlandbutzclient.Client;
+import com.example.stadtlandbutzclient.net.Client;
 import com.example.stadtlandbutzclient.gui.ClientGUI;
+import com.example.stadtlandbutzclient.net.ConnectionHolder;
+import com.example.stadtlandbutzclient.net.Package;
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -15,19 +17,22 @@ public class Game {
     private static int roundNumber = -1;
     private static boolean editAllowed;
 
-    public static void newGame() {
+    public static void newGame(boolean isExit) {
         if (client != null) client.exit();
         client = null;
         categories.clear();
         roundNumber = -1;
         editAllowed = false;
+        if (!isExit) Platform.runLater(() -> Game.getGui().joinStage());
     }
 
     public static boolean createClient(String ip, Integer port, String playerName) {
         client = new Client(playerName);
         try {
             client.createConnection(ip, port);
-        } catch (IOException e) {
+            ConnectionHolder.setConnected(true);
+            client.sendPackage(new Package("0000", "", null));
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return false;
         }
@@ -82,7 +87,7 @@ public class Game {
     }
 
     private static void exiting(boolean explicit) {
-        newGame();
+        newGame(true);
         Platform.exit();
         gui = null;
         categories = null;

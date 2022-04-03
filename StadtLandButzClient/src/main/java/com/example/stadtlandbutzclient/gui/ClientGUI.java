@@ -63,7 +63,7 @@ public class ClientGUI extends Application {
         //test();
     }
 
-    private void joinStage() {
+    public void joinStage() {
         TextField ip = new TextField();
         ip.setPromptText("192.168.0.1");
         ip.setMaxWidth(120);
