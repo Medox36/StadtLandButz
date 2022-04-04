@@ -11,7 +11,7 @@ public class ServerNetInterpreter {
         if (client.getUUID().equals(p.id)) {
             switch (p.prefix) {
                 case "0000":
-                    testingConnection(p, client);
+                    testingConnection(client);
                     break;
                 case "0010":
                     sendingPlayerName(p, client);
@@ -31,7 +31,7 @@ public class ServerNetInterpreter {
         } else {
             switch (p.prefix) {
                 case "0000":
-                    testingConnection(p, client);
+                    testingConnection(client);
                     break;
                 case "1111":
                     checkHash(p, client);
@@ -42,8 +42,7 @@ public class ServerNetInterpreter {
         }
     }
 
-    private static void testingConnection(Package p, Client client) {
-        //TODO send package with same prefix back for confirmation
+    private static void testingConnection(Client client) {
         client.sendPackage(new Package("0000", "", null));
         client.getConnectionHolder().setTested(true);
     }
@@ -81,7 +80,7 @@ public class ServerNetInterpreter {
             client.sendPackage(new Package("1111", connectionHolder.getHash(), null));
             client.sendPackage(new Package("0001", client.getUUID().toString(), client.getUUID()));
         } else {
-            //TODO close socket for security reason
+            // close socket for security reason
             try {
                 client.getSocket().close();
             } catch (IOException e) {

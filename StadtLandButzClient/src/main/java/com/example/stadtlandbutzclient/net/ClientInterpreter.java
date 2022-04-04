@@ -16,7 +16,7 @@ public class ClientInterpreter {
             if (p.id.equals(Game.getClient().getUUID())) {
                 switch (p.prefix) {
                     case "0000":
-                        testingConnection(p);
+                        testingConnection();
                         break;
                     case "0011":
                         receivingCategories(p);
@@ -49,7 +49,7 @@ public class ClientInterpreter {
         } else {
             switch (p.prefix) {
                 case "0000":
-                    testingConnection(p);
+                    testingConnection();
                     break;
                 case "0001":
                     receivingUUID(p);
@@ -63,8 +63,7 @@ public class ClientInterpreter {
         }
     }
 
-    private static void testingConnection(Package p) {
-        //TODO after th socket is connected wait until the server sends back this package
+    private static void testingConnection() {
         ConnectionHolder.setTestedReceived(true);
         Game.getClient().sendPackage(new Package("1111", ConnectionHolder.getHash(), null));
     }
@@ -115,7 +114,7 @@ public class ClientInterpreter {
         if (ConnectionHolder.checkHash(p.information)) {
             ConnectionHolder.setApproved(true);
         } else {
-            //TODO close socket for security reason
+            // close socket for security reason
             try {
                 Game.getClient().getSocket().close();
                 Game.newGame(false);
