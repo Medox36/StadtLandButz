@@ -51,7 +51,7 @@ public class ReceiverThread extends Thread {
         receiverInterpretThread.closeThread();
     }
 
-    public void closeThread() {
+    public synchronized void closeThread() {
         stop = true;
     }
 }

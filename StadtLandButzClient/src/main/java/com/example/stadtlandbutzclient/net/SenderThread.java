@@ -41,6 +41,11 @@ public class SenderThread extends Thread {
                 e.printStackTrace();
             }
         }
+        try {
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected synchronized void addPackageToSendStack(Package p) {
