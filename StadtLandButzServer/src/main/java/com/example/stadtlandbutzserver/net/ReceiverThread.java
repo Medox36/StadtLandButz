@@ -38,6 +38,7 @@ public class ReceiverThread extends Thread {
             try {
                 Package p = (Package) objectInputStream.readObject();
                 packages.add(p);
+                receiverInterpretThread.notify();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
