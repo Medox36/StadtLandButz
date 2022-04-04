@@ -324,7 +324,6 @@ public class ServerGUI extends Application {
         end.setScaleX(1.6);
         end.setScaleY(1.6);
         end.setOnAction(e -> {
-            //TODO fire on round-time elapsed
             timer.cancel();
 
             //TODO send 'blockUserInput' -> prefix: "0110"
