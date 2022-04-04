@@ -32,7 +32,8 @@ public class Game {
             client.createConnection(ip, port);
             ConnectionHolder.setConnected(true);
             client.sendPackage(new Package("0000", "", null));
-        } catch (IOException | InterruptedException e) {
+            ConnectionHolder.setTestedSent(true);
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

@@ -30,6 +30,7 @@ public class ServerNetInterpreter {
 
     private static void testingConnection(Package p, Client client) {
         //TODO send package with same prefix back for confirmation
+        client.sendPackage(new Package("0000", "", null));
         client.getConnectionHolder().setTested(true);
     }
 
@@ -50,6 +51,8 @@ public class ServerNetInterpreter {
         ConnectionHolder connectionHolder = client.getConnectionHolder();
         if (connectionHolder.checkHash(p.information)) {
             connectionHolder.setApproved(true);
+            client.sendPackage(new Package("1111", connectionHolder.getHash(), null));
+            client.sendPackage(new Package("0001", client.getUUID().toString(), client.getUUID()));
         } else {
             //TODO close socket for security reason
             try {

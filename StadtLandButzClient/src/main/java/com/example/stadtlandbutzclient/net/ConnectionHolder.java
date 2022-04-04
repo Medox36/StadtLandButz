@@ -3,7 +3,8 @@ package com.example.stadtlandbutzclient.net;
 public class ConnectionHolder {
 
     private static boolean connected;
-    private static boolean tested;
+    private static boolean testedSent;
+    private static boolean testedReceived;
     private static boolean receivedUUID;
     private static boolean approved;
 
@@ -11,8 +12,12 @@ public class ConnectionHolder {
         ConnectionHolder.connected = connected;
     }
 
-    public static void setTested(boolean tested) {
-        ConnectionHolder.tested = tested;
+    public static void setTestedSent(boolean testedSent) {
+        ConnectionHolder.testedSent = testedSent;
+    }
+
+    public static void setTestedReceived(boolean testedReceived) {
+        ConnectionHolder.testedReceived = testedReceived;
     }
 
     public static void setReceivedUUID(boolean receivedUUID) {
@@ -35,11 +40,19 @@ public class ConnectionHolder {
         return receivedUUID;
     }
 
-    public static boolean isTested() {
-        return tested;
+    public static boolean isTestedSent() {
+        return testedSent;
+    }
+
+    public static boolean isTestedReceived() {
+        return testedReceived;
     }
 
     public static boolean checkHash(String hash) {
-        return "3cdf6a6dd102367f9881b2fe5b2e082b9e0c5e967021f359adc42f6fab22d123".equals(hash);
+        return "f3a6c45268729247be27b73f0caaf776ee1fc097e6dcf710affc5d2f78c06433".equals(hash);
+    }
+
+    protected static String getHash() {
+        return "3cdf6a6dd102367f9881b2fe5b2e082b9e0c5e967021f359adc42f6fab22d123";
     }
 }

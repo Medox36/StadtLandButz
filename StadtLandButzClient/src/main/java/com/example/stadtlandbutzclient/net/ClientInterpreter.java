@@ -6,50 +6,70 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ClientInterpreter {
 
-    public static void interpret(Package p) {
-        switch (p.prefix) {
-            case "0000":
-                testingConnection(p);
-                break;
-            case "0001":
-                receivingId(p);
-                break;
-            case "0011":
-                receivingCategories(p);
-                break;
-            case "0100":
-                roundNumberAndLetter(p);
-                break;
-            case "0101":
-                enableUserInput();
-                break;
-            case "0110":
-                blockUserInput();
-                break;
-            case "1000":
-                madePointsInRound(p);
-                break;
-            case "1001":
-                placeOnScoreboard(p);
-                break;
-            case "1111":
-                checkHash(p);
-                break;
-            default:
-                invalidPackage();
+    public synchronized static void interpret(Package p) {
+        if (ConnectionHolder.isReceivedUUID()) {
+            if (p.id == Game.getClient().getUUID()) {
+                switch (p.prefix) {
+                    case "0000":
+                        testingConnection(p);
+                        break;
+                    case "0011":
+                        receivingCategories(p);
+                        break;
+                    case "0100":
+                        roundNumberAndLetter(p);
+                        break;
+                    case "0101":
+                        enableUserInput();
+                        break;
+                    case "0110":
+                        blockUserInput();
+                        break;
+                    case "1000":
+                        madePointsInRound(p);
+                        break;
+                    case "1001":
+                        placeOnScoreboard(p);
+                        break;
+                    case "1111":
+                        checkHash(p);
+                        break;
+                    default:
+                        invalidPackage();
+                }
+            }
+        } else {
+            switch (p.prefix) {
+                case "0000":
+                    testingConnection(p);
+                    break;
+                case "0001":
+                    receivingUUID(p);
+                    break;
+                case "1111":
+                    checkHash(p);
+                    break;
+                default:
+                    invalidPackage();
+            }
         }
     }
 
     private static void testingConnection(Package p) {
         //TODO after th socket is connected wait until the server sends back this package
-        ConnectionHolder.setTested(true);
+        ConnectionHolder.setTestedReceived(true);
+        Game.getClient().sendPackage(new Package("1111", ConnectionHolder.getHash(), null));
     }
 
-    private static void receivingId(Package p) {
+    private static void receivingUUID(Package p) {
+        if (!Objects.equals(p.information, p.id.toString())) {
+            // TODO display Errormessage or close
+        }
         Game.getClient().setUUID(UUID.fromString(p.information));
         ConnectionHolder.setReceivedUUID(true);
     }

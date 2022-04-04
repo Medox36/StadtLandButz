@@ -47,7 +47,7 @@ public class Client {
         this.points += points;
     }
 
-    public void sendPackage(Package p) throws InterruptedException {
+    public void sendPackage(Package p) {
         senderThread.addPackageToSendStack(p);
     }
 
