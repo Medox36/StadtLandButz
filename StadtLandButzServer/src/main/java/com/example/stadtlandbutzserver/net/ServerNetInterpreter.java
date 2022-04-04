@@ -3,28 +3,42 @@ package com.example.stadtlandbutzserver.net;
 import com.example.stadtlandbutzserver.game.Game;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public class ServerNetInterpreter {
 
     public static void interpretForClient(Package p, Client client) {
-        switch (p.prefix) {
-            case "0000":
-                testingConnection(p, client);
-                break;
-            case "0010":
-                sendingPlayerName(p, client);
-                break;
-            case "0111":
-                clientWordsOfCurrRound(p, client);
-                break;
-            case "1000":
-                clientPointsOfCurrRound(p, client);
-                break;
-            case "1111":
-                checkHash(p, client);
-                break;
-            default:
-                invalidPackage();
+        if (client.getUUID().equals(p.id)) {
+            switch (p.prefix) {
+                case "0000":
+                    testingConnection(p, client);
+                    break;
+                case "0010":
+                    sendingPlayerName(p, client);
+                    break;
+                case "0111":
+                    clientWordsOfCurrRound(p, client);
+                    break;
+                case "1000":
+                    clientPointsOfCurrRound(p, client);
+                    break;
+                case "1111":
+                    checkHash(p, client);
+                    break;
+                default:
+                    invalidPackage();
+            }
+        } else {
+            switch (p.prefix) {
+                case "0000":
+                    testingConnection(p, client);
+                    break;
+                case "1111":
+                    checkHash(p, client);
+                    break;
+                default:
+                    invalidPackage();
+            }
         }
     }
 
@@ -37,6 +51,19 @@ public class ServerNetInterpreter {
     private static void sendingPlayerName(Package p, Client client) {
         client.setPlayerName(p.information);
         Game.addClientToGUI(client);
+
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> it = Game.getCategories().iterator();
+        while (true) {
+            String e = it.next();
+            sb.append(e);
+            if (it.hasNext()) {
+                sb.append(',');
+            } else {
+                break;
+            }
+        }
+        client.sendPackage(new Package("0011", sb.toString(), client.getUUID()));
     }
 
     private static void clientWordsOfCurrRound(Package p, Client client) {

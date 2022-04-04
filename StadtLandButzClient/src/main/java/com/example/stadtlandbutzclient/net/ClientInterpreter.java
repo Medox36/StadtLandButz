@@ -13,7 +13,7 @@ public class ClientInterpreter {
 
     public synchronized static void interpret(Package p) {
         if (ConnectionHolder.isReceivedUUID()) {
-            if (p.id == Game.getClient().getUUID()) {
+            if (p.id.equals(Game.getClient().getUUID())) {
                 switch (p.prefix) {
                     case "0000":
                         testingConnection(p);
@@ -35,6 +35,9 @@ public class ClientInterpreter {
                         break;
                     case "1001":
                         placeOnScoreboard(p);
+                        break;
+                    case "1010":
+                        startGame(p);
                         break;
                     case "1111":
                         checkHash(p);
@@ -72,11 +75,11 @@ public class ClientInterpreter {
         }
         Game.getClient().setUUID(UUID.fromString(p.information));
         ConnectionHolder.setReceivedUUID(true);
+        Game.getClient().sendPackage(new Package("0010", Game.getClient().getPlayerName(), Game.getClient().getUUID()));
     }
 
     private static void receivingCategories(Package p) {
         Game.setCategories(new ArrayList<>(Arrays.asList(p.information.split(","))));
-        Platform.runLater(() -> Game.getGui().gameStage());
     }
 
     private static void roundNumberAndLetter(Package p) {
@@ -102,6 +105,10 @@ public class ClientInterpreter {
 
     private static void placeOnScoreboard(Package p) {
         Game.getGui().resultStage(p.information);
+    }
+
+    private static void startGame(Package p) {
+        Platform.runLater(() -> Game.getGui().gameStage());
     }
 
     private static void checkHash(Package p) {

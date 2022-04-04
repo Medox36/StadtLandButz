@@ -10,7 +10,7 @@ symbol for separating two values, when two values are sent in one package in the
     sending player name
 
 0011:
-    sending categories and start game
+    sending categories
 
 0100:
     sending current round number + letter
@@ -31,7 +31,7 @@ symbol for separating two values, when two values are sent in one package in the
     sending place on scoreboard
 
 1010:
-
+    start game
 
 1011:
 
