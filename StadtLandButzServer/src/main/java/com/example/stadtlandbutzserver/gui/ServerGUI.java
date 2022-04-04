@@ -249,6 +249,10 @@ public class ServerGUI extends Application {
         start.setScaleY(1.6);
         start.setOnAction(e -> {
             Game.getServer().letClientsConnect(false);
+
+            //TODO send 'startGame' -> prefix: "1010"
+            Game.sendToAllClients("1010", "");
+
             roundStage();
         });
 
@@ -322,6 +326,10 @@ public class ServerGUI extends Application {
         end.setOnAction(e -> {
             //TODO fire on round-time elapsed
             timer.cancel();
+
+            //TODO send 'blockUserInput' -> prefix: "0110"
+            Game.sendToAllClients("0110", "");
+
             checkStage();
         });
 
@@ -329,7 +337,9 @@ public class ServerGUI extends Application {
         letterTitle.setTextFill(Color.WHITE);
         letterTitle.setStyle("-fx-font-size: 48");
 
-        Label letter = new Label(Game.nextLetter());
+        String let = Game.nextLetter();
+
+        Label letter = new Label(let);
         letter.setTextFill(Color.WHITE);
         letter.setStyle("-fx-font-size: 120; -fx-font-weight: bold; -fx-font-family: 'Malgun Gothic'");
 
@@ -362,6 +372,12 @@ public class ServerGUI extends Application {
         stage.setMinWidth(436);
         stage.setMaximized(true);
         stage.show();
+
+        //TODO send 'roundNumberAndLetter' -> prefix: "0100"
+        Game.sendToAllClients("0100", Game.getRoundNumber() + "@" + let);
+
+        //TODO send 'enableUserInput' -> prefix: "0101"
+        Game.sendToAllClients("0101", "");
     }
 
     private void checkStage() {

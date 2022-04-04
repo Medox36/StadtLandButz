@@ -56,7 +56,7 @@ public class Client {
         return connectionHolder;
     }
 
-    public void sendPackage(Package p) {
+    public synchronized void sendPackage(Package p) {
         senderThread.addPackageToSendStack(p);
     }
 

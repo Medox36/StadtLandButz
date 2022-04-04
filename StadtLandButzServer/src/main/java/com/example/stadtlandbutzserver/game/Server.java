@@ -33,7 +33,7 @@ public class Server {
         await = true;
     }
 
-    public synchronized void start() {
+    public void start() {
         await = true;
         await();
     }
@@ -52,11 +52,6 @@ public class Server {
                 //e.printStackTrace();
             }
         } while (await);
-    }
-
-    public synchronized void letClientReconnect() {
-        await = true;
-        await();
     }
 
     public void letClientsConnect(boolean await) {

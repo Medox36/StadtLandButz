@@ -2,6 +2,7 @@ package com.example.stadtlandbutzserver.game;
 
 import com.example.stadtlandbutzserver.net.Client;
 import com.example.stadtlandbutzserver.gui.ServerGUI;
+import com.example.stadtlandbutzserver.net.Package;
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -87,6 +88,12 @@ public class Game {
 
     public static int getVisualRoundNumber() {
         return roundNumber + 1;
+    }
+
+    public synchronized static void sendToAllClients(String prefix, String information) {
+        for (Client client : clients) {
+            client.sendPackage(new Package(prefix, information, client.getUUID()));
+        }
     }
 
     public static UUID getNewUUID() {
