@@ -37,7 +37,7 @@ public class ClientInterpreter {
                         placeOnScoreboard(p);
                         break;
                     case "1010":
-                        startGame(p);
+                        startGame();
                         break;
                     case "1111":
                         checkHash(p);
@@ -106,7 +106,7 @@ public class ClientInterpreter {
         Game.getGui().resultStage(p.information);
     }
 
-    private static void startGame(Package p) {
+    private static void startGame() {
         Platform.runLater(() -> Game.getGui().gameStage());
     }
 
