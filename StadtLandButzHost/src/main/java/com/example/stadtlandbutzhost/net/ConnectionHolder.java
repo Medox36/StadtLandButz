@@ -1,4 +1,4 @@
-package com.example.stadtlandbutzserver.net;
+package com.example.stadtlandbutzhost.net;
 
 public class ConnectionHolder {
 

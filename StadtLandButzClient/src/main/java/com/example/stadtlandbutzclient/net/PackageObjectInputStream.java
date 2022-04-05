@@ -14,7 +14,7 @@ public class PackageObjectInputStream extends ObjectInputStream {
     @Override
     protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         ObjectStreamClass desc = super.readClassDescriptor();
-        if (desc.getName().equals("com.example.stadtlandbutzserver.net.Package")) {
+        if (desc.getName().equals("com.example.stadtlandbutzhost.net.Package")) {
             return ObjectStreamClass.lookup(com.example.stadtlandbutzclient.net.Package.class);
         }
         return desc;

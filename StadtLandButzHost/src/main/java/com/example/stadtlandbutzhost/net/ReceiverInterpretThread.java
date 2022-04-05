@@ -1,4 +1,4 @@
-package com.example.stadtlandbutzserver.net;
+package com.example.stadtlandbutzhost.net;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 

@@ -1,6 +1,6 @@
-package com.example.stadtlandbutzserver;
+package com.example.stadtlandbutzhost;
 
-import com.example.stadtlandbutzserver.gui.ServerGUI;
+import com.example.stadtlandbutzhost.gui.ServerGUI;
 import javafx.application.Application;
 
 public class Main {

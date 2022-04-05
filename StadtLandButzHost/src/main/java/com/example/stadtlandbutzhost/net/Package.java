@@ -1,4 +1,4 @@
-package com.example.stadtlandbutzserver.net;
+package com.example.stadtlandbutzhost.net;
 
 import java.io.Serializable;
 import java.util.UUID;

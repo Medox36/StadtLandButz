@@ -1,7 +1,7 @@
-package com.example.stadtlandbutzserver.game;
+package com.example.stadtlandbutzhost.game;
 
-import com.example.stadtlandbutzserver.net.Client;
-import com.example.stadtlandbutzserver.net.Package;
+import com.example.stadtlandbutzhost.net.Client;
+import com.example.stadtlandbutzhost.net.Package;
 
 import java.io.IOException;
 import java.net.ServerSocket;

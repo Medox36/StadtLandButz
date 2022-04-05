@@ -1,4 +1,4 @@
-package com.example.stadtlandbutzserver.net;
+package com.example.stadtlandbutzhost.net;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

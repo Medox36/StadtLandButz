@@ -1,8 +1,8 @@
-package com.example.stadtlandbutzserver.game;
+package com.example.stadtlandbutzhost.game;
 
-import com.example.stadtlandbutzserver.net.Client;
-import com.example.stadtlandbutzserver.gui.ServerGUI;
-import com.example.stadtlandbutzserver.net.Package;
+import com.example.stadtlandbutzhost.net.Client;
+import com.example.stadtlandbutzhost.gui.ServerGUI;
+import com.example.stadtlandbutzhost.net.Package;
 import javafx.application.Platform;
 
 import java.io.IOException;

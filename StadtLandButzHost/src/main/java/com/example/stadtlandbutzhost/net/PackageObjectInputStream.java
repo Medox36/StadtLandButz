@@ -1,4 +1,4 @@
-package com.example.stadtlandbutzserver.net;
+package com.example.stadtlandbutzhost.net;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,7 @@ public class PackageObjectInputStream extends ObjectInputStream {
     protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         ObjectStreamClass desc = super.readClassDescriptor();
         if (desc.getName().equals("com.example.stadtlandbutzclient.net.Package")) {
-            return ObjectStreamClass.lookup(com.example.stadtlandbutzserver.net.Package.class);
+            return ObjectStreamClass.lookup(com.example.stadtlandbutzhost.net.Package.class);
         }
         return desc;
     }
