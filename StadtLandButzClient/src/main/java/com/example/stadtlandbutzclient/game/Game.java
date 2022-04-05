@@ -1,5 +1,6 @@
 package com.example.stadtlandbutzclient.game;
 
+import com.example.stadtlandbutzclient.gui.Row;
 import com.example.stadtlandbutzclient.net.Client;
 import com.example.stadtlandbutzclient.gui.ClientGUI;
 import com.example.stadtlandbutzclient.net.ConnectionHolder;
@@ -79,6 +80,45 @@ public class Game {
 
     public static boolean isEditAllowed() {
         return editAllowed;
+    }
+
+    public static String collectWordsOfCurrentRound() {
+        Row row = gui.getCurrentRow(roundNumber);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < categories.size(); i++) {
+            if (i == 0) {
+                sb.append(row.getCat0());
+            }
+            if (i == 1) {
+                sb.append(row.getCat1());
+            }
+            if (i == 2) {
+                sb.append(row.getCat2());
+            }
+            if (i == 3) {
+                sb.append(row.getCat3());
+            }
+            if (i == 4) {
+                sb.append(row.getCat4());
+            }
+            if (i == 5) {
+                sb.append(row.getCat5());
+            }
+            if (i == 6) {
+                sb.append(row.getCat6());
+            }
+            if (i == 7) {
+                sb.append(row.getCat7());
+            }
+            if (i == 8) {
+                sb.append(row.getCat8());
+            }
+            if (i == 9) {
+                sb.append(row.getCat9());
+            }
+        }
+
+        return sb.toString();
     }
 
     public static void exit(boolean explicit) {

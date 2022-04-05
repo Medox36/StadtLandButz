@@ -1,6 +1,7 @@
 package com.example.stadtlandbutzclient.gui;
 
 import com.example.stadtlandbutzclient.game.Game;
+import com.example.stadtlandbutzclient.net.Client;
 import com.example.stadtlandbutzclient.net.ClientInterpreter;
 import com.example.stadtlandbutzclient.net.Package;
 import javafx.application.Application;
@@ -416,6 +417,10 @@ public class ClientGUI extends Application {
         categories.getItems().add(new Row(letter));
     }
 
+    public Row getCurrentRow(int currRow) {
+        return categories.getItems().get(currRow);
+    }
+
     public void resultStage(String place) {
         //TODO show the place and made points and maybe the name
     }
@@ -436,6 +441,12 @@ public class ClientGUI extends Application {
             }
             ClientInterpreter.interpret(new Package("0110", "", Game.getClient().getUUID()));
             ClientInterpreter.interpret(new Package("1000", "15@0", Game.getClient().getUUID()));
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Game.collectWordsOfCurrentRound());
         }).start());
     }
 
