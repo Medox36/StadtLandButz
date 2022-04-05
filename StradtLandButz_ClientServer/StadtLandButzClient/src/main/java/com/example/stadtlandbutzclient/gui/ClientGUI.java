@@ -416,7 +416,52 @@ public class ClientGUI extends Application {
     }
 
     public void resultStage(String place) {
-        //TODO show the place and made points and maybe the name
+        Label first = new Label(Game.getClient().getPlayerName());
+        first.setTextFill(Color.WHITE);
+        first.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-alignment: center");
+        first.setWrapText(true);
+        first.setMaxWidth(280);
+
+        Label firstPoints = new Label("0 Pt.");
+        firstPoints.setTextFill(Color.WHITE);
+        firstPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+
+        Label placeLabel = new Label(place);
+        placeLabel.setTextFill(Color.WHITE);
+        placeLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+
+        VBox pod = new VBox(20, new Label(place), new Label(String.valueOf(Game.getClient().getPoints())));
+        pod.setMinSize(300, 350);
+        pod.setMaxSize(300, 350);
+        pod.setAlignment(Pos.TOP_CENTER);
+        pod.setPadding(new Insets(40, 0, 0, 0));
+        pod.setStyle("-fx-background-color: #864bbf; -fx-border-color: #302177; -fx-border-width: 2px");
+
+        VBox topFirst = new VBox(20, first, pod);
+        topFirst.setAlignment(Pos.BOTTOM_CENTER);
+
+        HBox podium = new HBox(topFirst);
+        podium.setAlignment(Pos.BOTTOM_CENTER);
+
+        VBox top = new VBox(podium);
+        top.setStyle("-fx-alignment: center");
+
+        VBox all = new VBox(top);
+        all.setStyle("-fx-background-color: #55309b");
+        all.setPadding(new Insets(20));
+
+        Group group = new Group(all);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #24066b");
+        stage.hide();
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> Game.exit(false));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Resultat");
+        stage.setMinHeight(600);
+        stage.setMinWidth(400);
+        stage.show();
     }
 
     private void testInit() {
