@@ -44,7 +44,7 @@ public class ServerNetInterpreter {
 
     private static void testingConnection(Client client) {
         client.sendPackage(new Package("0000", "", null));
-        client.getConnectionHolder().setTested(true);
+        client.getConnectionHolder().setTestedReceived(true);
     }
 
     private static void sendingPlayerName(Package p, Client client) {

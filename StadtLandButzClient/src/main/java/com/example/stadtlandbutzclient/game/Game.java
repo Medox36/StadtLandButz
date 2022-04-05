@@ -4,7 +4,6 @@ import com.example.stadtlandbutzclient.gui.Row;
 import com.example.stadtlandbutzclient.net.Client;
 import com.example.stadtlandbutzclient.gui.ClientGUI;
 import com.example.stadtlandbutzclient.net.ConnectionHolder;
-import com.example.stadtlandbutzclient.net.Package;
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -32,8 +31,6 @@ public class Game {
         try {
             client.createConnection(ip, port);
             ConnectionHolder.setConnected(true);
-            client.sendPackage(new Package("0000", "", null));
-            ConnectionHolder.setTestedSent(true);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

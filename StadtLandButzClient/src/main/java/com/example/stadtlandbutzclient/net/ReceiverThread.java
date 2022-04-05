@@ -8,13 +8,14 @@ public class ReceiverThread extends Thread {
     private final ReceiverInterpretThread receiverInterpretThread;
 
     private final ConcurrentLinkedQueue<Package> packages = new ConcurrentLinkedQueue<>();
-    private ObjectInputStream objectInputStream;
+    private PackageObjectInputStream objectInputStream;
+    private final Object lock;
     private boolean stop;
 
     public ReceiverThread(InputStream inputStream) {
         super("Client-Receiving-Thread");
         try {
-            objectInputStream = new ObjectInputStream(new BufferedInputStream(inputStream));
+            objectInputStream = new PackageObjectInputStream(new BufferedInputStream(inputStream));
             /*objectInputStream.setObjectInputFilter(filterInfo -> {
                 if (filterInfo.serialClass().getName().equals("Package")) {
                     return ObjectInputFilter.Status.ALLOWED;
@@ -25,7 +26,8 @@ public class ReceiverThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        receiverInterpretThread = new ReceiverInterpretThread(packages);
+        lock = new Object();
+        receiverInterpretThread = new ReceiverInterpretThread(packages, lock);
     }
 
     @Override
@@ -35,7 +37,9 @@ public class ReceiverThread extends Thread {
             try {
                 Package p = (Package) objectInputStream.readObject();
                 packages.add(p);
-                receiverInterpretThread.notify();
+                synchronized (lock) {
+                    lock.notify();
+                }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

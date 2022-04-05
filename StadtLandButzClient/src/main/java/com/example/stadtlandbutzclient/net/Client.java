@@ -20,7 +20,9 @@ public class Client {
     public void createConnection(String ip, Integer port) throws IOException {
         socket = new Socket(InetAddress.getByName(ip), port);
         senderThread = new SenderThread(socket.getOutputStream());
+        senderThread.start();
         receiverThread = new ReceiverThread(socket.getInputStream());
+        receiverThread.start();
     }
 
     public Socket getSocket() {

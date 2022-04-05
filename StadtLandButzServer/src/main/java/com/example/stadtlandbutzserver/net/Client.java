@@ -21,7 +21,9 @@ public class Client {
 
         uuid = Game.getNewUUID();
         senderThread = new SenderThread(socket.getOutputStream(), uuid);
+        senderThread.start();
         receiverThread = new ReceiverThread(socket.getInputStream(), this);
+        receiverThread.start();
 
         connectionHolder = new ConnectionHolder();
         connectionHolder.setConnected(true);

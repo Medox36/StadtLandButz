@@ -3,15 +3,20 @@ package com.example.stadtlandbutzserver.net;
 public class ConnectionHolder {
 
     private boolean connected;
-    private boolean tested;
+    private boolean testedSent;
+    private boolean testedReceived;
     private boolean approved;
 
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
 
-    public void setTested(boolean tested) {
-        this.tested = tested;
+    public void setTesteSent(boolean testeSent) {
+        this.testedSent = testeSent;
+    }
+
+    public void setTestedReceived(boolean testedReceived) {
+        this.testedReceived = testedReceived;
     }
 
     public void setApproved(boolean approved) {
@@ -26,8 +31,12 @@ public class ConnectionHolder {
         return approved;
     }
 
-    public boolean isTested() {
-        return tested;
+    public boolean isTestedSent() {
+        return testedSent;
+    }
+
+    public boolean isTestedReceived() {
+        return testedReceived;
     }
 
     public boolean checkHash(String hash) {

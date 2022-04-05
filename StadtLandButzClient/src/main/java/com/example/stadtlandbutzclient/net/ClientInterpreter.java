@@ -64,7 +64,8 @@ public class ClientInterpreter {
     }
 
     private static void testingConnection() {
-        ConnectionHolder.setTestedReceived(true);
+        ConnectionHolder.setTested(true);
+        Game.getClient().sendPackage(new Package("0000", "", null));
         Game.getClient().sendPackage(new Package("1111", ConnectionHolder.getHash(), null));
     }
 

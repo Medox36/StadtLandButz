@@ -1,6 +1,7 @@
 package com.example.stadtlandbutzserver.game;
 
 import com.example.stadtlandbutzserver.net.Client;
+import com.example.stadtlandbutzserver.net.Package;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -47,7 +48,17 @@ public class Server {
         do {
             try {
                 Socket socket = serverSocket.accept();
-                Game.getClients().add(new Client(socket));
+                Client client = new Client(socket);
+                Game.getClients().add(client);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    client.sendPackage(new Package("0000", "", null));
+                    client.getConnectionHolder().setTesteSent(true);
+                }).start();
             } catch (IOException e) {
                 //e.printStackTrace();
             }

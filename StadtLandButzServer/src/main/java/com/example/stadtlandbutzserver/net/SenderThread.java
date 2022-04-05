@@ -10,36 +10,39 @@ public class SenderThread extends Thread {
 
     private ObjectOutputStream objectOutputStream;
     private final ConcurrentLinkedQueue<Package> packages = new ConcurrentLinkedQueue<>();
+    private final Object lock;
     private boolean stop;
 
     public SenderThread(OutputStream outputStream, UUID uuid) {
         super("Client-Sender-Thread for Client: " + uuid);
-
         try {
             objectOutputStream = new ObjectOutputStream(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        lock = new Object();
     }
 
     @Override
     public void run() {
         while (!stop) {
-            while (!packages.isEmpty()) {
-                try {
-                    Package p = packages.poll();
-                    if (p != null) {
-                        objectOutputStream.writeObject(p);
-                        objectOutputStream.flush();
+            synchronized (lock) {
+                while (!packages.isEmpty()) {
+                    try {
+                        Package p = packages.poll();
+                        if (p != null) {
+                            objectOutputStream.writeObject(p);
+                            objectOutputStream.flush();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
+                }
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
         try {
@@ -51,11 +54,15 @@ public class SenderThread extends Thread {
 
     protected synchronized void addPackageToSendStack(Package p) {
         packages.add(p);
-        this.notify();
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 
     public synchronized void closeThread() {
         stop = true;
-        this.notify();
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 }
