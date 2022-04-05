@@ -43,7 +43,6 @@ public class ServerNetInterpreter {
     }
 
     private static void testingConnection(Client client) {
-        client.sendPackage(new Package("0000", "", null));
         client.getConnectionHolder().setTestedReceived(true);
     }
 
