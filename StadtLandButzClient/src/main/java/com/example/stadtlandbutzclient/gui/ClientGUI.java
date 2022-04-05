@@ -1,7 +1,6 @@
 package com.example.stadtlandbutzclient.gui;
 
 import com.example.stadtlandbutzclient.game.Game;
-import com.example.stadtlandbutzclient.net.Client;
 import com.example.stadtlandbutzclient.net.ClientInterpreter;
 import com.example.stadtlandbutzclient.net.Package;
 import javafx.application.Application;
@@ -51,16 +50,10 @@ public class ClientGUI extends Application {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         Game.setGui(this);
-        //joinStage();
 
-        //test
-        Game.setCategories(new ArrayList<>(List.of("Stadt,Land,Gewässer,Nahrungsmittel,Gebirge,Beruf,Modemarke,Sportart".split(","))));
-        //testInit();
-
-        //
         joinStage();
 
-        //test
+        //testInit();
         //test();
     }
 
@@ -372,6 +365,7 @@ public class ClientGUI extends Application {
         //
 
         categories.setMaxWidth(MAXCATEGORIES);
+        categories.setMinWidth(MAXCATEGORIES);
         tables.setMaxWidth(MAXTABLES);
         header.setMaxWidth(MAXTABLES);
         all.setMaxWidth(MAXWIDTH);
@@ -426,6 +420,7 @@ public class ClientGUI extends Application {
     }
 
     private void testInit() {
+        Game.setCategories(new ArrayList<>(List.of("Stadt,Land,Gewässer,Nahrungsmittel,Gebirge,Beruf,Modemarke,Sportart".split(","))));
         Game.createClient("192.168.0.4", 24452, "ABC");
         Game.getClient().setUUID(UUID.randomUUID());
     }
@@ -449,5 +444,4 @@ public class ClientGUI extends Application {
             System.out.println(Game.collectWordsOfCurrentRound());
         }).start());
     }
-
 }
