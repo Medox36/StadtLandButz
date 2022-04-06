@@ -113,6 +113,9 @@ public class Game {
             if (i == 9) {
                 sb.append(row.getCat9());
             }
+            if (i < (categories.size() - 1)) {
+                sb.append(",");
+            }
         }
 
         return sb.toString();

@@ -3,6 +3,7 @@ package com.example.stadtlandbutzhost.net;
 import com.example.stadtlandbutzhost.game.Game;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class ServerNetInterpreter {
@@ -65,7 +66,7 @@ public class ServerNetInterpreter {
     }
 
     private static void clientWordsOfCurrRound(Package p, Client client) {
-
+        System.out.println(Arrays.asList(p.information.split(",")));
     }
 
     private static void clientPointsOfCurrRound(Package p, Client client) {

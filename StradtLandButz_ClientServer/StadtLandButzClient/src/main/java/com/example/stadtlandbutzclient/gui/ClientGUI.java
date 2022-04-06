@@ -195,7 +195,7 @@ public class ClientGUI extends Application {
         categories.getColumns().add(letter);
 
         TableColumn<Row, Boolean> editBox = new TableColumn<>();
-        editBox.setCellValueFactory(cellData -> cellData.getValue().getEditableProperty());
+        editBox.setCellValueFactory(cellData -> cellData.getValue().editableProperty());
         editBox.setCellFactory(CheckBoxTableCell.forTableColumn(editBox));
         editBox.setVisible(false);
         categories.getColumns().add(editBox);
@@ -211,7 +211,7 @@ public class ClientGUI extends Application {
             cat.setCellFactory(cb -> new TextFieldTableCell<>(new DefaultStringConverter()) {
                 @Override
                 public void startEdit() {
-                    boolean checkbox = getTableView().getItems().get(getIndex()).getEditableProperty().getValue();
+                    boolean checkbox = getTableView().getItems().get(getIndex()).editableProperty().getValue();
                     if (checkbox) {
                         super.startEdit();
                     }
@@ -398,7 +398,10 @@ public class ClientGUI extends Application {
     }
 
     public void setTableEditable(boolean editable, int row) {
-        categories.getColumns().get(row).getTableView().getItems().get(row).getEditableProperty().setValue(editable);
+        categories.getColumns().get(row).getTableView().getItems().get(row).editableProperty().setValue(editable);
+
+        // workaround to cancel ongoing edits
+        categories.edit(-1, null);
     }
 
     public void setMadePointsInRound(int points, int round) {
