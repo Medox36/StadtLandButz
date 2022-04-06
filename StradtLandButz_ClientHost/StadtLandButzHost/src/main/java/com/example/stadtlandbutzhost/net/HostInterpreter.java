@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class ServerNetInterpreter {
+public class HostInterpreter {
 
     public static void interpretForClient(Package p, Client client) {
         if (client.getUUID().equals(p.id)) {

@@ -23,7 +23,7 @@ public class ReceiverInterpretThread extends Thread {
                 while (!packages.isEmpty()) {
                     Package p = packages.poll();
                     if (p != null) {
-                        ServerNetInterpreter.interpretForClient(p, client);
+                        HostInterpreter.interpretForClient(p, client);
                     }
                 }
                 try {

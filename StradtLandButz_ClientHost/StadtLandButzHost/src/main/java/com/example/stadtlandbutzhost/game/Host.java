@@ -8,13 +8,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class Server {
+public class Host {
     private boolean await;
     private ServerSocket serverSocket;
 
     private final int BACKLOG = 5;
 
-    public Server() {
+    public Host() {
         //TODO implement port changing if server cant run on a specific port
         try {
             serverSocket = new ServerSocket(24452, BACKLOG);

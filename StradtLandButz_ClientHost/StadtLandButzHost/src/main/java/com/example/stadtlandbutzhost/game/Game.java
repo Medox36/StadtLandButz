@@ -1,7 +1,7 @@
 package com.example.stadtlandbutzhost.game;
 
 import com.example.stadtlandbutzhost.net.Client;
-import com.example.stadtlandbutzhost.gui.ServerGUI;
+import com.example.stadtlandbutzhost.gui.HostGUI;
 import com.example.stadtlandbutzhost.net.Package;
 import javafx.application.Platform;
 
@@ -16,26 +16,26 @@ public class Game {
     private static ArrayList<String> categories = new ArrayList<>();
     private static Vector<Client> clients = new Vector<>();
     private static Vector<UUID> uuids = new Vector<>();
-    private static Server server;
+    private static Host host;
     private static String serverPort;
     private static Thread serverThread;
-    private static ServerGUI gui;
+    private static HostGUI gui;
     private static int roundNumber = -1;
 
-    public static void startServer() {
-        if (server == null) {
-            server = new Server();
-            serverPort = server.getPort();
-            serverThread = new Thread(() -> server.start());
+    public static void startHost() {
+        if (host == null) {
+            host = new Host();
+            serverPort = host.getPort();
+            serverThread = new Thread(() -> host.start());
             serverThread.start();
         }
     }
 
-    public static void stopServer() {
-        if (server != null && !server.isClosed()) server.exit();
+    public static void stopHost() {
+        if (host != null && !host.isClosed()) host.exit();
         if (serverThread != null) serverThread.interrupt();
         serverThread = null;
-        server = null;
+        host = null;
         serverPort = null;
         closeAllSockets();
         clients = null;
@@ -49,11 +49,11 @@ public class Game {
         return serverPort;
     }
 
-    public static Server getServer() {
-        return server;
+    public static Host getHost() {
+        return host;
     }
 
-    public static void setGui(ServerGUI gui) {
+    public static void setGui(HostGUI gui) {
         Game.gui = gui;
     }
 
@@ -133,7 +133,7 @@ public class Game {
     }
 
     private static void exiting(boolean explicit) {
-        stopServer();
+        stopHost();
         Platform.exit();
         gui = null;
         uuids = null;

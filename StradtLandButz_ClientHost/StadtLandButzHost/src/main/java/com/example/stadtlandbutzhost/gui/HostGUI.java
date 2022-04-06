@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ServerGUI extends Application {
+public class HostGUI extends Application {
 
     private Stage stage;
 
@@ -239,7 +239,7 @@ public class ServerGUI extends Application {
             flow.setPrefWidth(bounds.getWidth());
             flow.setPrefHeight(bounds.getHeight());
         });
-        scroll.getStylesheets().add(Objects.requireNonNull(ServerGUI.class.getResource("/com/example/stadtlandbutzhost/css/joinStage.css")).toString());
+        scroll.getStylesheets().add(Objects.requireNonNull(HostGUI.class.getResource("/com/example/stadtlandbutzhost/css/joinStage.css")).toString());
 
         VBox players = new VBox(scroll);
         players.setStyle("-fx-alignment: center; -fx-padding: 10");
@@ -248,7 +248,7 @@ public class ServerGUI extends Application {
         start.setScaleX(1.6);
         start.setScaleY(1.6);
         start.setOnAction(e -> {
-            Game.getServer().letClientsConnect(false);
+            Game.getHost().letClientsConnect(false);
 
             //TODO send 'startGame' -> prefix: "1010"
             Game.sendToAllClients("1010", "");
@@ -277,7 +277,7 @@ public class ServerGUI extends Application {
         stage.show();
 
         //show IP and Port
-        Game.startServer();
+        Game.startHost();
 
         String hostAdd = "IP-Adresse konnte nicht gefunden werden";
         try {
@@ -623,13 +623,13 @@ public class ServerGUI extends Application {
         thirdPoints.setTextFill(Color.WHITE);
         thirdPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
 
-        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/com/example/stadtlandbutzhost/images/first.png"))));
+        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/com/example/stadtlandbutzhost/images/first.png"))));
         i1.setFitHeight(150);
         i1.setFitWidth(150);
-        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/com/example/stadtlandbutzhost/images/second.png"))));
+        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/com/example/stadtlandbutzhost/images/second.png"))));
         i2.setFitHeight(150);
         i2.setFitWidth(150);
-        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(ServerGUI.class.getResourceAsStream("/com/example/stadtlandbutzhost/images/third.png"))));
+        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/com/example/stadtlandbutzhost/images/third.png"))));
         i3.setFitHeight(150);
         i3.setFitWidth(150);
 
@@ -656,7 +656,7 @@ public class ServerGUI extends Application {
         restart.setScaleX(1.6);
         restart.setScaleY(1.6);
         restart.setOnAction(e -> {
-            Game.stopServer();
+            Game.stopHost();
             selectionStage();
         });
 
