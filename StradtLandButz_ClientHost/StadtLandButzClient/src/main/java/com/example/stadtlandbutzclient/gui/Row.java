@@ -7,13 +7,13 @@ import javafx.beans.property.SimpleStringProperty;
 public class Row {
     private Character letter;
 
-    private final SimpleStringProperty[] cats;
+    private final SimpleStringProperty[] categories;
 
     private final BooleanProperty editable;
 
     public Row(Character letter) {
         this.letter = letter;
-        cats = new SimpleStringProperty[10];
+        categories = new SimpleStringProperty[10];
         editable = new SimpleBooleanProperty(false);
     }
 
@@ -33,11 +33,15 @@ public class Row {
         return editable;
     }
 
-    public SimpleStringProperty getCat(int index) {
-        return cats[index];
+    public SimpleStringProperty getCategoryProperty(int index) {
+        return categories[index];
+    }
+
+    public String getCategoryString(int index) {
+        return categories[index].getValueSafe();
     }
 
     public void setCat(String newValue, int index) {
-        cats[index] = new SimpleStringProperty(newValue);
+        categories[index] = new SimpleStringProperty(newValue);
     }
 }

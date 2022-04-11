@@ -7,6 +7,7 @@ import com.example.stadtlandbutzclient.net.ConnectionHolder;
 import javafx.application.Platform;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Game {
@@ -83,7 +84,7 @@ public class Game {
         Row row = gui.getCurrentRow(roundNumber);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < categories.size(); i++) {
-            sb.append(row.getCat(i));
+            sb.append(row.getCategoryString(i).replaceAll("[^-a-zA-Z_0-9]", ""));
             if (i < (categories.size() - 1)) {
                 sb.append(",");
             }

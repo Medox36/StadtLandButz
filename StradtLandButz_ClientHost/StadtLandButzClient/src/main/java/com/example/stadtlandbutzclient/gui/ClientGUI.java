@@ -200,7 +200,7 @@ public class ClientGUI extends Application {
             cat.setResizable(true);
             cat.setSortable(false);
             cat.setReorderable(false);
-            cat.setCellValueFactory(cellData -> cellData.getValue().getCat(finalI));
+            cat.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty(finalI));
             cat.setCellFactory(TextFieldTableCell.forTableColumn());
             cat.setOnEditCommit(t -> {
                 boolean edit = t.getTableView().getItems().get(t.getTablePosition().getRow()).editableProperty().getValue();
