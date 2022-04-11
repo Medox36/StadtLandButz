@@ -5,13 +5,11 @@ import com.example.stadtlandbutzclient.net.ClientInterpreter;
 import com.example.stadtlandbutzclient.net.Package;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -24,7 +22,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.util.converter.DefaultStringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,44 +191,33 @@ public class ClientGUI extends Application {
         letter.setStyle("-fx-alignment: center");
         categories.getColumns().add(letter);
 
-        TableColumn<Row, Boolean> editBox = new TableColumn<>();
-        editBox.setCellValueFactory(cellData -> cellData.getValue().editableProperty());
-        editBox.setCellFactory(CheckBoxTableCell.forTableColumn(editBox));
-        editBox.setVisible(false);
-        categories.getColumns().add(editBox);
-
         ArrayList<String> strs = Game.getCategories();
         for (int i = 0; i < strs.size(); i++) {
+            int finalI = i;
+
             TableColumn<Row, String> cat = new TableColumn<>(strs.get(i));
             cat.setEditable(true);
             cat.setResizable(true);
             cat.setSortable(false);
             cat.setReorderable(false);
-            cat.setCellValueFactory(new PropertyValueFactory<>("cat" + i));
-            cat.setCellFactory(cb -> new TextFieldTableCell<>(new DefaultStringConverter()) {
-                @Override
-                public void startEdit() {
-                    boolean checkbox = getTableView().getItems().get(getIndex()).editableProperty().getValue();
-                    if (checkbox) {
-                        super.startEdit();
+            cat.setCellValueFactory(cellData -> cellData.getValue().getCat(finalI));
+            cat.setCellFactory(TextFieldTableCell.forTableColumn());
+            cat.setOnEditCommit(t -> {
+                boolean edit = t.getTableView().getItems().get(t.getTablePosition().getRow()).editableProperty().getValue();
+                    if (Game.isEditAllowed() && edit) {
+                        t.getTableView().getItems().get(t.getTablePosition().getRow()).setCat(t.getNewValue(), finalI);
+                        cat.getTableView().getItems().get(t.getTablePosition().getRow()).setCat(t.getNewValue(), finalI);
+
+                    } else {
+                        t.getTableView().getItems().get(t.getTablePosition().getRow()).setCat(t.getOldValue(), finalI);
+                        cat.getTableView().getItems().get(t.getTablePosition().getRow()).setCat(t.getOldValue(), finalI);
                     }
                 }
-
-                @Override
-                public void commitEdit(String item) {
-                    if (Game.isEditAllowed()) {
-                        if (!isEditing() && !item.equals(getItem())) {
-                            TableView<Row> table = getTableView();
-                            if (table != null) {
-                                TableColumn<Row, String> column = getTableColumn();
-                                TableColumn.CellEditEvent<Row, String> event = new TableColumn.CellEditEvent<>(table, new TablePosition<>(table, getIndex(), column), TableColumn.editCommitEvent(), item);
-                                Event.fireEvent(column, event);
-                            }
-                        }
-
-                        super.commitEdit(item);
-                        setContentDisplay(ContentDisplay.TEXT_ONLY);
-                    }
+            );
+            cat.setOnEditStart(t -> {
+                boolean edit = t.getTableView().getItems().get(t.getTablePosition().getRow()).editableProperty().getValue();
+                if (!edit) {
+                    Platform.runLater(() -> categories.edit(-1, null));
                 }
             });
             cat.setPrefWidth(200);
@@ -381,7 +367,6 @@ public class ClientGUI extends Application {
         private Integer point;
 
         public Point() {
-
         }
 
         public Point(int point) {
@@ -401,7 +386,9 @@ public class ClientGUI extends Application {
         categories.getColumns().get(row).getTableView().getItems().get(row).editableProperty().setValue(editable);
 
         // workaround to cancel ongoing edits
-        categories.edit(-1, null);
+        if (!editable) {
+            categories.edit(-1, null);
+        }
     }
 
     public void setMadePointsInRound(int points, int round) {
