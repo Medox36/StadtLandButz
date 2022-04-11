@@ -44,6 +44,7 @@ public class ReceiverThread extends Thread {
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+                stop = true;
             }
         }
         try {
