@@ -1,8 +1,8 @@
-module com.example.stadtlandbutz_host {
+module ch.giuntini.stadtlandbutz_host {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens com.example.stadtlandbutz_host.gui to javafx.fxml;
-    exports com.example.stadtlandbutz_host.gui;
-    exports com.example.stadtlandbutz_host;
+    opens ch.giuntini.stadtlandbutz_host.gui to javafx.fxml;
+    exports ch.giuntini.stadtlandbutz_host.gui;
+    exports ch.giuntini.stadtlandbutz_host;
 }

@@ -1,8 +1,8 @@
-module com.example.stadtlandbutz_client {
+module ch.giuntini.stadtlandbutz_client {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens com.example.stadtlandbutz_client.gui to javafx.fxml;
-    exports com.example.stadtlandbutz_client.gui;
-    exports com.example.stadtlandbutz_client;
+    opens ch.giuntini.stadtlandbutz_client.gui to javafx.fxml;
+    exports ch.giuntini.stadtlandbutz_client.gui;
+    exports ch.giuntini.stadtlandbutz_client;
 }

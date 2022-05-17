@@ -1,10 +1,10 @@
-module com.example.stadtlandbutzserver {
+module ch.giuntini.stadtlandbutzserver {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens com.example.stadtlandbutzhost.gui to javafx.fxml;
-    exports com.example.stadtlandbutzhost.gui;
-    exports com.example.stadtlandbutzhost.game;
-    exports com.example.stadtlandbutzhost.net;
-    exports com.example.stadtlandbutzhost;
+    opens ch.giuntini.stadtlandbutzhost.gui to javafx.fxml;
+    exports ch.giuntini.stadtlandbutzhost.gui;
+    exports ch.giuntini.stadtlandbutzhost.game;
+    exports ch.giuntini.stadtlandbutzhost.net;
+    exports ch.giuntini.stadtlandbutzhost;
 }
