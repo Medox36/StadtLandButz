@@ -33,8 +33,8 @@ public class ClientGUI extends Application {
 
     private Stage stage;
 
-    private final String ipRegex = "^(([01]?\\d{0,2})|(2[0-4]\\d)|(25[0-5]))?(\\.(([01]?\\d{0,2})|(2[0-4]\\d)|(25[0-5]))){0,3}";
-    private final String validateIpRegex = "^(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$";
+    private final String codeRegex = "^([1-9]\\d{0,6})$";
+    private final String validateCodeRegex = "^([1-9]\\d{6})$";
     private final String nameRegex = "^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z\\d._]+(?<![_.])$";
     private final String validateNameRegex = "^[a-zA-Z\\d._]{0,20}$";
 
@@ -56,28 +56,20 @@ public class ClientGUI extends Application {
     }
 
     public void joinStage() {
-        TextField ip = new TextField();
-        ip.setPromptText("192.168.0.1");
-        ip.setMaxWidth(120);
-        ip.setTooltip(new Tooltip("IP-Adresse"));
-
-        ip.setTextFormatter(new TextFormatter<>(change -> {
+        TextField code = new TextField();
+        code.setPromptText("Game-Code");
+        code.setTooltip(new Tooltip("GameCode"));
+        code.setTextFormatter(new TextFormatter<>(change -> {
             String text = change.getControlNewText();
-            if  (text.matches(ipRegex)) {
+            if  (text.matches(codeRegex)) {
                 return change ;
             } else {
                 return null ;
             }
         }));
 
-        Spinner<Integer> port = new Spinner<>(0, 65535, 24452, 1);
-        port.setEditable(true);
-        port.setMaxWidth(72);
-        port.setTooltip(new Tooltip("Port"));
-
         TextField playerName = new TextField();
         playerName.setPromptText("Spielername");
-
         playerName.setTextFormatter(new TextFormatter<>(change -> {
             if (change.getControlNewText().matches(validateNameRegex)) {
                 return change;
@@ -91,16 +83,15 @@ public class ClientGUI extends Application {
         confirm.setScaleY(1.4);
         confirm.setDefaultButton(true);
         confirm.setOnAction(e -> {
-            if (ip.getText().matches(validateIpRegex)) {
+            if (code.getText().matches(validateCodeRegex)) {
                 if (playerName.getText().matches(nameRegex)) {
-                    if (!Game.createClient(ip.getText(), port.getValue(), playerName.getText())) {
+                    Game.setGameCode(Integer.parseInt(code.getText()));
+                    if (!Game.createClient(playerName.getText())) {
                         Alert a = new Alert(Alert.AlertType.ERROR);
                         a.setTitle("Verbindung");
                         a.setHeaderText("Keine Verbindung möglich");
                         a.setContentText("Es konte keine Verbindung zum Server hergestellt werden.");
                         a.showAndWait();
-                    } else {
-                        waitStage();
                     }
                 } else {
                     Alert a = new Alert(Alert.AlertType.WARNING);
@@ -111,8 +102,8 @@ public class ClientGUI extends Application {
                 }
             } else {
                 Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setTitle("IP-Adresse");
-                a.setHeaderText("Ungültige IP-Adresse");
+                a.setTitle("Game-Code");
+                a.setHeaderText("Ungültiger Game-Code");
                 a.showAndWait();
             }
         });
@@ -124,9 +115,7 @@ public class ClientGUI extends Application {
         Label sep = new Label(":");
         sep.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-alignment: center");
 
-        HBox ipAndPort = new HBox(2.5, ip, sep, port);
-
-        VBox textFields = new VBox(10, ipAndPort, playerName, button);
+        VBox textFields = new VBox(10, code, playerName, button);
         textFields.setAlignment(Pos.CENTER);
         textFields.setPadding(new Insets(10));
         textFields.setStyle("-fx-background-color: white");
@@ -158,7 +147,7 @@ public class ClientGUI extends Application {
         confirm.requestFocus();
     }
 
-    private void waitStage() {
+    public void waitStage() {
         Label text = new Label("Bitte warten");
         text.setStyle("-fx-font-size: 60; -fx-font-weight: bold");
 
@@ -457,7 +446,7 @@ public class ClientGUI extends Application {
 
     private void testInit() {
         Game.setCategories(new ArrayList<>(List.of("Stadt,Land,Gewässer,Nahrungsmittel,Gebirge,Beruf,Modemarke,Sportart".split(","))));
-        Game.createClient("192.168.0.4", 24452, "ABC");
+        Game.createClient("ABC");
         Game.getClient().setUUID(UUID.randomUUID());
     }
 

@@ -1,4 +1,4 @@
-package ch.giuntini.stadtlandbutz_server.net;
+package ch.giuntini.stadtlandbutz_host.net;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -8,8 +8,8 @@ public class Host {
     private final SenderThread senderThread;
     private final ReceiverThread receiverThread;
 
-    public Host(Socket socket) throws IOException {
-        this.socket = socket;
+    public Host() throws IOException {
+        socket = new Socket("giuntini-ch.dynv6.net", 25541);
         senderThread = new SenderThread(socket.getOutputStream());
         senderThread.start();
         receiverThread = new ReceiverThread(socket.getInputStream());

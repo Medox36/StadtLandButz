@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 public class HostConnection extends Thread {
 
     private ServerSocket serverSocket;
-    private Host host;
 
     public HostConnection() {
         try {
@@ -25,6 +24,14 @@ public class HostConnection extends Thread {
             Game.addHost(serverSocket.accept());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void close() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -34,16 +34,16 @@ symbol for separating two values, when two values are sent in one package in the
     start game
 
 1011:
-
+    sending Pw
 
 1100:
-
+    generate GameCode
 
 1101:
-
+    Pw response
 
 1110:
-
+    sending gameCode
 
 1111:
     check if approved

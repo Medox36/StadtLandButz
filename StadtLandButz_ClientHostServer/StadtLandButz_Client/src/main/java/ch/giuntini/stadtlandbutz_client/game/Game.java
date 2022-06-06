@@ -3,7 +3,7 @@ package ch.giuntini.stadtlandbutz_client.game;
 import ch.giuntini.stadtlandbutz_client.gui.ClientGUI;
 import ch.giuntini.stadtlandbutz_client.gui.Row;
 import ch.giuntini.stadtlandbutz_client.net.Client;
-import ch.giuntini.stadtlandbutz_client.net.ConnectionHolder;
+
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -14,6 +14,7 @@ public class Game {
     private static ArrayList<String> categories = new ArrayList<>();
     private static Client client;
     private static ClientGUI gui;
+    private static int gameCode;
     private static int roundNumber = -1;
     private static boolean editAllowed;
 
@@ -26,11 +27,10 @@ public class Game {
         if (!isExit) Platform.runLater(() -> Game.getGui().joinStage());
     }
 
-    public static boolean createClient(String ip, Integer port, String playerName) {
+    public static boolean createClient(String playerName) {
         client = new Client(playerName);
         try {
-            client.createConnection(ip, port);
-            ConnectionHolder.setConnected(true);
+            client.createConnection();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -60,6 +60,14 @@ public class Game {
 
     public static void setRoundNumber(int roundNumber) {
         Game.roundNumber = roundNumber;
+    }
+
+    public static int getGameCode() {
+        return gameCode;
+    }
+
+    public static void setGameCode(int gameCode) {
+        Game.gameCode = gameCode;
     }
 
     public static int getRoundNumber() {

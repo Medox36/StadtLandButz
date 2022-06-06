@@ -8,13 +8,9 @@ import java.util.UUID;
 
 public class Client {
     private final SenderThread senderThread;
-    private final ReceiverThread receiverThread;
+    private final ClientReceiverThread clientReceiverThread;
     private final Socket socket;
-    private String playerName = "";
     private final UUID uuid;
-    private int points;
-
-    private final ConnectionHolder connectionHolder;
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
@@ -22,24 +18,16 @@ public class Client {
         uuid = Game.getNewUUID();
         senderThread = new SenderThread(socket.getOutputStream());
         senderThread.start();
-        receiverThread = new ReceiverThread(socket.getInputStream());
-        receiverThread.start();
+        clientReceiverThread = new ClientReceiverThread(socket.getInputStream(), this);
+        clientReceiverThread.start();
 
-        connectionHolder = new ConnectionHolder();
         //connectionHolder.setConnected(true);
+        sendPackage(new Package("", "0001", "", uuid.toString()));
         System.out.println("(origin=client) client connected: " + uuid);
     }
 
     public Socket getSocket() {
         return socket;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
     }
 
     public UUID getUUID() {
@@ -50,27 +38,19 @@ public class Client {
         return uuid.toString();
     }
 
-    public int getPoints() {
-        return points;
-    }
-
-    public void addPoints(int points) {
-        this.points += points;
-    }
-
-    public ConnectionHolder getConnectionHolder() {
-        return connectionHolder;
-    }
-
     public synchronized void sendPackage(Package p) {
         senderThread.addPackageToSendStack(p);
     }
 
-    public void closeSocketIfOpen() throws IOException {
+    public void closeSocketIfOpen() {
         if (!socket.isClosed()) {
-            senderThread.closeThread();
-            receiverThread.closeThread();
-            socket.close();
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+        senderThread.closeThread();
+        clientReceiverThread.closeThread();
     }
 }

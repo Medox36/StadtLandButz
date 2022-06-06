@@ -34,17 +34,9 @@ public class ClientConnection extends Thread {
         do {
             try {
                 Socket socket = serverSocket.accept();
-                Game.addClient(socket);
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    //client.sendPackage(new Package("0000", "", null));
-                }).start();
+                Game.putClientOnWait(socket);
             } catch (IOException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         } while (await);
     }
@@ -53,7 +45,7 @@ public class ClientConnection extends Thread {
         this.await = await;
     }
 
-    public void exit() {
+    public void close() {
         try {
             serverSocket.close();
         } catch (IOException e) {

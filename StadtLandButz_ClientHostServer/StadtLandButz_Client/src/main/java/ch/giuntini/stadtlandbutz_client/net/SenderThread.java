@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SenderThread extends Thread {
 
     private ObjectOutputStream objectOutputStream;
-    private final ConcurrentLinkedQueue<java.lang.Package> packages = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<Package> packages = new ConcurrentLinkedQueue<>();
     private final Object lock;
     private boolean stop;
 
@@ -28,7 +28,7 @@ public class SenderThread extends Thread {
             synchronized (lock) {
                 while (!packages.isEmpty()) {
                     try {
-                        java.lang.Package p = packages.poll();
+                        Package p = packages.poll();
                         if (p != null) {
                             objectOutputStream.writeObject(p);
                             objectOutputStream.flush();
@@ -51,7 +51,7 @@ public class SenderThread extends Thread {
         }
     }
 
-    protected synchronized void addPackageToSendStack(java.lang.Package p) {
+    protected synchronized void addPackageToSendStack(Package p) {
         packages.add(p);
         synchronized (lock) {
             lock.notify();

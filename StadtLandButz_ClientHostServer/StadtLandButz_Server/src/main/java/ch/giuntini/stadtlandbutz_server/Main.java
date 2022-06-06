@@ -1,7 +1,6 @@
 package ch.giuntini.stadtlandbutz_server;
 
-import ch.giuntini.stadtlandbutz_server.gui.ServerGUI;
-import javafx.application.Application;
+import ch.giuntini.stadtlandbutz_server.game.Game;
 
 import java.io.ObjectInputFilter;
 
@@ -11,7 +10,7 @@ public class Main {
         ObjectInputFilter.Config.setSerialFilter(
                 ObjectInputFilter.Config.createFilter("ch.giuntini.stadtlandbutz_client.net.Package;" +
                         "ch.giuntini.stadtlandbutz_host.net.Package"));
-        Application.launch(ServerGUI.class);
-
+        Game.setPw(String.valueOf(System.console().readPassword("Define Password: ")));
+        Game.startServer();
     }
 }

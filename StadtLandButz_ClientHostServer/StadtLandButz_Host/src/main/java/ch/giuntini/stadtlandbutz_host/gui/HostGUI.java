@@ -2,6 +2,8 @@ package ch.giuntini.stadtlandbutz_host.gui;
 
 import ch.giuntini.stadtlandbutz_host.game.Game;
 import ch.giuntini.stadtlandbutz_host.net.Client;
+import ch.giuntini.stadtlandbutz_host.net.Package;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -18,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public class HostGUI extends Application {
 
     //joinStage
     private FlowPane flow;
+    private Label ip;
 
     //checkStage
     private Text checkStageCategory;
@@ -48,13 +52,58 @@ public class HostGUI extends Application {
     private Label thirdPoints;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         this.stage = stage;
         Game.setGui(this);
-        selectionStage();
+        hostLoginStage();
     }
 
-    private void selectionStage() {
+    private void hostLoginStage() {
+        Label label = new Label("Password");
+        PasswordField passwordField = new PasswordField();
+
+        Button button = new Button("Anmelden");
+        button.setDefaultButton(true);
+        button.setOnAction(actionEvent -> new Thread(() -> {
+            try {
+                Game.startHost();
+                Thread.sleep(200);
+                Game.getHost().sendPackage(new Package("001", "1011", passwordField.getText(), null));
+            } catch (IOException | InterruptedException e) {
+                Platform.runLater(() -> showPasswordMessage("Keine Verbindung zum Server möglich"));
+            }
+        }).start()
+        );
+        button.setScaleX(1.2);
+        button.setScaleY(1.2);
+
+        HBox pw = new HBox(20, label, passwordField);
+        VBox login = new VBox(40, pw, button);
+
+        pw.setStyle("-fx-alignment: center");
+        login.setStyle("-fx-alignment: center");
+
+        Group group = new Group(login);
+        BorderPane root = new BorderPane();
+        root.setCenter(group);
+        root.setStyle("-fx-background-color: #eadddd");
+        stage = new Stage();
+        stage.setOnCloseRequest(windowEvent -> Game.exit(true));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Login als Host");
+        stage.setMinHeight(200);
+        stage.setMinWidth(400);
+        stage.show();
+    }
+
+    public void showPasswordMessage(String s) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Password-Info");
+        alert.setHeaderText(s);
+        alert.showAndWait();
+    }
+
+    public void selectionStage() {
         ListView<String> categoriesList = new ListView<>();
         categoriesList.setEditable(false);
         emptyListTest(categoriesList);
@@ -148,6 +197,7 @@ public class HostGUI extends Application {
             } else {
                 Game.getCategories().addAll(categoriesList.getItems());
                 System.out.println("(origin=GUI) categories: " + Game.getCategories());
+                Game.getHost().sendPackage(new Package("001", "1100", "", null));
                 joinStage();
             }
         });
@@ -209,14 +259,13 @@ public class HostGUI extends Application {
 
     private void joinStage() {
         Label title = new Label("Beitreten über:");
-        Label ip = new Label("IP: Server initializing");
-        Label port = new Label("Port: Server initializing");
+        ip = new Label("Game-Code wird generiert");
         title.setStyle("-fx-font-size: 60; -fx-font-style: italic; -fx-padding: 10");
-        ip.setStyle("-fx-font-size: 36; -fx-font-style: italic; -fx-padding: 5");
-        port.setStyle("-fx-font-size: 36; -fx-font-style: italic; -fx-padding: 5");
+        ip.setStyle("-fx-font-size: 70; -fx-font-weight: bold; -fx-padding: 5");
 
-        VBox w1 = new VBox(1,ip, port);
+        VBox w1 = new VBox(ip);
         VBox w2 = new VBox(15, title, w1);
+        w1.setStyle("-fx-alignment: center");
         w2.setStyle("-fx-background-color: #dbefef");
 
         HBox topText = new HBox(w2);
@@ -250,10 +299,8 @@ public class HostGUI extends Application {
         start.setScaleX(1.6);
         start.setScaleY(1.6);
         start.setOnAction(e -> {
-            Game.getHost().letClientsConnect(false);
-
             //TODO send 'startGame' -> prefix: "1010"
-            Game.sendToAllClients("", "1010", "");
+            Game.sendToAllClients("011", "1010", "");
 
             roundStage();
         });
@@ -277,21 +324,10 @@ public class HostGUI extends Application {
         stage.setMinWidth(936);
         stage.setMaximized(true);
         stage.show();
+    }
 
-        //show IP and Port
-        Game.startHost();
-
-        String hostAdd = "IP-Adresse konnte nicht gefunden werden";
-        try {
-            hostAdd = InetAddress.getLocalHost().getHostAddress();
-            System.out.println("(origin=GUI) ip: " + hostAdd);
-            System.out.println("(origin=GUI) port: " + Game.getServerPort());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-        ip.setText("IP: " + hostAdd);
-        port.setText("Port: " + Game.getServerPort());
+    public void setGameCode(String s) {
+        ip.setText(s);
     }
 
     public void addPlayer(Client client) {
@@ -329,7 +365,7 @@ public class HostGUI extends Application {
             timer.cancel();
 
             //TODO send 'blockUserInput' -> prefix: "0110"
-            Game.sendToAllClients("", "0110", "");
+            Game.sendToAllClients("011", "0110", "");
 
             checkStage();
         });
@@ -375,10 +411,10 @@ public class HostGUI extends Application {
         stage.show();
 
         //TODO send 'roundNumberAndLetter' -> prefix: "0100"
-        Game.sendToAllClients("", "0100", Game.getRoundNumber() + "@" + let);
+        Game.sendToAllClients("011", "0100", Game.getRoundNumber() + "@" + let);
 
         //TODO send 'enableUserInput' -> prefix: "0101"
-        Game.sendToAllClients("", "0101", "");
+        Game.sendToAllClients("011", "0101", "");
     }
 
     private void checkStage() {

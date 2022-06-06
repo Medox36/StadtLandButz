@@ -3,6 +3,7 @@ package ch.giuntini.stadtlandbutz_host.game;
 import ch.giuntini.stadtlandbutz_host.gui.HostGUI;
 import ch.giuntini.stadtlandbutz_host.net.Client;
 import ch.giuntini.stadtlandbutz_host.net.Package;
+import ch.giuntini.stadtlandbutz_host.net.Host;
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -16,28 +17,16 @@ public class Game {
     private static ArrayList<String> categories = new ArrayList<>();
     private static Vector<Client> clients = new Vector<>();
     private static Vector<UUID> uuids = new Vector<>();
-    private static Host host;
-    private static String serverPort;
-    private static Thread serverThread;
     private static HostGUI gui;
+    private static Host host;
+    private static int gameCode;
     private static int roundNumber = -1;
 
-    public static void startHost() {
-        if (host == null) {
-            host = new Host();
-            serverPort = host.getPort();
-            serverThread = new Thread(() -> host.start());
-            serverThread.start();
-        }
+    public static void startHost() throws IOException {
+        host = new Host();
     }
 
     public static void stopHost() {
-        if (host != null && !host.isClosed()) host.exit();
-        if (serverThread != null) serverThread.interrupt();
-        serverThread = null;
-        host = null;
-        serverPort = null;
-        closeAllSockets();
         clients = null;
         uuids.clear();
         letters.clear();
@@ -45,16 +34,12 @@ public class Game {
         roundNumber = -1;
     }
 
-    public static String getServerPort() {
-        return serverPort;
-    }
-
-    public static Host getHost() {
-        return host;
-    }
-
     public static void setGui(HostGUI gui) {
         Game.gui = gui;
+    }
+
+    public static HostGUI getGui() {
+        return gui;
     }
 
     public static void addClientToGUI(Client client) {
@@ -67,6 +52,18 @@ public class Game {
 
     public static Vector<Client> getClients() {
         return clients;
+    }
+
+    public static int getGameCode() {
+        return gameCode;
+    }
+
+    public static void setGameCode(int gameCode) {
+        Game.gameCode = gameCode;
+    }
+
+    public static Host getHost() {
+        return host;
     }
 
     public static Client getClientByUUID(UUID uuid) {
@@ -114,16 +111,6 @@ public class Game {
         }
         letters.add(letter);
         return String.valueOf(letter).toUpperCase();
-    }
-
-    private static void closeAllSockets() {
-        for (Client client : clients) {
-            try {
-                client.closeSocketIfOpen();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static void exit(boolean explicit) {

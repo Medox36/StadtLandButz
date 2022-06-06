@@ -17,8 +17,8 @@ public class Client {
         this.playerName = playerName;
     }
 
-    public void createConnection(String ip, Integer port) throws IOException {
-        socket = new Socket(InetAddress.getByName(ip), port);
+    public void createConnection() throws IOException {
+        socket = new Socket("giuntini-ch.dynv6.net", 24452);
         senderThread = new SenderThread(socket.getOutputStream());
         senderThread.start();
         receiverThread = new ReceiverThread(socket.getInputStream());
@@ -37,6 +37,10 @@ public class Client {
         return uuid;
     }
 
+    public String getUUIDString() {
+        return uuid.toString();
+    }
+
     public void setUUID(UUID uuid) {
         this.uuid = uuid;
     }
@@ -49,7 +53,7 @@ public class Client {
         this.points += points;
     }
 
-    public void sendPackage(java.lang.Package p) {
+    public void sendPackage(Package p) {
         senderThread.addPackageToSendStack(p);
     }
 
