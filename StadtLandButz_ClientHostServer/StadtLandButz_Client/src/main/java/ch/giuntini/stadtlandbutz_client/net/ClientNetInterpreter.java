@@ -18,6 +18,9 @@ public class ClientNetInterpreter {
             case "0001":
                 receivingUUID(p);
                 break;
+            case "0010":
+                requestingName();
+                break;
             case "0011":
                 receivingCategories(p);
                 break;
@@ -51,6 +54,11 @@ public class ClientNetInterpreter {
     private static void receivingUUID(Package p) {
         Game.getClient().setUUID(UUID.fromString(p.information));
         Game.getClient().sendPackage(new Package("000", "1110", String.valueOf(Game.getGameCode()), Game.getClient().getUUIDString()));
+    }
+
+    private static void requestingName() {
+        Client client = Game.getClient();
+        client.sendPackage(new Package("100", "0010", client.getPlayerName(), client.getUUIDString()));
     }
 
     private static void receivingCategories(Package p) {

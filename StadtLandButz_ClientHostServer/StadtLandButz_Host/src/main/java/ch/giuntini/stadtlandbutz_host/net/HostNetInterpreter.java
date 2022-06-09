@@ -4,10 +4,15 @@ import ch.giuntini.stadtlandbutz_host.game.Game;
 
 import javafx.application.Platform;
 
+import java.util.UUID;
+
 public class HostNetInterpreter {
 
     public synchronized static void interpret(Package p) {
         switch (p.prefix) {
+            case "0010":
+                newClient(p);
+                break;
             case "1101":
                 passwordResponse(p);
                 break;
@@ -15,6 +20,13 @@ public class HostNetInterpreter {
                 gameCode(p);
                 break;
         }
+    }
+
+    private synchronized static void newClient(Package p) {
+        Client client = new Client(UUID.fromString(p.uuid));
+        client.setPlayerName(p.information);
+        Game.addClient(client);
+        Game.addClientToGUI(client);
     }
 
     private synchronized static void passwordResponse(Package p) {

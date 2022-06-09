@@ -34,6 +34,10 @@ public class Game {
         roundNumber = -1;
     }
 
+    public static void addClient(Client client) {
+        clients.add(client);
+    }
+
     public static void setGui(HostGUI gui) {
         Game.gui = gui;
     }

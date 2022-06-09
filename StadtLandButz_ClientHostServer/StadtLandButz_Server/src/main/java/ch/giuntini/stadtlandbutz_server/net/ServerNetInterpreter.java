@@ -51,6 +51,7 @@ public class ServerNetInterpreter {
         } else {
             c.sendPackage(new Package("", "1110", "Kein aktives Spiel", c.getUUIDString()));
             c.closeSocketIfOpen();
+            Game.removeWaitingClient(c);
         }
     }
 
