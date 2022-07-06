@@ -78,7 +78,7 @@ public class ClientNetInterpreter {
 
     private static void blockUserInput() {
         Game.allowEditInCurrRow(false);
-        Game.getClient().sendPackage(new Package("001", "0111", Game.collectWordsOfCurrentRound(), Game.getClient().getUUID().toString()));
+        Game.getClient().sendPackage(new Package("000", "0111", Game.collectWordsOfCurrentRound(), Game.getClient().getUUID().toString()));
     }
 
     private static void madePointsInRound(Package p) {
