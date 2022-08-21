@@ -94,7 +94,8 @@ public class Game {
     }
 
     public static void generateNewGameCode() {
-        gameCode = new SecureRandom().nextInt(1111111, 9999999);
+        // min=1111111, max=9999999
+        gameCode = new SecureRandom().nextInt(8888888) + 1111111;
     }
 
     public static void exit(boolean explicit) {
