@@ -1,7 +1,6 @@
 package ch.giuntini.stadtlandbutz_client.net;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.UUID;
 
