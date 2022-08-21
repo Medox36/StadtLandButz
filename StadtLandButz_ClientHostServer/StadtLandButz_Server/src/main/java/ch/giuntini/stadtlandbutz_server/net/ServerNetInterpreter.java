@@ -77,7 +77,7 @@ public class ServerNetInterpreter {
 
     private synchronized static void generateGameCode() {
         Game.generateNewGameCode();
-        Game.getHost().sendPackage(new Package("", "", String.valueOf(Game.getGameCode()), null));
+        Game.getHost().sendPackage(new Package("", "1110", String.valueOf(Game.getGameCode()), null));
     }
 
     private synchronized static void interpretCH(Package p) {

@@ -70,7 +70,6 @@ public class Game {
 
             LinkedHashMap<String, Vector<UUID>> sortedWordsOfCat = new LinkedHashMap<>();
 
-
             for (int i = 0; i <= addPointer; i++) {
                 LinkedHashMap<UUID, Vector<String>> temp = words.get(i);
 
@@ -266,10 +265,6 @@ public class Game {
 
     public static ArrayList<String> getCategories() {
         return categories;
-    }
-
-    public static Vector<Client> getClients() {
-        return clients;
     }
 
     public static int getGameCode() {
