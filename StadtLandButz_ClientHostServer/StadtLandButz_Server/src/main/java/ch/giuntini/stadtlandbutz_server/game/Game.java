@@ -25,7 +25,9 @@ public class Game {
 
     public static void startServer() {
         hostConnection = new HostConnection();
+        hostConnection.start();
         clientConnection = new ClientConnection();
+        clientConnection.start();
     }
 
 
