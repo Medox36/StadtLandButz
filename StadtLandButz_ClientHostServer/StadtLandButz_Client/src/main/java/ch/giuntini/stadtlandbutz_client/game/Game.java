@@ -91,7 +91,7 @@ public class Game {
         Row row = gui.getCurrentRow(roundNumber);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < categories.size(); i++) {
-            sb.append(row.getCategoryString(i).replaceAll("[^-a-zA-Z_0-9]", ""));
+            sb.append(row.getCategoryString(i).replaceAll("[^-a-zA-Z_0-9 ]", "").trim());
             if (i < (categories.size() - 1)) {
                 sb.append(",");
             }
