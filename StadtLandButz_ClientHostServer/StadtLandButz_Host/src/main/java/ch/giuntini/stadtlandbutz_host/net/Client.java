@@ -1,6 +1,5 @@
 package ch.giuntini.stadtlandbutz_host.net;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class Client {
@@ -31,10 +30,6 @@ public class Client {
 
     public void addPoints(int points) {
         this.points += points;
-    }
-
-    public synchronized void sendPackage(Package p) {
-
     }
 
 }
