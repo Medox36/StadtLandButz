@@ -1,7 +1,6 @@
 package ch.giuntini.stadtlandbutz_server.net.connection;
 
 import ch.giuntini.stadtlandbutz_server.game.Game;
-import ch.giuntini.stadtlandbutz_server.net.Host;
 
 import java.io.IOException;
 import java.net.ServerSocket;
