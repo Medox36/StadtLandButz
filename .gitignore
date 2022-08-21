@@ -34,5 +34,4 @@ hs_err_pid*
 /dataSources.local.xml
 
 /out/
-/*/artifacts/
 /*/*/target/
