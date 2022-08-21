@@ -13,6 +13,9 @@ public class HostNetInterpreter {
             case "0010":
                 newClient(p);
                 break;
+            case "0111":
+                addWordsOfClientFromCurrentRound(p);
+                break;
             case "1101":
                 passwordResponse(p);
                 break;
@@ -27,6 +30,10 @@ public class HostNetInterpreter {
         client.setPlayerName(p.information);
         Game.addClient(client);
         Game.addClientToGUI(client);
+    }
+
+    private static void addWordsOfClientFromCurrentRound(Package p) {
+        Game.addWordsOfClient(p.information.split(","), UUID.fromString(p.uuid));
     }
 
     private synchronized static void passwordResponse(Package p) {

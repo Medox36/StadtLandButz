@@ -21,8 +21,6 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
@@ -39,6 +37,7 @@ public class HostGUI extends Application {
     //checkStage
     private Text checkStageCategory;
     private ListView<String> checkStagePlayerNames;
+    private Label checkStageWord;
 
     //scoreStage
     private ListView<BorderPane> scoreboard;
@@ -423,16 +422,22 @@ public class HostGUI extends Application {
         continueButton.setScaleX(1.6);
         continueButton.setScaleY(1.6);
         continueButton.setOnAction(e -> {
-            //TODO check if all answers from clients have been checked
-            scoreStage();
+            if (Game.allWordsCorrected()) {
+                Game.distPoints();
+                Game.resetCurrRoundStuff();
+                scoreStage();
+            }
         });
 
         Button finishButton = new Button("Spiel abschliessen");
         finishButton.setScaleX(1.6);
         finishButton.setScaleY(1.6);
         finishButton.setOnAction(e -> {
-            //TODO check if all answers from clients have been checked
-            winnerStage();
+            if (Game.allWordsCorrected()) {
+                Game.distPoints();
+                Game.resetCurrRoundStuff();
+                winnerStage();
+            }
         });
 
         Button accept = new Button("Wort akzeptieren");
@@ -442,6 +447,13 @@ public class HostGUI extends Application {
         accept.setOnMouseExited(mouseEvent -> accept.setStyle(""));
         accept.setOnMousePressed(mouseEvent -> accept.setStyle("-fx-background-color: #91b457"));
         accept.setOnMouseReleased(mouseEvent -> accept.setStyle(accept.isHover() ? "-fx-background-color: #bbd9a2" : ""));
+        accept.setOnAction(e -> {
+            if (!Game.allWordsCorrected()) {
+                Game.acceptCurrWord();
+                Game.nextWordOrCategory();
+            }
+        });
+        accept.setDisable(true);
 
         Button reject = new Button("Wort ablehnen");
         reject.setScaleX(1.6);
@@ -450,6 +462,13 @@ public class HostGUI extends Application {
         reject.setOnMouseExited(mouseEvent -> reject.setStyle(""));
         reject.setOnMousePressed(mouseEvent -> reject.setStyle("-fx-background-color: #af6a62"));
         reject.setOnMouseReleased(mouseEvent -> reject.setStyle(accept.isHover() ? "-fx-background-color: #d08e83" : ""));
+        reject.setOnAction(e -> {
+            if (!Game.allWordsCorrected()) {
+                Game.rejectCurrWord();
+                Game.nextWordOrCategory();
+            }
+        });
+        reject.setDisable(true);
 
         VBox buttons1 = new VBox(50, accept, reject);
         buttons1.setStyle("-fx-alignment: center");
@@ -466,14 +485,14 @@ public class HostGUI extends Application {
         Label wordTitle = new Label("", new TextFlow(txt, checkStageCategory, col));
         wordTitle.setStyle("-fx-font-size: 36");
 
-        Label clientWord = new Label("Fluss");
-        clientWord.setMinWidth(965.0);
-        AnchorPane.setLeftAnchor(clientWord, 0.0);
-        AnchorPane.setRightAnchor(clientWord, 0.0);
-        clientWord.setAlignment(Pos.CENTER);
-        clientWord.setStyle("-fx-font-size: 60");
+        checkStageWord = new Label("Fluss");
+        checkStageWord.setMinWidth(965.0);
+        AnchorPane.setLeftAnchor(checkStageWord, 0.0);
+        AnchorPane.setRightAnchor(checkStageWord, 0.0);
+        checkStageWord.setAlignment(Pos.CENTER);
+        checkStageWord.setStyle("-fx-font-size: 60");
 
-        VBox word = new VBox(20, wordTitle, clientWord);
+        VBox word = new VBox(20, wordTitle, checkStageWord);
         word.setStyle("-fx-alignment: center");
         word.setPadding(new Insets(20, 40, 40, 40));
 
@@ -524,13 +543,26 @@ public class HostGUI extends Application {
         stage.setMinWidth(1101);
         stage.setMaximized(true);
         stage.show();
+
+        new Thread(() -> {
+            while (!Game.isCurrRoundReady()) {
+                Thread.onSpinWait();
+            }
+            Game.nextWordOrCategory();
+            accept.setDisable(false);
+            reject.setDisable(false);
+        }).start();
     }
 
-    public void setCheckStageCategory(String categoryName) {
+    private void setCheckStageCategory(String categoryName) {
         checkStageCategory.setText(categoryName);
     }
 
-    public void setCheckStagePlayerNames(ArrayList<String> playerNames) {
+    private void setCheckStageWord(String word) {
+        checkStageWord.setText(word);
+    }
+
+    private void setCheckStagePlayerNames(ArrayList<String> playerNames) {
         checkStagePlayerNames.getItems().clear();
         emptyListTest(checkStagePlayerNames);
         for (String str : playerNames) {
@@ -538,8 +570,9 @@ public class HostGUI extends Application {
         }
     }
 
-    public void setCheckStageCategoryAndPlayerNames(String categoryName, ArrayList<String> playerNames) {
+    public void setCheckStageCategoryAndPlayerNames(String categoryName, String word, ArrayList<String> playerNames) {
         setCheckStageCategory(categoryName);
+        setCheckStageWord(word);
         setCheckStagePlayerNames(playerNames);
     }
 
@@ -593,6 +626,8 @@ public class HostGUI extends Application {
         stage.setMinWidth(1000);
         stage.setMaximized(true);
         stage.show();
+
+        Platform.runLater(Game::collScoreStage);
     }
 
     /**
@@ -601,7 +636,7 @@ public class HostGUI extends Application {
      * @param name name of the player
      * @param score score of the player
      */
-    public void showTopFive(int pos, String name, String score) {
+    private void showTopFive(int pos, String name, String score) {
         BorderPane b = new BorderPane();
         b.setLeft(new Label(name));
         b.setRight(new Label(score));
@@ -747,6 +782,8 @@ public class HostGUI extends Application {
         stage.setMinWidth(956);
         stage.setMaximized(true);
         stage.show();
+
+        Platform.runLater(Game::collWinnerStage);
     }
 
     public void setFirst(Client client) {
