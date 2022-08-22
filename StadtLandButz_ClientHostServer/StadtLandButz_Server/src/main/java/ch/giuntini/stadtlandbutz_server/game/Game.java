@@ -81,6 +81,7 @@ public class Game {
     public static void addHost(Socket socket) {
         try {
             host = new Host(socket);
+            System.out.println("host connected");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,6 +99,7 @@ public class Game {
     public static void generateNewGameCode() {
         // min=1111111, max=9999999
         gameCode = new SecureRandom().nextInt(8888888) + 1111111;
+        System.out.println("new GameCode generated:" + gameCode);
     }
 
     public static void exit(boolean explicit) {

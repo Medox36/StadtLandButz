@@ -12,6 +12,7 @@ public class HostConnection extends Thread {
     public HostConnection() {
         try {
             serverSocket = new ServerSocket(25541, 1);
+            serverSocket.setSoTimeout(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
