@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         ObjectInputFilter.Config.setSerialFilter(
-                ObjectInputFilter.Config.createFilter("ch.giuntini.stadtlandbutz_server.net.Package"));
+                ObjectInputFilter.Config.createFilter("ch.giuntini.stadtlandbutz_package.Package"));
         Application.launch(HostGUI.class);
 
     }

@@ -8,8 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         ObjectInputFilter.Config.setSerialFilter(
-                ObjectInputFilter.Config.createFilter("ch.giuntini.stadtlandbutz_client.net.Package;" +
-                        "ch.giuntini.stadtlandbutz_host.net.Package"));
+                ObjectInputFilter.Config.createFilter("ch.giuntini.stadtlandbutz_package.Package"));
         Game.setPw(String.valueOf(System.console().readPassword("Define Password: ")));
         Game.startServer();
     }

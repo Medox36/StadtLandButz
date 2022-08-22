@@ -1,5 +1,7 @@
 package ch.giuntini.stadtlandbutz_client.net;
 
+import ch.giuntini.stadtlandbutz_package.Package;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -14,7 +16,7 @@ public class PackageObjectInputStream extends ObjectInputStream {
     @Override
     protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         ObjectStreamClass desc = super.readClassDescriptor();
-        if (desc.getName().equals("com.example.stadtlandbutz_server.net.Package")) {
+        if (desc.getName().equals("ch.giuntini.stadtlandbutz_package.Package")) {
             return ObjectStreamClass.lookup(Package.class);
         }
         return desc;
