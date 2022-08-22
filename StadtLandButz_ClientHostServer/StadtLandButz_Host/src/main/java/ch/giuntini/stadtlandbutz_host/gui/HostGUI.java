@@ -2,7 +2,7 @@ package ch.giuntini.stadtlandbutz_host.gui;
 
 import ch.giuntini.stadtlandbutz_host.game.Game;
 import ch.giuntini.stadtlandbutz_host.net.Client;
-import ch.giuntini.stadtlandbutz_host.net.Package;
+import ch.giuntini.stadtlandbutz_package.Package;
 
 import javafx.application.Application;
 import javafx.application.Platform;

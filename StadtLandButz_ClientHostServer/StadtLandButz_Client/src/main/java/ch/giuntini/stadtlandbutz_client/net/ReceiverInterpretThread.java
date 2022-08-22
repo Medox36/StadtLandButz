@@ -1,5 +1,7 @@
 package ch.giuntini.stadtlandbutz_client.net;
 
+import ch.giuntini.stadtlandbutz_package.Package;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ReceiverInterpretThread extends Thread {

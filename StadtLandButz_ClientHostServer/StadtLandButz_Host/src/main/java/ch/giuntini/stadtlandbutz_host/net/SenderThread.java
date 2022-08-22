@@ -1,5 +1,7 @@
 package ch.giuntini.stadtlandbutz_host.net;
 
+import ch.giuntini.stadtlandbutz_package.Package;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;

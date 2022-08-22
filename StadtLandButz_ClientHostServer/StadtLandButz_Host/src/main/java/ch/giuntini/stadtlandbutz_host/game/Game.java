@@ -2,8 +2,8 @@ package ch.giuntini.stadtlandbutz_host.game;
 
 import ch.giuntini.stadtlandbutz_host.gui.HostGUI;
 import ch.giuntini.stadtlandbutz_host.net.Client;
-import ch.giuntini.stadtlandbutz_host.net.Package;
 import ch.giuntini.stadtlandbutz_host.net.Host;
+import ch.giuntini.stadtlandbutz_package.Package;
 import javafx.application.Platform;
 
 import java.io.IOException;

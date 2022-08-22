@@ -1,6 +1,7 @@
 package ch.giuntini.stadtlandbutz_client.net;
 
 import ch.giuntini.stadtlandbutz_client.game.Game;
+import ch.giuntini.stadtlandbutz_package.Package;
 
 import javafx.application.Platform;
 

@@ -1,9 +1,9 @@
 package ch.giuntini.stadtlandbutz_client.gui;
 
 import ch.giuntini.stadtlandbutz_client.game.Game;
-import ch.giuntini.stadtlandbutz_client.net.Package;
 import ch.giuntini.stadtlandbutz_client.net.ClientNetInterpreter;
 
+import ch.giuntini.stadtlandbutz_package.Package;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;

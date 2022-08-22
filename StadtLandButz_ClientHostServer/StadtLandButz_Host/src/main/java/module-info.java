@@ -1,4 +1,5 @@
 module ch.giuntini.stadtlandbutz_host {
+    requires ch.giuntini.stadtlandbutz_package;
     requires javafx.controls;
     requires javafx.fxml;
 

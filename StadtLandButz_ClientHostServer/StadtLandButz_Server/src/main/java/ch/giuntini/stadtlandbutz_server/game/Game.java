@@ -1,7 +1,7 @@
 package ch.giuntini.stadtlandbutz_server.game;
 
+import ch.giuntini.stadtlandbutz_package.Package;
 import ch.giuntini.stadtlandbutz_server.net.Host;
-import ch.giuntini.stadtlandbutz_server.net.Package;
 import ch.giuntini.stadtlandbutz_server.net.Client;
 import ch.giuntini.stadtlandbutz_server.net.connection.ClientConnection;
 import ch.giuntini.stadtlandbutz_server.net.connection.HostConnection;
