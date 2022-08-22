@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="StadtLandButz_Server" />
         <module name="StadtLandButz_Client" />
+        <module name="StadtLandButz_Package" />
         <module name="StadtLandButzClient" />
         <module name="StadtLandButzHost" />
         <module name="StadtLandButz_Host" />
@@ -15,11 +16,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="SLB_Test_TableView" target="17" />
-      <module name="StadtLandButz_Client" target="11" />
-      <module name="StadtLandButz_Host" target="11" />
-      <module name="StadtLandButz_Server" target="11" />
-      <module name="StadtLandButzClient" target="11" />
-      <module name="StadtLandButzHost" target="11" />
       <module name="StadtLandButzServer" target="11" />
     </bytecodeTargetLevel>
   </component>

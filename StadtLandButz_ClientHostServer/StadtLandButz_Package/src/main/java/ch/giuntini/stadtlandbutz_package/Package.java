@@ -1,12 +1,12 @@
-package ch.giuntini.stadtlandbutz_host.net;
+package ch.giuntini.stadtlandbutz_package;
 
 import java.io.Serializable;
 
 public class Package implements Serializable {
-    String serverPrefix;
-    String prefix;
-    String information;
-    String uuid;
+    public String serverPrefix;
+    public String prefix;
+    public String information;
+    public String uuid;
 
     public Package(String serverPrefix, String prefix, String information, String uuid) {
         this.serverPrefix = serverPrefix;
