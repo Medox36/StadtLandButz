@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class ClientConnection extends Thread {
     private boolean await;
@@ -36,7 +37,9 @@ public class ClientConnection extends Thread {
                 Socket socket = serverSocket.accept();
                 Game.putClientOnWait(socket);
             } catch (IOException e) {
-                e.printStackTrace();
+                if (!(e instanceof SocketTimeoutException)) {
+                    e.printStackTrace();
+                }
             }
         } while (await);
     }
