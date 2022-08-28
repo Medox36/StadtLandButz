@@ -38,12 +38,17 @@ public class Game {
     public static void removeWaitingClient(Client client) {
         waitingClients.remove(client);
         removeUUID(client.getUUID());
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.closeSocketIfOpen();
     }
 
     public static void acceptClient(Client client) {
         waitingClients.remove(client);
         clients.add(client);
-        client.sendPackage(new Package("", "0010", "", client.getUUIDString()));
     }
 
     public static void addClient(Socket socket) throws IOException {
