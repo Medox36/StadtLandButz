@@ -37,6 +37,7 @@ public class SenderThread extends Thread {
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
+                        closeThread();
                     }
                 }
                 try {
