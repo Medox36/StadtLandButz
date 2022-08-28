@@ -4,6 +4,7 @@ import ch.giuntini.stadtlandbutz_client.game.Game;
 import ch.giuntini.stadtlandbutz_package.Package;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +19,6 @@ public class ClientNetInterpreter {
                 break;
             case "0001":
                 receivingUUID(p);
-                break;
-            case "0010":
-                requestingName();
                 break;
             case "0011":
                 receivingCategories(p);
@@ -53,13 +51,8 @@ public class ClientNetInterpreter {
     }
 
     private static void receivingUUID(Package p) {
-        Game.getClient().setUUID(UUID.fromString(p.information));
+        Game.getClient().setUUID(UUID.fromString(p.uuid));
         Game.getClient().sendPackage(new Package("000", "1110", String.valueOf(Game.getGameCode()), Game.getClient().getUUIDString()));
-    }
-
-    private static void requestingName() {
-        Client client = Game.getClient();
-        client.sendPackage(new Package("100", "0010", client.getPlayerName(), client.getUUIDString()));
     }
 
     private static void receivingCategories(Package p) {
@@ -100,6 +93,14 @@ public class ClientNetInterpreter {
         if (p.information.equals("1")) {
             Platform.runLater(() -> Game.getGui().waitStage());
             Game.getClient().sendPackage(new Package("100", "0010", Game.getClient().getPlayerName(), Game.getClient().getUUIDString()));
+        } else {
+            Game.getClient().exit();
+            Platform.runLater(() -> {
+                Alert a = new Alert(Alert.AlertType.WARNING);
+                a.setTitle("Game code nicht existent");
+                a.setHeaderText(p.information);
+                a.showAndWait();
+            });
         }
     }
 }
