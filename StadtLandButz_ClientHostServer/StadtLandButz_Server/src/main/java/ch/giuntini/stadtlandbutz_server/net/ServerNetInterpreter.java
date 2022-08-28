@@ -51,7 +51,6 @@ public class ServerNetInterpreter {
             c.sendPackage(new Package("", "1110", "1", c.getUUIDString()));
         } else {
             c.sendPackage(new Package("", "1110", "Kein aktives Spiel", c.getUUIDString()));
-            c.closeSocketIfOpen();
             Game.removeWaitingClient(c);
         }
     }
@@ -69,7 +68,7 @@ public class ServerNetInterpreter {
 
     private synchronized static void checkPw(Package p) {
         if (!Game.getPw().equals(p.information)) {
-            Game.getHost().sendPackage(new Package("", "", "Falsches Password", null));
+            Game.getHost().sendPackage(new Package("", "1101", "Falsches Password", null));
             Game.closeHost();
         } else {
             Game.getHost().sendPackage(new Package("", "1101", "1", null));

@@ -88,8 +88,16 @@ public class Game {
     }
 
     public static void closeHost() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         host.stop();
+        hostConnection.close();
+        hostConnection = new HostConnection();
         hostConnection.start();
+        System.out.println("host disconnected due to wrong pwd");
     }
 
     public static Host getHost() {
