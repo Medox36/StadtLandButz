@@ -4,13 +4,19 @@ import ch.giuntini.stadtlandbutz_host.gui.HostGUI;
 import ch.giuntini.stadtlandbutz_host.net.Client;
 import ch.giuntini.stadtlandbutz_host.net.Host;
 import ch.giuntini.stadtlandbutz_package.Package;
+
 import javafx.application.Platform;
+
+import net.ricecode.similarity.LevenshteinDistanceStrategy;
+import net.ricecode.similarity.SimilarityScore;
+import net.ricecode.similarity.StringSimilarityServiceImpl;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +37,7 @@ public class Game {
     private static Integer wordPointer = 0;
     private static Integer addPointer = 0;
     private static Integer sortPointer = 0;
+    private static Integer sortCatPointer = 0;
     private static Boolean ready = false;
     private static Boolean finished = false;
     private static HostGUI gui;
@@ -67,35 +74,41 @@ public class Game {
     }
 
     public static void sortWordsAndCats() {
-        while (sortPointer <= addPointer) {
-            LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> sortedCat = new LinkedHashMap<>();
-            String cat = categories.get(sortPointer);
+        while (sortCatPointer <= categories.size()) {
+            while (sortPointer <= addPointer) {
+                LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> sortedCat = new LinkedHashMap<>();
+                String cat = categories.get(sortCatPointer);
 
-            LinkedHashMap<String, Vector<UUID>> sortedWordsOfCat = new LinkedHashMap<>();
+                LinkedHashMap<String, Vector<UUID>> sortedWordsOfCat = new LinkedHashMap<>();
 
-            for (int i = 0; i <= addPointer; i++) {
-                LinkedHashMap<UUID, Vector<String>> temp = words.get(i);
+                for (int i = 0; i <= addPointer; i++) {
+                    LinkedHashMap<UUID, Vector<String>> temp = words.get(i);
 
-                Optional<UUID> firstKey = temp.keySet().stream().findFirst();
-                if (firstKey.isPresent()) {
-                    UUID key = firstKey.get();
-                    String tempStr = temp.get(key).get(sortPointer);
+                    for (UUID key : temp.keySet()) {
+                        String strL = temp.get(key).get(sortCatPointer).toLowerCase();
 
-                    if (sortedWordsOfCat.containsKey(tempStr)) {
-                        sortedWordsOfCat.get(tempStr).add(key);
-                    } else {
-                        Vector<UUID> uuids = new Vector<>();
-                        uuids.add(key);
-                        sortedWordsOfCat.put(tempStr.toLowerCase(), uuids);
+                        SimilarityScore topScore = new StringSimilarityServiceImpl(new LevenshteinDistanceStrategy())
+                                .findTop(List.copyOf(sortedWordsOfCat.keySet()), strL);
+
+                        if (sortedWordsOfCat.containsKey(strL)) {
+                            sortedWordsOfCat.get(strL).add(key);
+                        } else if (topScore.getScore() > 0.95) {
+                            sortedWordsOfCat.get(topScore.getKey()).add(key);
+                        } else {
+                            Vector<UUID> uuids = new Vector<>();
+                            uuids.add(key);
+                            sortedWordsOfCat.put(strL, uuids);
+                        }
                     }
                 }
+                if (sortedWordsOfCat.keySet().stream().allMatch(s -> s.isEmpty() || s.isBlank())) {
+                    continue;
+                }
+                sortedCat.put(cat, sortedWordsOfCat);
+                sortedWords.put(sortCatPointer, sortedCat);
+                sortPointer++;
             }
-            if (sortedWordsOfCat.keySet().stream().allMatch(s -> s.isEmpty() || s.isBlank())) {
-                continue;
-            }
-            sortedCat.put(cat, sortedWordsOfCat);
-            sortedWords.put(sortPointer, sortedCat);
-            sortPointer++;
+            sortCatPointer++;
         }
         synchronized (ready) {
             ready = true;
@@ -105,7 +118,7 @@ public class Game {
     public static void nextWordOrCategory() {
         LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer);
 
-        if (tempCat.keySet().size() >= catPointer) {
+        if (tempCat.keySet().size() <= catPointer) {
             synchronized (finished) {
                 finished = true;
             }
@@ -131,7 +144,7 @@ public class Game {
         String finalCatName = catName;
 
         if (tempWords.keySet().size() >= wordPointer) {
-            wordPointer = 0;
+            wordPointer = 1;
             catPointer++;
         } else {
             wordPointer++;
@@ -173,6 +186,8 @@ public class Game {
             if (points.containsKey(uuid)) {
                 Integer oldVal = points.get(uuid);
                 points.put(uuid, oldVal + pointsMade);
+            } else {
+                points.put(uuid, pointsMade);
             }
         }
     }
@@ -268,6 +283,21 @@ public class Game {
 
     public static ArrayList<String> getCategories() {
         return categories;
+    }
+
+    public static String getCatsForClients() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> it = Game.getCategories().iterator();
+        while (true) {
+            String e = it.next();
+            sb.append(e);
+            if (it.hasNext()) {
+                sb.append(',');
+            } else {
+                break;
+            }
+        }
+        return sb.toString();
     }
 
     public static int getGameCode() {
