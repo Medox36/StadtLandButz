@@ -39,6 +39,9 @@ public class Game {
     private static int roundNumber = -1;
 
     public static void startHost() throws IOException {
+        if (host != null) {
+            host.stop();
+        }
         host = new Host();
     }
 
