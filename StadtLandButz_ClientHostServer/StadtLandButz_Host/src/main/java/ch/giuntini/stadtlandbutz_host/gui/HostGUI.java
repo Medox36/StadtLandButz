@@ -298,8 +298,10 @@ public class HostGUI extends Application {
         start.setScaleX(1.6);
         start.setScaleY(1.6);
         start.setOnAction(e -> {
+            //TODO send categories to clients -> prefix "0011"
+            Game.sendToAllClients("0011", Game.getCatsForClients());
             //TODO send 'startGame' -> prefix: "1010"
-            Game.sendToAllClients("011", "1010", "");
+            Game.sendToAllClients("1010", "");
 
             roundStage();
         });
@@ -364,7 +366,7 @@ public class HostGUI extends Application {
             timer.cancel();
 
             //TODO send 'blockUserInput' -> prefix: "0110"
-            Game.sendToAllClients("011", "0110", "");
+            Game.sendToAllClients("0110", "");
 
             checkStage();
         });
@@ -410,10 +412,10 @@ public class HostGUI extends Application {
         stage.show();
 
         //TODO send 'roundNumberAndLetter' -> prefix: "0100"
-        Game.sendToAllClients("011", "0100", Game.getRoundNumber() + "@" + let);
+        Game.sendToAllClients("0100", Game.getRoundNumber() + "@" + let);
 
         //TODO send 'enableUserInput' -> prefix: "0101"
-        Game.sendToAllClients("011", "0101", "");
+        Game.sendToAllClients("0101", "");
     }
 
     private void checkStage() {

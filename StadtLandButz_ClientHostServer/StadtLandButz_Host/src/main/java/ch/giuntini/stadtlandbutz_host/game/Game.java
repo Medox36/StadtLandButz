@@ -300,9 +300,9 @@ public class Game {
         return roundNumber + 1;
     }
 
-    public synchronized static void sendToAllClients(String serverPrefix, String prefix, String information) {
+    public synchronized static void sendToAllClients(String prefix, String information) {
         for (Client client : clients) {
-            host.sendPackage(new Package(serverPrefix, prefix, information, client.getUUID().toString()));
+            host.sendPackage(new Package("011", prefix, information, client.getUUID().toString()));
         }
     }
 
