@@ -92,7 +92,7 @@ public class Game {
 
                         if (sortedWordsOfCat.containsKey(strL)) {
                             sortedWordsOfCat.get(strL).add(key);
-                        } else if (topScore.getScore() > 0.95) {
+                        } else if (topScore != null && topScore.getScore() > 0.95) {
                             sortedWordsOfCat.get(topScore.getKey()).add(key);
                         } else {
                             Vector<UUID> uuids = new Vector<>();
