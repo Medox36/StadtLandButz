@@ -6,17 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="StadtLandButz_Server" />
         <module name="StadtLandButz_Client" />
+        <module name="StadtLandButz_Host" />
+        <module name="StadtLandButz_Server" />
         <module name="StadtLandButz_Package" />
         <module name="StadtLandButzClient" />
         <module name="StadtLandButzHost" />
-        <module name="StadtLandButz_Host" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="SLB_Test_TableView" target="17" />
-      <module name="StadtLandButzServer" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
