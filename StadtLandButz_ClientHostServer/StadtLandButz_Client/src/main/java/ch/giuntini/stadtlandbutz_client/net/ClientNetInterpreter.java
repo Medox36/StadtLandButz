@@ -59,23 +59,23 @@ public class ClientNetInterpreter {
         Game.setCategories(new ArrayList<>(Arrays.asList(p.information.split(","))));
     }
 
-    private static void roundNumberAndLetter(Package p) {
+    private synchronized static void roundNumberAndLetter(Package p) {
         String[] str = p.information.split("@");
 
         Game.setRoundNumber(Integer.parseInt(str[0]));
         Game.getGui().addRound(str[1].charAt(0));
     }
 
-    private static void enableUserInput() {
+    private synchronized static void enableUserInput() {
         Game.allowEditInCurrRow(true);
     }
 
-    private static void blockUserInput() {
+    private synchronized static void blockUserInput() {
         Game.allowEditInCurrRow(false);
         Game.getClient().sendPackage(new Package("100", "0111", Game.collectWordsOfCurrentRound(), Game.getClient().getUUID().toString()));
     }
 
-    private static void madePointsInRound(Package p) {
+    private synchronized static void madePointsInRound(Package p) {
         String[] str = p.information.split("@");
         Game.getClient().addPoints(Integer.parseInt(str[0]));
         Game.getGui().setMadePointsInRound(Integer.parseInt(str[0]), Integer.parseInt(str[1]));

@@ -15,8 +15,8 @@ public class Game {
     private static Client client;
     private static ClientGUI gui;
     private static int gameCode;
-    private static int roundNumber = -1;
-    private static boolean editAllowed;
+    private volatile static int roundNumber = -1;
+    private volatile static boolean editAllowed;
 
     public static void newGame(boolean isExit) {
         if (client != null) client.exit();
@@ -58,7 +58,7 @@ public class Game {
         return gui;
     }
 
-    public static void setRoundNumber(int roundNumber) {
+    public synchronized static void setRoundNumber(int roundNumber) {
         Game.roundNumber = roundNumber;
     }
 
@@ -78,16 +78,16 @@ public class Game {
         return roundNumber + 1;
     }
 
-    public static void allowEditInCurrRow(boolean editAllowed) {
+    public synchronized static void allowEditInCurrRow(boolean editAllowed) {
         Game.editAllowed = editAllowed;
         Platform.runLater(() -> gui.setTableEditable(editAllowed, roundNumber));
     }
 
-    public static boolean isEditAllowed() {
+    public synchronized static boolean isEditAllowed() {
         return editAllowed;
     }
 
-    public static String collectWordsOfCurrentRound() {
+    public synchronized static String collectWordsOfCurrentRound() {
         Row row = gui.getCurrentRow(roundNumber);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < categories.size(); i++) {

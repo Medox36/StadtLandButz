@@ -10,7 +10,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -23,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -318,9 +326,19 @@ public class ClientGUI extends Application {
         stage.setScene(new Scene(root));
         stage.setTitle("Stadt Land Butz");
         stage.setAlwaysOnTop(true);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
         stage.setMaximized(true);
         stage.setResizable(false);
+
+        stage.focusedProperty().addListener((observableValue, oldVal, newVal) -> {
+            System.out.println(newVal + " " + stage.isFocused());
+            if (!newVal) {
+                System.out.println("refocused1");
+                stage.requestFocus();
+                stage.toFront();
+            }
+        });
 
         // calc widths
         double MAX = 1865;

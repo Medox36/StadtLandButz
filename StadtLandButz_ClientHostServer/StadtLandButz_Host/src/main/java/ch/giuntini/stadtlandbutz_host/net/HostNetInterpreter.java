@@ -33,7 +33,7 @@ public class HostNetInterpreter {
         Game.addClientToGUI(client);
     }
 
-    private static void addWordsOfClientFromCurrentRound(Package p) {
+    private synchronized static void addWordsOfClientFromCurrentRound(Package p) {
         Game.addWordsOfClient(p.information.split(","), UUID.fromString(p.uuid));
     }
 
