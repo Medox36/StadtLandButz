@@ -11,10 +11,21 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -41,6 +52,7 @@ public class HostGUI extends Application {
 
     //scoreStage
     private ListView<BorderPane> scoreboard;
+    private final BorderPane defaultBorderPane = new BorderPane();
 
     //winnerStage
     private Label first;
@@ -596,9 +608,10 @@ public class HostGUI extends Application {
         scoreboard.setEditable(false);
         scoreboard.setMinWidth(900);
         scoreboard.setMaxHeight(307);
-        scoreboard.getItems().add(new BorderPane());
         scoreboard.setStyle("-fx-font-size: 30; -fx-font-weight: bold");
         scoreboard.getSelectionModel().clearSelection();
+
+        emptyBorderPaneListTest(scoreboard);
 
         VBox board = new VBox(scoreboard);
         board.setStyle("-fx-alignment: center");
@@ -632,6 +645,15 @@ public class HostGUI extends Application {
         Platform.runLater(Game::collScoreStage);
     }
 
+    private void emptyBorderPaneListTest(ListView<BorderPane> listView) {
+        if (listView.getItems().isEmpty()) {
+            listView.getItems().add(defaultBorderPane);
+        } else {
+            listView.getItems().remove(defaultBorderPane);
+        }
+        listView.getSelectionModel().clearSelection();
+    }
+
     /**
      *
      * @param pos position on leaderboard (0-based)
@@ -646,7 +668,7 @@ public class HostGUI extends Application {
         if (scoreboard.getItems().size() > 5) {
             scoreboard.getItems().remove(5);
         }
-        scoreboard.getSelectionModel().clearSelection();
+        emptyBorderPaneListTest(scoreboard);
     }
 
     /**
