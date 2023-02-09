@@ -101,9 +101,6 @@ public class Game {
                         }
                     }
                 }
-                if (sortedWordsOfCat.keySet().stream().allMatch(s -> s.isEmpty() || s.isBlank())) {
-                    continue;
-                }
                 sortedCat.put(cat, sortedWordsOfCat);
                 sortedWords.put(sortCatPointer, sortedCat);
                 sortPointer++;
@@ -151,8 +148,11 @@ public class Game {
         } else {
             wordPointer++;
         }
-
-        Platform.runLater(() -> gui.setCheckStageCategoryAndPlayerNames(finalCatName, keyWord, playerNames));
+        if (keyWord.isEmpty() || keyWord.isBlank() || keyWord.equals("~")) {
+            Platform.runLater(Game::nextWordOrCategory);
+        } else {
+            Platform.runLater(() -> gui.setCheckStageCategoryAndPlayerNames(finalCatName, keyWord, playerNames));
+        }
     }
 
     public synchronized static void acceptCurrWord() {
