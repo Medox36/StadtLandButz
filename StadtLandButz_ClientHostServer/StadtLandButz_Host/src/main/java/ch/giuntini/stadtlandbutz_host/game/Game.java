@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
@@ -73,6 +72,7 @@ public class Game {
         sortWordsAndCats();
     }
 
+    @SuppressWarnings("SynchronizeOnNonFinalField")
     public static void sortWordsAndCats() {
         while (sortCatPointer < categories.size()) {
             while (sortPointer <= addPointer) {
@@ -113,6 +113,7 @@ public class Game {
         }
     }
 
+    @SuppressWarnings("SynchronizeOnNonFinalField")
     public static void nextWordOrCategory() {
         LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer);
 
@@ -123,11 +124,7 @@ public class Game {
             return;
         }
 
-        String catName = "";
-        Optional<String> firstKey = tempCat.keySet().stream().findFirst();
-        if (firstKey.isPresent()) {
-            catName = firstKey.get();
-        }
+        String catName = tempCat.keySet().stream().findFirst().orElseThrow();
 
         LinkedHashMap<String, Vector<UUID>> tempWords = tempCat.get(catName);
         String keyWord = (String) tempWords.keySet().toArray()[wordPointer];
@@ -140,8 +137,6 @@ public class Game {
             playerNames.add(Objects.requireNonNull(getClientByUUID(uuid)).getPlayerName());
         }
 
-        String finalCatName = catName;
-
         if (tempWords.keySet().size()-1 >= wordPointer) {
             wordPointer = 0;
             catPointer++;
@@ -151,23 +146,14 @@ public class Game {
         if (keyWord.isEmpty() || keyWord.isBlank() || keyWord.equals("~")) {
             Platform.runLater(Game::nextWordOrCategory);
         } else {
-            Platform.runLater(() -> gui.setCheckStageCategoryAndPlayerNames(finalCatName, keyWord, playerNames));
+            Platform.runLater(() -> gui.setCheckStageCategoryAndPlayerNames(catName, keyWord, playerNames));
         }
     }
 
     public synchronized static void acceptCurrWord() {
-        int catPointer0 = catPointer - 1;
         int wordPointer0 = wordPointer;
 
-        LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer0);
-
-        String catName = "";
-        Optional<String> firstKey = tempCat.keySet().stream().findFirst();
-        if (firstKey.isPresent()) {
-            catName = firstKey.get();
-        }
-
-        LinkedHashMap<String, Vector<UUID>> tempWords = tempCat.get(catName);
+        LinkedHashMap<String, Vector<UUID>> tempWords = getTempWords();
         String keyWord = (String) tempWords.keySet().toArray()[wordPointer0];
 
         Vector<UUID> uuids = tempWords.get(keyWord);
@@ -195,19 +181,9 @@ public class Game {
     }
 
     private static int numberOfPlayersInCatInCurrRound() {
-        int catPointer0 = catPointer - 1;
-
-        LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer0);
-
-        String catName = "";
-        Optional<String> firstKey = tempCat.keySet().stream().findFirst();
-        if (firstKey.isPresent()) {
-            catName = firstKey.get();
-        }
-
         int playerCount = 0;
 
-        LinkedHashMap<String, Vector<UUID>> tempWords = tempCat.get(catName);
+        LinkedHashMap<String, Vector<UUID>> tempWords = getTempWords();
         Set<String> keyWord =  tempWords.keySet();
         for (String str : keyWord) {
             playerCount += tempWords.get(str).size();
@@ -215,33 +191,9 @@ public class Game {
         return playerCount;
     }
 
-    public synchronized static void rejectCurrWord() {
-        int catPointer0 = catPointer - 1;
-        int wordPointer0 = wordPointer;
-
-        LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer0);
-
-        String catName = "";
-        Optional<String> firstKey = tempCat.keySet().stream().findFirst();
-        if (firstKey.isPresent()) {
-            catName = firstKey.get();
-        }
-
-        LinkedHashMap<String, Vector<UUID>> tempWords = tempCat.get(catName);
-        String keyWord = (String) tempWords.keySet().toArray()[wordPointer0];
-
-        Vector<UUID> uuids = tempWords.get(keyWord);
-
-        int pointsMade = 0;
-
-        for (UUID uuid : uuids) {
-            if (points.containsKey(uuid)) {
-                Integer oldVal = points.get(uuid);
-                points.put(uuid, oldVal + pointsMade);
-            } else {
-                points.put(uuid, pointsMade);
-            }
-        }
+    private static LinkedHashMap<String, Vector<UUID>> getTempWords() {
+        LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer - 1);
+        return tempCat.get(tempCat.keySet().stream().findFirst().orElseThrow());
     }
 
     public synchronized static void distPoints() {
