@@ -20,13 +20,6 @@ public class ReceiverThread extends Thread {
         super("Client-Receiving-Thread");
         try {
             objectInputStream = new PackageObjectInputStream(new BufferedInputStream(inputStream));
-            /*objectInputStream.setObjectInputFilter(filterInfo -> {
-                if (filterInfo.serialClass().getName().equals("Package")) {
-                    return ObjectInputFilter.Status.ALLOWED;
-                } else {
-                    return ObjectInputFilter.Status.REJECTED;
-                }
-            });*/
         } catch (IOException e) {
             e.printStackTrace();
         }

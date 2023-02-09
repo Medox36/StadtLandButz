@@ -32,16 +32,14 @@ public class ServerNetInterpreter {
                 break;
             case "100":
                 // send to the host from a client
-                interpretHC(p, c);
+                interpretHC(p);
                 break;
         }
     }
 
     private synchronized static void interpretSC(Package p, Client c) {
-        switch (p.prefix) {
-            case "1110":
-                checkGameCode(p, c);
-                break;
+        if (p.prefix.equals("1110")) {
+            checkGameCode(p, c);
         }
     }
 
@@ -91,7 +89,7 @@ public class ServerNetInterpreter {
         Game.sendToAllClients(p.prefix, p.information);
     }
 
-    private synchronized static void interpretHC(Package p, Client c) {
+    private synchronized static void interpretHC(Package p) {
         Game.getHost().sendPackage(p);
     }
 

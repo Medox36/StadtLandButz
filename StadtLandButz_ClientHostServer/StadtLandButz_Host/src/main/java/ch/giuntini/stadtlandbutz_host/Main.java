@@ -2,6 +2,7 @@ package ch.giuntini.stadtlandbutz_host;
 
 import ch.giuntini.stadtlandbutz_host.game.Game;
 import ch.giuntini.stadtlandbutz_host.gui.HostGUI;
+
 import javafx.application.Application;
 
 import java.io.ObjectInputFilter;
