@@ -14,7 +14,14 @@ public class Row {
     public Row(Character letter) {
         this.letter = letter;
         categories = new SimpleStringProperty[10];
+        fillArray();
         editable = new SimpleBooleanProperty(false);
+    }
+
+    private void fillArray() {
+        for (int i = 0; i < categories.length; i++) {
+            categories[i] = new SimpleStringProperty("");
+        }
     }
 
     public Character getLetter() {
