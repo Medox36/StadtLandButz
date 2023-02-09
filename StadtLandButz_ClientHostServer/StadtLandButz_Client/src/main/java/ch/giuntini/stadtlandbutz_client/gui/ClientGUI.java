@@ -407,28 +407,28 @@ public class ClientGUI extends Application {
     }
 
     public void resultStage(String place) {
-        Label first = new Label(Game.getClient().getPlayerName());
-        first.setTextFill(Color.WHITE);
-        first.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-alignment: center");
-        first.setWrapText(true);
-        first.setMaxWidth(280);
+        Label name = new Label(Game.getClient().getPlayerName());
+        name.setTextFill(Color.WHITE);
+        name.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-alignment: center");
+        name.setWrapText(true);
+        name.setMaxWidth(340);
 
-        Label firstPoints = new Label("0 Pt.");
-        firstPoints.setTextFill(Color.WHITE);
-        firstPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
-
-        Label placeLabel = new Label(place);
+        Label placeLabel = new Label(place + " Platz");
         placeLabel.setTextFill(Color.WHITE);
-        placeLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+        placeLabel.setStyle("-fx-font-size: 40px; -fx-font-weight: bold");
 
-        VBox pod = new VBox(20, new Label(place), new Label(String.valueOf(Game.getClient().getPoints())));
-        pod.setMinSize(300, 350);
-        pod.setMaxSize(300, 350);
+        Label pointsLabel = new Label(Game.getClient().getPoints() + " Pt.");
+        pointsLabel.setTextFill(Color.WHITE);
+        pointsLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
+
+        VBox pod = new VBox(20, placeLabel, pointsLabel);
+        pod.setMinSize(360, 410);
+        pod.setMaxSize(360, 410);
         pod.setAlignment(Pos.TOP_CENTER);
         pod.setPadding(new Insets(40, 0, 0, 0));
         pod.setStyle("-fx-background-color: #864bbf; -fx-border-color: #302177; -fx-border-width: 2px");
 
-        VBox topFirst = new VBox(20, first, pod);
+        VBox topFirst = new VBox(20, name, pod);
         topFirst.setAlignment(Pos.BOTTOM_CENTER);
 
         HBox podium = new HBox(topFirst);
@@ -450,8 +450,8 @@ public class ClientGUI extends Application {
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Resultat");
-        stage.setMinHeight(600);
-        stage.setMinWidth(400);
+        stage.setMinHeight(660);
+        stage.setMinWidth(460);
         stage.show();
     }
 }
