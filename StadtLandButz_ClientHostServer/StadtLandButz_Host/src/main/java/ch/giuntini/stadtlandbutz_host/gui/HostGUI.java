@@ -465,6 +465,11 @@ public class HostGUI extends Application {
             if (!Game.allWordsCorrected()) {
                 Game.acceptCurrWord();
                 Game.nextWordOrCategory();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Korrektur");
+                alert.setHeaderText("Alles korrigiert");
+                alert.showAndWait();
             }
         });
         accept.setDisable(true);
@@ -480,6 +485,11 @@ public class HostGUI extends Application {
             if (!Game.allWordsCorrected()) {
                 Game.rejectCurrWord();
                 Game.nextWordOrCategory();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Korrektur");
+                alert.setHeaderText("Alles korrigiert");
+                alert.showAndWait();
             }
         });
         reject.setDisable(true);
