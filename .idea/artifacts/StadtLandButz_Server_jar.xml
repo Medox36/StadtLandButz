@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="StadtLandButz_Server:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/StadtLandButz_Server_jar</output-path>
+    <root id="archive" name="StadtLandButz_Server.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Server/src/main/resources/ch.giuntini.stadtlandbutz_server/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="StadtLandButz_Server" />
+      <element id="module-output" name="StadtLandButz_Package" />
+    </root>
+  </artifact>
+</component>
