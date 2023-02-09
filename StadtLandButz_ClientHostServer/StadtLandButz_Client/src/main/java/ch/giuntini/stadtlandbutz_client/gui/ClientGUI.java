@@ -1,9 +1,7 @@
 package ch.giuntini.stadtlandbutz_client.gui;
 
 import ch.giuntini.stadtlandbutz_client.game.Game;
-import ch.giuntini.stadtlandbutz_client.net.ClientNetInterpreter;
 
-import ch.giuntini.stadtlandbutz_package.Package;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -33,9 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ClientGUI extends Application {
 
@@ -58,9 +54,6 @@ public class ClientGUI extends Application {
         Game.setGui(this);
 
         joinStage();
-
-        //testInit();
-        //test();
     }
 
     public void joinStage() {
@@ -460,31 +453,5 @@ public class ClientGUI extends Application {
         stage.setMinHeight(600);
         stage.setMinWidth(400);
         stage.show();
-    }
-
-    private void testInit() {
-        Game.setCategories(new ArrayList<>(List.of("Stadt,Land,Gewässer,Nahrungsmittel,Gebirge,Beruf,Modemarke,Sportart".split(","))));
-        Game.createClient("ABC");
-        Game.getClient().setUUID(UUID.randomUUID());
-    }
-
-    private void test() {
-        Platform.runLater(() -> new Thread(() -> {
-            ClientNetInterpreter.interpret(new Package("", "0100", "0@L", Game.getClient().getUUID().toString()));
-            ClientNetInterpreter.interpret(new Package("", "0101", "", Game.getClient().getUUID().toString()));
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ClientNetInterpreter.interpret(new Package("", "0110", "", Game.getClient().getUUID().toString()));
-            ClientNetInterpreter.interpret(new Package("", "1000", "15@0", Game.getClient().getUUID().toString()));
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(Game.collectWordsOfCurrentRound());
-        }).start());
     }
 }
