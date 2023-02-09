@@ -52,7 +52,7 @@ public class Game {
     }
 
     public static void stopHost() {
-        clients = null;
+        clients.clear();
         letters.clear();
         categories.clear();
         words.clear();
@@ -225,7 +225,7 @@ public class Game {
         if (sortedClients.size() > 2)
             gui.setThird(sortedClients.get(2));
         for (int i = 0; i < sortedClients.size(); i++) {
-            host.sendPackage(new Package("010", "1001", String.valueOf(i), sortedClients.get(i).getUUID().toString()));
+            host.sendPackage(new Package("010", "1001", String.valueOf(i + 1), sortedClients.get(i).getUUID().toString()));
         }
     }
 
@@ -343,6 +343,7 @@ public class Game {
         gui = null;
         letters = null;
         categories = null;
+        clients = null;
         words = null;
         sortedWords = null;
         points = null;
