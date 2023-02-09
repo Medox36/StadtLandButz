@@ -277,7 +277,8 @@ public class Game {
         }
     }
 
-    public static void resetCurrRoundStuff() {
+    public synchronized static void resetCurrRoundStuff() {
+        sortCatPointer = 0;
         catPointer = 0;
         wordPointer = 0;
         addPointer = 0;
