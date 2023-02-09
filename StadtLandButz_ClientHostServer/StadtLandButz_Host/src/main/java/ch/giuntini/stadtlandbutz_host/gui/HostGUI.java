@@ -651,7 +651,7 @@ public class HostGUI extends Application {
         stage.setMaximized(true);
         stage.show();
 
-        Platform.runLater(Game::collScoreStage);
+        Platform.runLater(Game::callScoreStage);
     }
 
     private void emptyBorderPaneListTest(ListView<BorderPane> listView) {
@@ -816,7 +816,7 @@ public class HostGUI extends Application {
         stage.setMaximized(true);
         stage.show();
 
-        Platform.runLater(Game::collWinnerStage);
+        Platform.runLater(Game::callWinnerStage);
     }
 
     public void setFirst(Client client) {

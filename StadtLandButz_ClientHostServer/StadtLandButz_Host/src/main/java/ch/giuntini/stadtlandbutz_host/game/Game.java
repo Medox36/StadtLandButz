@@ -209,14 +209,14 @@ public class Game {
         return finished;
     }
 
-    public static void collScoreStage() {
+    public static void callScoreStage() {
         List<Client> sortedClients = clients.stream().sorted(Comparator.comparingInt(Client::getPoints).reversed()).collect(Collectors.toList());
         for (int i = 0; i < sortedClients.size() && i < 5; i++) {
             gui.showTopFive(i, sortedClients.get(i).getPlayerName(), sortedClients.get(i).getPoints());
         }
     }
 
-    public static void collWinnerStage() {
+    public static void callWinnerStage() {
         List<Client> sortedClients = clients.stream().sorted(Comparator.comparingInt(Client::getPoints).reversed()).collect(Collectors.toList());
         if (sortedClients.size() > 0)
             gui.setFirst(sortedClients.get(0));
