@@ -82,7 +82,7 @@ public class ClientNetInterpreter {
     }
 
     private static void placeOnScoreboard(Package p) {
-        Game.getGui().resultStage(p.information);
+        Platform.runLater(() -> Game.getGui().resultStage(p.information));
     }
 
     private static void startGame() {
