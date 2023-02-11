@@ -65,6 +65,7 @@ public class HostGUI extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+        this.stage.getIcons().add(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzhost/images/stadtlandbutz.png"))));
         Game.setGui(this);
         hostLoginStage();
     }

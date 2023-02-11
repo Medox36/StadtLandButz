@@ -51,6 +51,7 @@ public class ClientGUI extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
+        this.stage.getIcons().add(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/stadtlandbutz.png"))));
         Game.setGui(this);
 
         joinStage();
