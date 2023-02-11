@@ -132,8 +132,6 @@ public class ClientGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #004445");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Beitreten");
@@ -159,14 +157,13 @@ public class ClientGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #015657");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Beitreten");
         stage.setMinHeight(500);
         stage.setMinWidth(470);
         stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -313,8 +310,6 @@ public class ClientGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #131313"); //#015657
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Stadt Land Butz");
@@ -445,13 +440,12 @@ public class ClientGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #24066b");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Resultat");
         stage.setMinHeight(660);
         stage.setMinWidth(460);
+        stage.centerOnScreen();
         stage.show();
     }
 }
