@@ -570,10 +570,10 @@ public class HostGUI extends Application {
 
     private void setCheckStagePlayerNames(ArrayList<String> playerNames) {
         checkStagePlayerNames.getItems().clear();
-        emptyListTest(checkStagePlayerNames);
         for (String str : playerNames) {
             checkStagePlayerNames.getItems().add(str);
         }
+        emptyListTest(checkStagePlayerNames);
     }
 
     public void setCheckStageCategoryAndPlayerNames(String categoryName, String word, ArrayList<String> playerNames) {
