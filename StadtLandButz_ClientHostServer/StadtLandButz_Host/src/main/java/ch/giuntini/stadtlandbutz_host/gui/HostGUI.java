@@ -131,7 +131,7 @@ public class HostGUI extends Application {
         checkBoxes[8] = new CheckBox("Promi");
         checkBoxes[9] = new CheckBox("Modemarke");
         checkBoxes[10] = new CheckBox("Automarke");
-        checkBoxes[11] = new CheckBox("Sporler");
+        checkBoxes[11] = new CheckBox("Sportler");
         checkBoxes[12] = new CheckBox("Sportart");
         checkBoxes[13] = new CheckBox("Hobby");
         checkBoxes[14] = new CheckBox("Nahrungsmittel");
@@ -501,14 +501,14 @@ public class HostGUI extends Application {
         buttons2.setPadding(new Insets(40, 50, 0, 50));
 
         Text txt = new Text("Wort der Kategorie ");
-        checkStageCategory = new Text("Nahrungsmittel");
+        checkStageCategory = new Text("Kategorie");
         checkStageCategory.setStyle("-fx-font-style: italic");
         Text col = new Text(":");
 
         Label wordTitle = new Label("", new TextFlow(txt, checkStageCategory, col));
         wordTitle.setStyle("-fx-font-size: 36");
 
-        checkStageWord = new Label("Fluss");
+        checkStageWord = new Label("Wort");
         checkStageWord.setMinWidth(965.0);
         AnchorPane.setLeftAnchor(checkStageWord, 0.0);
         AnchorPane.setRightAnchor(checkStageWord, 0.0);
