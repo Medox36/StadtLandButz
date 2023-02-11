@@ -49,7 +49,7 @@ public class ClientGUI extends Application {
 
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         this.stage = stage;
         Game.setGui(this);
 
@@ -359,7 +359,7 @@ public class ClientGUI extends Application {
         // originally: stage.getWidth() - points.getWidth() - 100
     }
 
-    public static class Point {
+    private static class Point {
         private Integer point;
 
         public Point() {
