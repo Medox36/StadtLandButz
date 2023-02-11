@@ -98,12 +98,12 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #eadddd");
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(true));
         stage.setScene(new Scene(root));
         stage.setTitle("Login als Host");
         stage.setMinHeight(200);
         stage.setMinWidth(400);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -231,14 +231,12 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #da6060");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Kategorien");
-        stage.setMinHeight(702);
-        stage.setMinWidth(553);
-        stage.setMaximized(true);
+        stage.setMinHeight(806);
+        stage.setMinWidth(633);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -328,14 +326,11 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #28988b");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(true));
         stage.setScene(new Scene(root));
         stage.setTitle("Beitreten");
-        stage.setMinHeight(804);
-        stage.setMinWidth(936);
-        stage.setMaximized(true);
+        stage.setMinHeight(850);
+        stage.setMinWidth(1000);
         stage.show();
     }
 
@@ -413,14 +408,12 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #00292a");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Runde " + Game.getVisualRoundNumber());
-        stage.setMinHeight(624);
-        stage.setMinWidth(436);
-        stage.setMaximized(true);
+        stage.setMinHeight(684);
+        stage.setMinWidth(496);
+        stage.centerOnScreen();
         stage.show();
 
         //TODO send 'roundNumberAndLetter' -> prefix: "0100"
@@ -557,14 +550,11 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #d89e00");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Auswertung");
         stage.setMinHeight(920);
         stage.setMinWidth(1101);
-        stage.setMaximized(true);
         stage.show();
 
         new Thread(() -> {
@@ -641,14 +631,11 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #0341b9");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Punktestand");
-        stage.setMinHeight(860);
-        stage.setMinWidth(1000);
-        stage.setMaximized(true);
+        stage.setMinHeight(920);
+        stage.setMinWidth(1060);
         stage.show();
 
         Platform.runLater(Game::callScoreStage);
@@ -806,14 +793,11 @@ public class HostGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #24066b");
-        stage.hide();
-        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Rangliste");
-        stage.setMinHeight(979);
-        stage.setMinWidth(956);
-        stage.setMaximized(true);
+        stage.setMinHeight(1039);
+        stage.setMinWidth(1016);
         stage.show();
 
         Platform.runLater(Game::callWinnerStage);
