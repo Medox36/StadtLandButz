@@ -6,6 +6,7 @@ import ch.giuntini.stadtlandbutz_host.net.Host;
 import ch.giuntini.stadtlandbutz_package.Package;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import net.ricecode.similarity.LevenshteinDistanceStrategy;
 import net.ricecode.similarity.SimilarityScore;
@@ -111,6 +112,15 @@ public class Game {
         synchronized (ready) {
             ready = true;
         }
+        if (sortedWords.isEmpty()) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Korrektur");
+                alert.setHeaderText("Keine Wörter zum korrigieren");
+                alert.setContentText("Keiner hat in dieser Kategorie ein Wort eingegeben.");
+                alert.showAndWait();
+            });
+        }
     }
 
     @SuppressWarnings("SynchronizeOnNonFinalField")
@@ -121,6 +131,12 @@ public class Game {
             synchronized (finished) {
                 finished = true;
             }
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Korrektur");
+                alert.setHeaderText("Alles korrigiert");
+                alert.showAndWait();
+            });
             return;
         }
 
