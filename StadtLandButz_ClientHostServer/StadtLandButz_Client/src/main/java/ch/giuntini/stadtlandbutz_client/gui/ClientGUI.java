@@ -51,7 +51,7 @@ public class ClientGUI extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-        this.stage.getIcons().add(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/stadtlandbutz.png"))));
+        this.stage.getIcons().add(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/stadtlandbutz.png"))));
         Game.setGui(this);
 
         joinStage();
@@ -122,7 +122,7 @@ public class ClientGUI extends Application {
         textFields.setPadding(new Insets(10));
         textFields.setStyle("-fx-background-color: white");
 
-        ImageView logo = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/stadtlandbutz.png"))));
+        ImageView logo = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/stadtlandbutz.png"))));
         logo.setFitWidth(221);
         logo.setFitHeight(221);
 
@@ -232,20 +232,20 @@ public class ClientGUI extends Application {
         HBox tables = new HBox(categories, points);
         tables.setAlignment(Pos.CENTER);
 
-        ImageView stadt = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/stadt.png"))));
+        ImageView stadt = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/stadt.png"))));
         stadt.setFitHeight(100);
         stadt.setFitWidth(300);
 
-        ImageView land = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/land.png"))));
+        ImageView land = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/land.png"))));
         land.setRotate(-90);
         land.setFitHeight(40);
         land.setFitWidth(150);
 
-        ImageView butz = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/butz.png"))));
+        ImageView butz = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/butz.png"))));
         butz.setFitHeight(100);
         butz.setFitWidth(300);
 
-        ImageView reachablePoints = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzclient/images/points.png"))));
+        ImageView reachablePoints = new ImageView(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/points.png"))));
         reachablePoints.setFitHeight(100);
         reachablePoints.setFitWidth(270);
 
