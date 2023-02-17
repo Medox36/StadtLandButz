@@ -78,7 +78,7 @@ public class HostGUI extends Application {
         button.setDefaultButton(true);
         button.setOnAction(actionEvent -> new Thread(() -> {
             try {
-                Game.startHost();
+                Game.startHost(getParameters().getRaw());
                 Thread.sleep(200);
                 Game.getHost().sendPackage(new Package("001", "1011", passwordField.getText(), null));
             } catch (IOException | InterruptedException e) {
