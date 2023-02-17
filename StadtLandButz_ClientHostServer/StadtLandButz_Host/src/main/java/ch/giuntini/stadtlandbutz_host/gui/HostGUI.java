@@ -26,6 +26,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -794,7 +796,12 @@ public class HostGUI extends Application {
         stage.setMinWidth(1016);
         stage.show();
 
-        Platform.runLater(Game::callWinnerStage);
+        Platform.runLater(() -> {
+            Game.callWinnerStage();
+            Media media = new Media(Objects.requireNonNull(HostGUI.class.getResource("/ch/giuntini/stadtlandbutz_host/sounds/win.mp3")).toString());
+            MediaPlayer player = new MediaPlayer(media);
+            player.play();
+        });
     }
 
     public void setFirst(Client client) {
