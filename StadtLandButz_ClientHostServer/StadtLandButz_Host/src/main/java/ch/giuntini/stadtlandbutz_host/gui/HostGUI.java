@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,6 +32,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -106,8 +108,8 @@ public class HostGUI extends Application {
         stage.setTitle("Login als Host");
         stage.setMinHeight(200);
         stage.setMinWidth(400);
-        stage.centerOnScreen();
         stage.show();
+        centerStageOnScreen();
     }
 
     public void showPasswordMessage(String s) {
@@ -239,8 +241,8 @@ public class HostGUI extends Application {
         stage.setTitle("Kategorien");
         stage.setMinHeight(806);
         stage.setMinWidth(633);
-        stage.centerOnScreen();
         stage.show();
+        centerStageOnScreen();
     }
 
     private void emptyListTest(ListView<String> listView) {
@@ -333,6 +335,7 @@ public class HostGUI extends Application {
         stage.setMinHeight(850);
         stage.setMinWidth(1000);
         stage.show();
+        centerStageOnScreen();
     }
 
     public void setGameCode(String s) {
@@ -412,8 +415,8 @@ public class HostGUI extends Application {
         stage.setTitle("Runde " + Game.getVisualRoundNumber());
         stage.setMinHeight(684);
         stage.setMinWidth(496);
-        stage.centerOnScreen();
         stage.show();
+        centerStageOnScreen();
 
         Game.sendToAllClients("0100", Game.getRoundNumber() + "@" + let);
         Game.sendToAllClients("0101", "");
@@ -552,6 +555,7 @@ public class HostGUI extends Application {
         stage.setMinHeight(920);
         stage.setMinWidth(1101);
         stage.show();
+        centerStageOnScreen();
 
         new Thread(() -> {
             while (!Game.isCurrRoundReady()) {
@@ -633,6 +637,7 @@ public class HostGUI extends Application {
         stage.setMinHeight(920);
         stage.setMinWidth(1060);
         stage.show();
+        centerStageOnScreen();
 
         Platform.runLater(Game::callScoreStage);
     }
@@ -795,6 +800,7 @@ public class HostGUI extends Application {
         stage.setMinHeight(1039);
         stage.setMinWidth(1016);
         stage.show();
+        centerStageOnScreen();
 
         Platform.runLater(() -> {
             Game.callWinnerStage();
@@ -817,5 +823,29 @@ public class HostGUI extends Application {
     public void setThird(Client client) {
         third.setText(client.getPlayerName());
         thirdPoints.setText(client.getPoints() + " Pt.");
+    }
+
+    private strictfp void centerStageOnScreen() {
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        double screenWidth = visualBounds.getWidth();
+        double screenHeight = visualBounds.getHeight();
+        double stageWidth = stage.getWidth();
+        double stageHeight = stage.getHeight();
+
+        double x;
+        double y;
+
+        if (stageWidth < stage.getMinWidth()) {
+            stageWidth = stage.getMinWidth();
+        }
+        if (stageHeight < stage.getMinHeight()) {
+            stageHeight = stage.getMinHeight();
+        }
+
+        x = (screenWidth / 2.0) - (stageWidth / 2.0);
+        y = (screenHeight / 2.0) - (stageHeight / 2.0);
+
+        stage.setX(x);
+        stage.setY(y);
     }
 }
