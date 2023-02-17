@@ -65,7 +65,7 @@ public class HostGUI extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-        this.stage.getIcons().add(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzhost/images/stadtlandbutz.png"))));
+        this.stage.getIcons().add(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_host/images/stadtlandbutz.png"))));
         Game.setGui(this);
         hostLoginStage();
     }
@@ -300,7 +300,7 @@ public class HostGUI extends Application {
             flow.setPrefWidth(bounds.getWidth());
             flow.setPrefHeight(bounds.getHeight());
         });
-        scroll.getStylesheets().add(Objects.requireNonNull(HostGUI.class.getResource("/ch/giuntini/stadtlandbutzhost/css/joinStage.css")).toString());
+        scroll.getStylesheets().add(Objects.requireNonNull(HostGUI.class.getResource("/ch/giuntini/stadtlandbutz_host/css/joinStage.css")).toString());
 
         VBox players = new VBox(scroll);
         players.setStyle("-fx-alignment: center; -fx-padding: 10");
@@ -710,13 +710,13 @@ public class HostGUI extends Application {
         thirdPoints.setTextFill(Color.WHITE);
         thirdPoints.setStyle("-fx-font-size: 48px; -fx-font-weight: bold");
 
-        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzhost/images/first.png"))));
+        ImageView i1 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_host/images/first.png"))));
         i1.setFitHeight(150);
         i1.setFitWidth(150);
-        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzhost/images/second.png"))));
+        ImageView i2 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_host/images/second.png"))));
         i2.setFitHeight(150);
         i2.setFitWidth(150);
-        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutzhost/images/third.png"))));
+        ImageView i3 = new ImageView(new Image(Objects.requireNonNull(HostGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_host/images/third.png"))));
         i3.setFitHeight(150);
         i3.setFitWidth(150);
 
