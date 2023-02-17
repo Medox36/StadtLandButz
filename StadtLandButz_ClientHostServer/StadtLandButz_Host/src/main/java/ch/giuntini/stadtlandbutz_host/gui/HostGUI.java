@@ -753,6 +753,7 @@ public class HostGUI extends Application {
             Game.stopHost();
             selectionStage();
         });
+        restart.setDisable(true);
 
         Button close = new Button("Spiel beenden");
         close.setScaleX(1.6);
