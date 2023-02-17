@@ -167,10 +167,8 @@ public class Game {
     }
 
     public synchronized static void acceptCurrWord() {
-        int wordPointer0 = wordPointer;
-
         LinkedHashMap<String, Vector<UUID>> tempWords = getTempWords();
-        String keyWord = (String) tempWords.keySet().toArray()[wordPointer0];
+        String keyWord = (String) tempWords.keySet().toArray()[wordPointer];
 
         Vector<UUID> uuids = tempWords.get(keyWord);
 

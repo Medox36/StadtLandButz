@@ -48,6 +48,6 @@ public class HostNetInterpreter {
 
     private synchronized static void gameCode(Package p) {
         Game.setGameCode(Integer.parseInt(p.information));
-        Platform.runLater(() -> Game.getGui().setGameCode(p.information));
+        Platform.runLater(() -> Game.getGui().setGameCode(String.valueOf(Game.getGameCode())));
     }
 }
