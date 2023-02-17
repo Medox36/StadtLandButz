@@ -8,6 +8,7 @@ import javafx.application.Platform;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -27,10 +28,10 @@ public class Game {
         if (!isExit) Platform.runLater(() -> Game.getGui().joinStage());
     }
 
-    public static boolean createClient(String playerName) {
+    public static boolean createClient(String playerName, List<String> args) {
         client = new Client(playerName);
         try {
-            client.createConnection();
+            client.createConnection(args);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

@@ -88,7 +88,7 @@ public class ClientGUI extends Application {
             if (code.getText().matches(validateCodeRegex)) {
                 if (playerName.getText().matches(nameRegex)) {
                     Game.setGameCode(Integer.parseInt(code.getText()));
-                    if (!Game.createClient(playerName.getText())) {
+                    if (!Game.createClient(playerName.getText(), getParameters().getRaw())) {
                         Alert a = new Alert(Alert.AlertType.ERROR);
                         a.setTitle("Verbindung");
                         a.setHeaderText("Keine Verbindung möglich");

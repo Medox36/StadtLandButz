@@ -4,6 +4,8 @@ import ch.giuntini.stadtlandbutz_package.Package;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Client {
@@ -18,8 +20,18 @@ public class Client {
         this.playerName = playerName;
     }
 
-    public void createConnection() throws IOException {
-        socket = new Socket("giuntini-ch.dynv6.net", 24452);
+    public void createConnection(List<String> args) throws IOException {
+        String url = "";
+        if (!args.isEmpty()) {
+            if (args.size() == 2) {
+                if (Objects.equals(args.get(0), "-s")) {
+                    url = args.get(1);
+                }
+            }
+        } else {
+            url = "giuntini-ch.dynv6.net";
+        }
+        socket = new Socket(url, 24452);
         senderThread = new SenderThread(socket.getOutputStream());
         senderThread.start();
         receiverThread = new ReceiverThread(socket.getInputStream());

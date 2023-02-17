@@ -12,7 +12,7 @@ public class Main {
         ObjectInputFilter.Config.setSerialFilter(
                 ObjectInputFilter.Config.createFilter("ch.giuntini.stadtlandbutz_package.Package"));
         Runtime.getRuntime().addShutdownHook(new Thread(() -> Game.exit(true), "Exit Thread"));
-        Application.launch(ClientGUI.class);
+        Application.launch(ClientGUI.class, args);
 
     }
 }
