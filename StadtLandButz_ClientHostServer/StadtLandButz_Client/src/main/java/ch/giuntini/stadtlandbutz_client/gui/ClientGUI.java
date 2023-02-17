@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -27,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -144,6 +146,7 @@ public class ClientGUI extends Application {
         stage.setWidth(470);
         stage.setResizable(false);
         stage.show();
+        centerStageOnScreen();
         confirm.requestFocus();
     }
 
@@ -164,8 +167,8 @@ public class ClientGUI extends Application {
         stage.setMinHeight(500);
         stage.setMinWidth(470);
         stage.setResizable(false);
-        stage.centerOnScreen();
         stage.show();
+        centerStageOnScreen();
     }
 
     public void gameStage() {
@@ -311,19 +314,19 @@ public class ClientGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #131313"); //#015657
+        stage.hide();
+        stage = new Stage();
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Stadt Land Butz");
         stage.setAlwaysOnTop(true);
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.show();
         stage.setMaximized(true);
         stage.setResizable(false);
+        stage.show();
 
         stage.focusedProperty().addListener((observableValue, oldVal, newVal) -> {
-            System.out.println(newVal + " " + stage.isFocused());
             if (!newVal) {
-                System.out.println("refocused1");
                 stage.requestFocus();
                 stage.toFront();
             }
@@ -446,7 +449,31 @@ public class ClientGUI extends Application {
         stage.setTitle("Resultat");
         stage.setMinHeight(660);
         stage.setMinWidth(460);
-        stage.centerOnScreen();
         stage.show();
+        centerStageOnScreen();
+    }
+
+    private strictfp void centerStageOnScreen() {
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        double screenWidth = visualBounds.getWidth();
+        double screenHeight = visualBounds.getHeight();
+        double stageWidth = stage.getWidth();
+        double stageHeight = stage.getHeight();
+
+        double x;
+        double y;
+
+        if (stageWidth < stage.getMinWidth()) {
+            stageWidth = stage.getMinWidth();
+        }
+        if (stageHeight < stage.getMinHeight()) {
+            stageHeight = stage.getMinHeight();
+        }
+
+        x = (screenWidth / 2.0) - (stageWidth / 2.0);
+        y = (screenHeight / 2.0) - (stageHeight / 2.0);
+
+        stage.setX(x);
+        stage.setY(y);
     }
 }
