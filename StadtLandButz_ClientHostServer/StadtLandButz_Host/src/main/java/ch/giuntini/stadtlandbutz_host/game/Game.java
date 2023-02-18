@@ -3,14 +3,13 @@ package ch.giuntini.stadtlandbutz_host.game;
 import ch.giuntini.stadtlandbutz_host.gui.HostGUI;
 import ch.giuntini.stadtlandbutz_host.net.Client;
 import ch.giuntini.stadtlandbutz_host.net.Host;
+import ch.giuntini.stadtlandbutz_host.stringsimilarity.LevenshteinDistanceStrategy;
+import ch.giuntini.stadtlandbutz_host.stringsimilarity.SimilarityScore;
+import ch.giuntini.stadtlandbutz_host.stringsimilarity.StringSimilarityService;
 import ch.giuntini.stadtlandbutz_package.Package;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-
-import net.ricecode.similarity.LevenshteinDistanceStrategy;
-import net.ricecode.similarity.SimilarityScore;
-import net.ricecode.similarity.StringSimilarityServiceImpl;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -88,7 +87,7 @@ public class Game {
                     for (UUID key : temp.keySet()) {
                         String strL = temp.get(key).get(sortCatPointer).toLowerCase();
 
-                        SimilarityScore topScore = new StringSimilarityServiceImpl(new LevenshteinDistanceStrategy())
+                        SimilarityScore topScore = new StringSimilarityService(new LevenshteinDistanceStrategy())
                                 .findTop(List.copyOf(sortedWordsOfCat.keySet()), strL);
 
                         if (sortedWordsOfCat.containsKey(strL)) {
