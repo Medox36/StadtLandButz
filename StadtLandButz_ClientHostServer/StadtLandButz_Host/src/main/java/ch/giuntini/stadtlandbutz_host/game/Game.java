@@ -52,12 +52,12 @@ public class Game {
     }
 
     public static void stopHost() {
-        clients.clear();
-        letters.clear();
-        categories.clear();
-        words.clear();
-        sortedWords.clear();
-        points.clear();
+        if (clients != null) clients.clear();
+        if (letters != null) letters.clear();
+        if (clients != null) categories.clear();
+        if (words != null) words.clear();
+        if (sortedWords != null) sortedWords.clear();
+        if (points != null) points.clear();
         roundNumber = -1;
     }
 
