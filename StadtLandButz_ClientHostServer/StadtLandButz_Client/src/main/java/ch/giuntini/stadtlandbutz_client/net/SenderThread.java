@@ -11,8 +11,7 @@ public class SenderThread extends Thread {
 
     private ObjectOutputStream objectOutputStream;
     private final ConcurrentLinkedQueue<Package> packages = new ConcurrentLinkedQueue<>();
-    private final Object lock;
-    private boolean stop;
+    private volatile boolean stop;
 
     public SenderThread(OutputStream outputStream) {
         super("Client-Sender-Thread");
@@ -21,31 +20,24 @@ public class SenderThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        lock = new Object();
     }
 
     @Override
     public void run() {
         while (!stop) {
-            synchronized (lock) {
-                while (!packages.isEmpty()) {
-                    try {
-                        Package p = packages.poll();
-                        if (p != null) {
-                            objectOutputStream.writeObject(p);
-                            objectOutputStream.flush();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        closeThread();
-                    }
-                }
+            while (!packages.isEmpty()) {
                 try {
-                    lock.wait();
-                } catch (InterruptedException e) {
+                    Package p = packages.poll();
+                    if (p != null) {
+                        objectOutputStream.writeObject(p);
+                        objectOutputStream.flush();
+                    }
+                } catch (IOException e) {
                     e.printStackTrace();
+                    closeThread();
                 }
             }
+            Thread.onSpinWait();
         }
         try {
             objectOutputStream.close();
@@ -56,15 +48,9 @@ public class SenderThread extends Thread {
 
     protected synchronized void addPackageToSendStack(Package p) {
         packages.add(p);
-        synchronized (lock) {
-            lock.notify();
-        }
     }
 
-    public synchronized void closeThread() {
+    public void closeThread() {
         stop = true;
-        synchronized (lock) {
-            lock.notify();
-        }
     }
 }

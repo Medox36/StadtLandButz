@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class ClientNetInterpreter {
 
-    public synchronized static void interpret(Package p) {
+    public static void interpret(Package p) {
         switch (p.prefix) {
             case "0000":
                 testingConnection();

@@ -8,21 +8,13 @@ import java.io.InputStream;
 
 public class ReceiverThread extends Thread {
 
-
     private PackageObjectInputStream objectInputStream;
-    private boolean stop;
+    private volatile boolean stop;
 
     public ReceiverThread(InputStream inputStream) {
         super("Client-Receiving-Thread");
         try {
             objectInputStream = new PackageObjectInputStream(new BufferedInputStream(inputStream));
-            /*objectInputStream.setObjectInputFilter(filterInfo -> {
-                if (filterInfo.serialClass().getName().equals("Package")) {
-                    return ObjectInputFilter.Status.ALLOWED;
-                } else {
-                    return ObjectInputFilter.Status.REJECTED;
-                }
-            });*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +38,7 @@ public class ReceiverThread extends Thread {
         }
     }
 
-    public synchronized void closeThread() {
+    public void closeThread() {
         stop = true;
     }
 }

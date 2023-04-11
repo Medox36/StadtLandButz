@@ -39,7 +39,7 @@ public class Client {
         return uuid.toString();
     }
 
-    public synchronized void sendPackage(Package p) {
+    public void sendPackage(Package p) {
         senderThread.addPackageToSendStack(p);
     }
 

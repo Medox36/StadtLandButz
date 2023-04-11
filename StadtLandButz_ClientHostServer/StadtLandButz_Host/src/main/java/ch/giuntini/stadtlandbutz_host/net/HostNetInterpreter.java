@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class HostNetInterpreter {
 
-    public synchronized static void interpret(Package p) {
+    public static void interpret(Package p) {
         switch (p.prefix) {
             case "0010":
                 newClient(p);

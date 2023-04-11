@@ -5,7 +5,7 @@ import ch.giuntini.stadtlandbutz_server.game.Game;
 
 public class ServerNetInterpreter {
 
-    public synchronized static void interpret(Package p) {
+    public static void interpret(Package p) {
         switch (p.serverPrefix) {
             case "001":
                 // for the server from the host
@@ -24,7 +24,7 @@ public class ServerNetInterpreter {
         }
     }
 
-    public synchronized static void interpretFromClient(Package p, Client c) {
+    public static void interpretFromClient(Package p, Client c) {
         switch (p.serverPrefix) {
             case "000":
                 // for the server from a client

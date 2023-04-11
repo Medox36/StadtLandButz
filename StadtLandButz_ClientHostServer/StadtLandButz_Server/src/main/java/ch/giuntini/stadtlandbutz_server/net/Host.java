@@ -18,7 +18,7 @@ public class Host {
         receiverThread.start();
     }
 
-    public synchronized void sendPackage(Package p) {
+    public void sendPackage(Package p) {
         senderThread.addPackageToSendStack(p);
     }
 

@@ -10,7 +10,7 @@ public class ClientReceiverThread extends Thread{
 
     private PackageObjectInputStream objectInputStream;
     private final Client client;
-    private boolean stop;
+    private volatile boolean stop;
 
     public ClientReceiverThread(InputStream inputStream, Client client) {
         super("Client-Receiving-Thread");
@@ -40,7 +40,7 @@ public class ClientReceiverThread extends Thread{
         }
     }
 
-    public synchronized void closeThread() {
+    public void closeThread() {
         stop = true;
     }
 }
