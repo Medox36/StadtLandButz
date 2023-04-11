@@ -24,7 +24,7 @@ public class Client {
 
         //connectionHolder.setConnected(true);
         sendPackage(new Package("", "0001", "", uuid.toString()));
-        System.out.println("(origin=client) client connected: " + uuid);
+        System.out.println("client connected: " + uuid);
     }
 
     public Socket getSocket() {
