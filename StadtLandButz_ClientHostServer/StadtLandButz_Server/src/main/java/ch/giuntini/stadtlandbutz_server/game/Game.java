@@ -16,9 +16,9 @@ public class Game {
 
     private static String pw;
     private static int gameCode;
-    private static Vector<Client> waitingClients = new Vector<>();
-    private static Vector<Client> clients = new Vector<>();
-    private static Vector<UUID> uuids = new Vector<>();
+    private static final Vector<Client> waitingClients = new Vector<>();
+    private static final Vector<Client> clients = new Vector<>();
+    private static final Vector<UUID> uuids = new Vector<>();
     private static Host host;
     private static HostConnection hostConnection;
     private static ClientConnection clientConnection;
@@ -43,16 +43,12 @@ public class Game {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        client.closeSocketIfOpen();
+        client.disconnectOnRefusal();
     }
 
     public static void acceptClient(Client client) {
         waitingClients.remove(client);
         clients.add(client);
-    }
-
-    public static void addClient(Socket socket) throws IOException {
-        clients.add(new Client(socket));
     }
 
     public static Client getClientByUUID(String uuid) {

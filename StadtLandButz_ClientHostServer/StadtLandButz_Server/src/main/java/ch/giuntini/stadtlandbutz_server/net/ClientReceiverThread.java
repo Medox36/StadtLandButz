@@ -6,7 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ClientReceiverThread extends Thread{
+public class ClientReceiverThread extends Thread {
 
     private PackageObjectInputStream objectInputStream;
     private final Client client;
@@ -30,13 +30,16 @@ public class ClientReceiverThread extends Thread{
                 ServerNetInterpreter.interpretFromClient(p, client);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                closeThread();
+                break;
             }
         }
         try {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (!stop) {
+            client.disconnectOnException();
         }
     }
 

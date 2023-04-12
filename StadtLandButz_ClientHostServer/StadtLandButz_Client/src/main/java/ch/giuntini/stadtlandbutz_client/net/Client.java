@@ -2,6 +2,9 @@ package ch.giuntini.stadtlandbutz_client.net;
 
 import ch.giuntini.stadtlandbutz_package.Package;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
@@ -32,14 +35,10 @@ public class Client {
             url = "giuntini-ch.dynv6.net";
         }
         socket = new Socket(url, 24452);
-        senderThread = new SenderThread(socket.getOutputStream());
+        senderThread = new SenderThread(socket.getOutputStream(), this);
         senderThread.start();
-        receiverThread = new ReceiverThread(socket.getInputStream());
+        receiverThread = new ReceiverThread(socket.getInputStream(), this);
         receiverThread.start();
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public String getPlayerName() {
@@ -70,17 +69,27 @@ public class Client {
         senderThread.addPackageToSendStack(p);
     }
 
-    public void exit() {
+    public synchronized void exit() {
         if (socket != null) {
             try {
                 if (!socket.isClosed()) {
-                    senderThread.closeThread();
-                    receiverThread.closeThread();
                     socket.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        senderThread.closeThread();
+        receiverThread.closeThread();
+    }
+
+    public void disconnectOnException() {
+        exit();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Verbindung verloren.");
+            alert.setHeaderText("Die Verbindung zum Server wurde unterbrochen.");
+            alert.show();
+        });
     }
 }

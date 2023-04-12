@@ -140,11 +140,9 @@ public class ClientGUI extends Application {
         stage.setTitle("Beitreten");
         stage.setMinHeight(500);
         stage.setMinWidth(470);
-        stage.setMaxHeight(500);
-        stage.setMaxWidth(470);
         stage.setHeight(500);
         stage.setWidth(470);
-        stage.setResizable(false);
+        stage.hide();
         stage.show();
         centerStageOnScreen();
         confirm.requestFocus();
@@ -166,7 +164,7 @@ public class ClientGUI extends Application {
         stage.setTitle("Beitreten");
         stage.setMinHeight(500);
         stage.setMinWidth(470);
-        stage.setResizable(false);
+        stage.setWidth(470.00000001);
         stage.show();
         centerStageOnScreen();
     }
@@ -325,13 +323,6 @@ public class ClientGUI extends Application {
         stage.setResizable(false);
         stage.show();
 
-        stage.focusedProperty().addListener((observableValue, oldVal, newVal) -> {
-            if (!newVal) {
-                stage.requestFocus();
-                stage.toFront();
-            }
-        });
-
         // calc widths
         double MAX = 1865;
         double MARGIN = 100;
@@ -361,25 +352,6 @@ public class ClientGUI extends Application {
         sep2.setMaxWidth(MAXTABLES);
 
         // originally: stage.getWidth() - points.getWidth() - 100
-    }
-
-    private static class Point {
-        private Integer point;
-
-        public Point() {
-        }
-
-        public Point(int point) {
-            this.point = point;
-        }
-
-        public Integer getPoint() {
-            return point;
-        }
-
-        public void setPoint(Integer point) {
-            this.point = point;
-        }
     }
 
     public void setTableEditable(boolean editable, int row) {
@@ -449,6 +421,7 @@ public class ClientGUI extends Application {
         stage.setTitle("Resultat");
         stage.setMinHeight(660);
         stage.setMinWidth(460);
+        stage.setWidth(stage.getWidth() + 0.000000001);
         stage.show();
         centerStageOnScreen();
     }

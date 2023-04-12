@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 public class Game {
     private static ArrayList<Character> letters = new ArrayList<>();
     private static ArrayList<String> categories = new ArrayList<>();
+    private static String categoryString;
     private static Vector<Client> clients = new Vector<>();
     private volatile static LinkedHashMap<Integer, LinkedHashMap<UUID, Vector<String>>> words = new LinkedHashMap<>();
     private volatile static LinkedHashMap<Integer, LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>>> sortedWords = new LinkedHashMap<>();
@@ -149,7 +149,10 @@ public class Game {
         ArrayList<String> playerNames = new ArrayList<>();
 
         for (UUID uuid : uuids) {
-            playerNames.add(Objects.requireNonNull(getClientByUUID(uuid)).getPlayerName());
+            Client client = getClientByUUID(uuid);
+            if (client != null) {
+                playerNames.add(client.getPlayerName());
+            }
         }
 
         if (tempWords.keySet().size()-1 >= wordPointer) {
@@ -212,9 +215,11 @@ public class Game {
     public synchronized static void distPoints() {
         for (UUID uuid : points.keySet()) {
             Integer madePoints = points.get(uuid);
-            Client client = Objects.requireNonNull(getClientByUUID(uuid));
-            client.addPoints(madePoints);
-            host.sendPackage(new Package("010", "1000",  madePoints + "@" + getRoundNumber(), uuid.toString()));
+            Client client = getClientByUUID(uuid);
+            if (client != null) {
+                client.addPoints(madePoints);
+                host.sendPackage(new Package("010", "1000",  madePoints + "@" + getRoundNumber(), uuid.toString()));
+            }
         }
     }
 
@@ -294,6 +299,14 @@ public class Game {
         return sb.toString();
     }
 
+    public static void generateCategoryString() {
+        categoryString = getCatsForClients();
+    }
+
+    public static String getCategoryString() {
+        return categoryString;
+    }
+
     public static int getGameCode() {
         return gameCode;
     }
@@ -313,6 +326,14 @@ public class Game {
             }
         }
         return null;
+    }
+
+    public static void removeClientByUUID(UUID uuid) {
+        Client client = getClientByUUID(uuid);
+        if (client != null) {
+            clients.remove(client);
+            points.remove(client.getUUID());
+        }
     }
 
     public static void incRoundNumber() {

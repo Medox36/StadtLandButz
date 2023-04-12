@@ -212,6 +212,7 @@ public class HostGUI extends Application {
                 a.showAndWait();
             } else {
                 Game.getCategories().addAll(categoriesList.getItems());
+                Game.generateCategoryString();
                 System.out.println("(origin=GUI) categories: " + Game.getCategories());
                 Game.getHost().sendPackage(new Package("001", "1100", "", null));
                 joinStage();
@@ -313,7 +314,7 @@ public class HostGUI extends Application {
         start.setScaleX(1.6);
         start.setScaleY(1.6);
         start.setOnAction(e -> {
-            Game.sendToAllClients("0011", Game.getCatsForClients());
+            // Game.sendToAllClients("0011", Game.getCatsForClients());
             Game.sendToAllClients("1010", "");
 
             roundStage();

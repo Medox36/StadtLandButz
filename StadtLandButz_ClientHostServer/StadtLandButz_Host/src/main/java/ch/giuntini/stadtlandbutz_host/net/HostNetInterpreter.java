@@ -4,6 +4,7 @@ import ch.giuntini.stadtlandbutz_host.game.Game;
 import ch.giuntini.stadtlandbutz_package.Package;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.util.UUID;
 
@@ -23,6 +24,9 @@ public class HostNetInterpreter {
             case "1110":
                 gameCode(p);
                 break;
+            case "1111":
+                disconnect(p);
+                break;
         }
     }
 
@@ -31,6 +35,7 @@ public class HostNetInterpreter {
         client.setPlayerName(p.information);
         Game.addClient(client);
         Game.addClientToGUI(client);
+        Game.getHost().sendPackage(new Package("010", "0011", Game.getCategoryString(), client.getUUID().toString()));
     }
 
     private synchronized static void addWordsOfClientFromCurrentRound(Package p) {
@@ -49,5 +54,19 @@ public class HostNetInterpreter {
     private synchronized static void gameCode(Package p) {
         Game.setGameCode(Integer.parseInt(p.information));
         Platform.runLater(() -> Game.getGui().setGameCode(String.valueOf(Game.getGameCode())));
+    }
+
+    private synchronized static void disconnect(Package p) {
+        Client client = Game.getClientByUUID(UUID.fromString(p.uuid));
+        Game.removeClientByUUID(UUID.fromString(p.uuid));
+        if (client != null) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Spieler");
+                alert.setHeaderText("Verbindung einem Spieler verloren.");
+                alert.setContentText("Name: " + client.getPlayerName() + "\nUUID: " + client.getUUID().toString());
+                alert.show();
+            });
+        }
     }
 }

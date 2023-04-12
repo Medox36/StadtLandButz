@@ -31,7 +31,7 @@ public class HostConnection extends Thread {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }

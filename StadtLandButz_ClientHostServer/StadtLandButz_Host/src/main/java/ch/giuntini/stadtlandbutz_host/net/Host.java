@@ -24,9 +24,9 @@ public class Host {
             url = "giuntini-ch.dynv6.net";
         }
         socket = new Socket(url, 25541);
-        senderThread = new SenderThread(socket.getOutputStream());
+        senderThread = new SenderThread(socket.getOutputStream(), this);
         senderThread.start();
-        receiverThread = new ReceiverThread(socket.getInputStream());
+        receiverThread = new ReceiverThread(socket.getInputStream(), this);
         receiverThread.start();
     }
 
@@ -35,12 +35,14 @@ public class Host {
     }
 
     public synchronized void stop() {
+        try {
+            if (!socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         senderThread.closeThread();
         receiverThread.closeThread();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

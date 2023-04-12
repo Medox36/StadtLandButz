@@ -1,4 +1,4 @@
-package ch.giuntini.stadtlandbutz_client.net;
+package ch.giuntini.stadtlandbutz_server.net;
 
 import ch.giuntini.stadtlandbutz_package.Package;
 
@@ -7,14 +7,14 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class SenderThread extends Thread {
+public class ClientSenderThread extends Thread {
 
     private ObjectOutputStream objectOutputStream;
     private final ConcurrentLinkedQueue<Package> packages = new ConcurrentLinkedQueue<>();
     private final Client client;
     private volatile boolean stop;
 
-    public SenderThread(OutputStream outputStream, Client client) {
+    public ClientSenderThread(OutputStream outputStream, Client client) {
         super("Client-Sender-Thread");
         try {
             objectOutputStream = new ObjectOutputStream(outputStream);

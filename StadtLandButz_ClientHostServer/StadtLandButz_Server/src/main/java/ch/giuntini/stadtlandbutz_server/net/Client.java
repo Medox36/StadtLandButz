@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.UUID;
 
 public class Client {
-    private final SenderThread senderThread;
+    private final ClientSenderThread senderThread;
     private final ClientReceiverThread clientReceiverThread;
     private final Socket socket;
     private final UUID uuid;
@@ -17,18 +17,13 @@ public class Client {
         this.socket = socket;
 
         uuid = Game.getNewUUID();
-        senderThread = new SenderThread(socket.getOutputStream());
+        senderThread = new ClientSenderThread(socket.getOutputStream(), this);
         senderThread.start();
         clientReceiverThread = new ClientReceiverThread(socket.getInputStream(), this);
         clientReceiverThread.start();
 
-        //connectionHolder.setConnected(true);
         sendPackage(new Package("", "0001", "", uuid.toString()));
         System.out.println("client connected: " + uuid);
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public UUID getUUID() {
@@ -43,12 +38,23 @@ public class Client {
         senderThread.addPackageToSendStack(p);
     }
 
-    public void closeSocketIfOpen() {
+    public void disconnectOnException() {
+        Game.getHost().sendPackage(new Package("", "1111", "", getUUIDString()));
+        close();
+        System.out.println("client disconnected: " + uuid);
+    }
+
+    public void disconnectOnRefusal() {
+        close();
+        System.out.println("client refused: " + uuid);
+    }
+
+    private synchronized void close() {
         if (!socket.isClosed()) {
             try {
                 socket.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
         senderThread.closeThread();

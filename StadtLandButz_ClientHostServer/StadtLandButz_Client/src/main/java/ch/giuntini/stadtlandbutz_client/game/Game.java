@@ -22,7 +22,7 @@ public class Game {
     public static void newGame(boolean isExit) {
         if (client != null) client.exit();
         client = null;
-        categories.clear();
+        if (categories != null) categories.clear();
         roundNumber = -1;
         editAllowed = false;
         if (!isExit) Platform.runLater(() -> Game.getGui().joinStage());

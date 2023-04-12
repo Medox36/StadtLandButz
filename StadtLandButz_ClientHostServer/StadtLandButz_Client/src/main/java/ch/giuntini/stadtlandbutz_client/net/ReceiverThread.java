@@ -9,15 +9,17 @@ import java.io.InputStream;
 public class ReceiverThread extends Thread {
 
     private PackageObjectInputStream objectInputStream;
+    private final Client client;
     private volatile boolean stop;
 
-    public ReceiverThread(InputStream inputStream) {
+    public ReceiverThread(InputStream inputStream, Client client) {
         super("Client-Receiving-Thread");
         try {
             objectInputStream = new PackageObjectInputStream(new BufferedInputStream(inputStream));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.client = client;
     }
 
     @Override
@@ -28,13 +30,16 @@ public class ReceiverThread extends Thread {
                 ClientNetInterpreter.interpret(p);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                closeThread();
+                break;
             }
         }
         try {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (!stop) {
+            client.disconnectOnException();
         }
     }
 

@@ -11,19 +11,22 @@ public class SenderThread extends Thread {
 
     private ObjectOutputStream objectOutputStream;
     private final ConcurrentLinkedQueue<Package> packages = new ConcurrentLinkedQueue<>();
+    private final Host host;
     private volatile boolean stop;
 
-    public SenderThread(OutputStream outputStream) {
+    public SenderThread(OutputStream outputStream, Host host) {
         super("Client-Sender-Thread");
         try {
             objectOutputStream = new ObjectOutputStream(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.host = host;
     }
 
     @Override
     public void run() {
+        runLoop:
         while (!stop) {
             while (!packages.isEmpty()) {
                 try {
@@ -34,7 +37,7 @@ public class SenderThread extends Thread {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    closeThread();
+                    break runLoop;
                 }
             }
             Thread.onSpinWait();
@@ -43,6 +46,9 @@ public class SenderThread extends Thread {
             objectOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (stop) {
+            host.disconnectOnException();
         }
     }
 
