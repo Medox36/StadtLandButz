@@ -44,10 +44,6 @@ public class ClientConnection extends Thread {
         } while (await);
     }
 
-    public void letClientsConnect(boolean await) {
-        this.await = await;
-    }
-
     public void close() {
         try {
             serverSocket.close();
