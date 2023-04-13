@@ -238,11 +238,17 @@ public class HostGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #da6060");
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Kategorien");
         stage.setMinHeight(806);
         stage.setMinWidth(633);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
     }
 
@@ -331,11 +337,17 @@ public class HostGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #28988b");
         stage.setOnCloseRequest(windowEvent -> Game.exit(true));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Beitreten");
         stage.setMinHeight(850);
         stage.setMinWidth(1000);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
     }
 
@@ -376,6 +388,7 @@ public class HostGUI extends Application {
         end.setScaleY(1.6);
         end.setOnAction(e -> {
             timer.cancel();
+            Game.setReceiving(true);
             Game.sendToAllClients("0110", "");
 
             checkStage();
@@ -412,12 +425,18 @@ public class HostGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #00292a");
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Runde " + Game.getVisualRoundNumber());
         stage.setMinHeight(684);
         stage.setMinWidth(496);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
         centerStageOnScreen();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
 
         Game.sendToAllClients("0100", Game.getRoundNumber() + "@" + let);
         Game.sendToAllClients("0101", "");
@@ -433,6 +452,11 @@ public class HostGUI extends Application {
                 Game.distPoints();
                 Game.resetCurrRoundStuff();
                 scoreStage();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Korrektur");
+                alert.setHeaderText("noch nicht alles korrigiert");
+                alert.showAndWait();
             }
         });
 
@@ -444,6 +468,11 @@ public class HostGUI extends Application {
                 Game.distPoints();
                 Game.resetCurrRoundStuff();
                 winnerStage();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Korrektur");
+                alert.setHeaderText("noch nicht alles korrigiert");
+                alert.showAndWait();
             }
         });
 
@@ -494,14 +523,14 @@ public class HostGUI extends Application {
         buttons2.setPadding(new Insets(40, 50, 0, 50));
 
         Text txt = new Text("Wort der Kategorie ");
-        checkStageCategory = new Text("Kategorie");
+        checkStageCategory = new Text("null");
         checkStageCategory.setStyle("-fx-font-style: italic");
         Text col = new Text(":");
 
         Label wordTitle = new Label("", new TextFlow(txt, checkStageCategory, col));
         wordTitle.setStyle("-fx-font-size: 36");
 
-        checkStageWord = new Label("Wort");
+        checkStageWord = new Label("null");
         checkStageWord.setMinWidth(965.0);
         AnchorPane.setLeftAnchor(checkStageWord, 0.0);
         AnchorPane.setRightAnchor(checkStageWord, 0.0);
@@ -551,11 +580,17 @@ public class HostGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #d89e00");
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Auswertung");
         stage.setMinHeight(920);
         stage.setMinWidth(1101);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
 
         new Thread(() -> {
@@ -633,11 +668,17 @@ public class HostGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #0341b9");
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Punktestand");
         stage.setMinHeight(920);
         stage.setMinWidth(1060);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
 
         Platform.runLater(Game::callScoreStage);
@@ -797,11 +838,17 @@ public class HostGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #24066b");
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Rangliste");
         stage.setMinHeight(1039);
         stage.setMinWidth(1016);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
 
         Platform.runLater(() -> {

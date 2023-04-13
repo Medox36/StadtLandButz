@@ -12,10 +12,5 @@
         <module name="StadtLandButz_Host" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="StadtLandButz" target="19" />
-      <module name="StadtLandButzClient" target="11" />
-      <module name="StadtLandButzHost" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>

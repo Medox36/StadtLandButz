@@ -47,7 +47,7 @@ public class SenderThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (stop) {
+        if (!stop) {
             host.disconnectOnException();
         }
     }

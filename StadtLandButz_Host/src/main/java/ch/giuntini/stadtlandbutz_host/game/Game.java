@@ -39,10 +39,11 @@ public class Game {
     private static Integer sortCatPointer = 0;
     private volatile static Boolean ready = false;
     private volatile static Boolean finished = false;
+    private volatile static Boolean receiving = false;
     private static HostGUI gui;
     private static Host host;
     private static int gameCode;
-    private static int roundNumber = -1;
+    private volatile static int roundNumber = -1;
 
     public static void startHost(List<String> args) throws IOException {
         if (host != null) {
@@ -74,6 +75,7 @@ public class Game {
 
     @SuppressWarnings("SynchronizeOnNonFinalField")
     public static void sortWordsAndCats() {
+        receiving = false;
         while (sortCatPointer < categories.size()) {
             while (sortPointer <= addPointer) {
                 LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> sortedCat = new LinkedHashMap<>();
@@ -112,6 +114,9 @@ public class Game {
             ready = true;
         }
         if (sortedWords.isEmpty()) {
+            synchronized (finished) {
+                finished = true;
+            }
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Korrektur");
@@ -155,7 +160,7 @@ public class Game {
             }
         }
 
-        if (tempWords.keySet().size()-1 >= wordPointer) {
+        if ((tempWords.size()-1) <= wordPointer) {
             wordPointer = 0;
             catPointer++;
         } else {
@@ -208,23 +213,23 @@ public class Game {
     }
 
     private static LinkedHashMap<String, Vector<UUID>> getTempWords() {
-        LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer - 1);
+        LinkedHashMap<String, LinkedHashMap<String, Vector<UUID>>> tempCat = sortedWords.get(catPointer);
         return tempCat.get(tempCat.keySet().stream().findFirst().orElseThrow());
     }
 
     public synchronized static void distPoints() {
-        for (UUID uuid : points.keySet()) {
-            Integer madePoints = points.get(uuid);
-            Client client = getClientByUUID(uuid);
-            if (client != null) {
-                client.addPoints(madePoints);
-                host.sendPackage(new Package("010", "1000",  madePoints + "@" + getRoundNumber(), uuid.toString()));
+        for (Client client : clients) {
+            Integer madePoints = 0;
+            if (points.containsKey(client.getUUID())) {
+                 madePoints = points.get(client.getUUID());
             }
+            client.addPoints(madePoints);
+            host.sendPackage(new Package("010", "1000",  madePoints + "@" + getRoundNumber(), client.getUUID().toString()));
         }
     }
 
     public synchronized static boolean allWordsCorrected() {
-        return finished;
+        return finished || sortedWords.isEmpty();
     }
 
     public static void callScoreStage() {
@@ -244,6 +249,7 @@ public class Game {
             gui.setThird(sortedClients.get(2));
         for (int i = 0; i < sortedClients.size(); i++) {
             host.sendPackage(new Package("010", "1001", String.valueOf(i + 1), sortedClients.get(i).getUUID().toString()));
+            System.out.println("Sent place: " + (i + 1) + " to: " + sortedClients.get(i).getUUID().toString());
         }
     }
 
@@ -333,10 +339,15 @@ public class Game {
         if (client != null) {
             clients.remove(client);
             points.remove(client.getUUID());
+            System.out.println("removed client:" + client.getUUID().toString() + " " + client.getPlayerName());
+            if (receiving && words.size() == clients.size()) {
+                System.out.println("Sorting from removal");
+                sortWordsAndCats();
+            }
         }
     }
 
-    public static void incRoundNumber() {
+    public synchronized static void incRoundNumber() {
         roundNumber++;
     }
 
@@ -348,10 +359,12 @@ public class Game {
         return roundNumber + 1;
     }
 
+    public static void setReceiving(Boolean receiving) {
+        Game.receiving = receiving;
+    }
+
     public synchronized static void sendToAllClients(String prefix, String information) {
-        for (Client client : clients) {
-            host.sendPackage(new Package("011", prefix, information, client.getUUID().toString()));
-        }
+        host.sendPackage(new Package("011", prefix, information, null));
     }
 
     public static String nextLetter() {
@@ -373,6 +386,7 @@ public class Game {
 
     private static void exiting(boolean explicit) {
         stopHost();
+        host.stop();
         Platform.exit();
         gui = null;
         letters = null;

@@ -63,7 +63,7 @@ public class HostNetInterpreter {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Spieler");
-                alert.setHeaderText("Verbindung einem Spieler verloren.");
+                alert.setHeaderText("Verbindung zu einem Spieler verloren.");
                 alert.setContentText("Name: " + client.getPlayerName() + "\nUUID: " + client.getUUID().toString());
                 alert.show();
             });

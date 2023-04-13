@@ -160,12 +160,15 @@ public class ClientGUI extends Application {
         root.setCenter(group);
         root.setStyle("-fx-background-color: #015657");
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
-        stage.setScene(new Scene(root));
+        stage.getScene().setRoot(root);
         stage.setTitle("Beitreten");
-        stage.setMinHeight(500);
-        stage.setMinWidth(470);
-        stage.setWidth(470.00000001);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
     }
 
@@ -317,7 +320,7 @@ public class ClientGUI extends Application {
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Stadt Land Butz");
-        stage.setAlwaysOnTop(true);
+        //stage.setAlwaysOnTop(true);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setMaximized(true);
         stage.setResizable(false);
@@ -364,7 +367,9 @@ public class ClientGUI extends Application {
     }
 
     public void setMadePointsInRound(int points, int round) {
-        this.points.getItems().add(new Point());
+        while (this.points.getItems().size() <= round) {
+            this.points.getItems().add(new Point(0));
+        }
         this.points.getItems().get(round).setPoint(points);
         totalPoints.setText(String.valueOf(Game.getClient().getPoints()));
     }
@@ -416,13 +421,21 @@ public class ClientGUI extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(group);
         root.setStyle("-fx-background-color: #24066b");
+        stage.hide();
+        stage = new Stage();
+        stage.getIcons().add(new Image(Objects.requireNonNull(ClientGUI.class.getResourceAsStream("/ch/giuntini/stadtlandbutz_client/images/stadtlandbutz.png"))));
         stage.setOnCloseRequest(windowEvent -> Game.exit(false));
         stage.setScene(new Scene(root));
         stage.setTitle("Resultat");
         stage.setMinHeight(660);
         stage.setMinWidth(460);
-        stage.setWidth(stage.getWidth() + 0.000000001);
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         stage.show();
+        if (!stage.isMaximized()) {
+            stage.setWidth(stage.getWidth() + 1);
+        }
         centerStageOnScreen();
     }
 

@@ -12,7 +12,8 @@ import java.util.UUID;
 
 public class ClientNetInterpreter {
 
-    public static void interpret(Package p) {
+    public synchronized static void interpret(Package p) {
+        System.out.println("Received package: " + p.prefix + " " + p.information);
         switch (p.prefix) {
             case "0000":
                 testingConnection();
@@ -62,8 +63,10 @@ public class ClientNetInterpreter {
     private synchronized static void roundNumberAndLetter(Package p) {
         String[] str = p.information.split("@");
 
-        Game.setRoundNumber(Integer.parseInt(str[0]));
-        Game.getGui().addRound(str[1].charAt(0));
+        Platform.runLater(() -> {
+            Game.setRoundNumber(Integer.parseInt(str[0]));
+            Game.getGui().addRound(str[1].charAt(0));
+        });
     }
 
     private synchronized static void enableUserInput() {

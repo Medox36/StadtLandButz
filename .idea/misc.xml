@@ -4,16 +4,14 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Server/pom.xml" />
-        <option value="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Client/pom.xml" />
-        <option value="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Host/pom.xml" />
-        <option value="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Package/pom.xml" />
-        <option value="$PROJECT_DIR$/StradtLandButz_ClientHost/StadtLandButzHost/pom.xml" />
-        <option value="$PROJECT_DIR$/StradtLandButz_ClientHost/StadtLandButzClient/pom.xml" />
+        <option value="$PROJECT_DIR$/StadtLandButz_Host/pom.xml" />
+        <option value="$PROJECT_DIR$/StadtLandButz_Client/pom.xml" />
+        <option value="$PROJECT_DIR$/StadtLandButz_Server/pom.xml" />
+        <option value="$PROJECT_DIR$/StadtLandButz_Package/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19 OpenJDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Client/StadtLandButz_Client.iml" filepath="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Client/StadtLandButz_Client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Host/StadtLandButz_Host.iml" filepath="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Host/StadtLandButz_Host.iml" />
-      <module fileurl="file://$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Package/StadtLandButz_Package.iml" filepath="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Package/StadtLandButz_Package.iml" />
-      <module fileurl="file://$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Server/StadtLandButz_Server.iml" filepath="$PROJECT_DIR$/StadtLandButz_ClientHostServer/StadtLandButz_Server/StadtLandButz_Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/StadtLandButz.iml" filepath="$PROJECT_DIR$/.idea/StadtLandButz.iml" />
     </modules>
   </component>
 </project>
