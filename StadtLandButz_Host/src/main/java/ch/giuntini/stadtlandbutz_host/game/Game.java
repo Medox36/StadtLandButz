@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
@@ -160,13 +161,8 @@ public class Game {
             }
         }
 
-        if ((tempWords.size()-1) <= wordPointer) {
-            wordPointer = 0;
-            catPointer++;
-        } else {
-            wordPointer++;
-        }
         if (keyWord.isEmpty() || keyWord.isBlank() || keyWord.equals("~")) {
+            incrementCorrPointers(tempWords);
             Platform.runLater(Game::nextWordOrCategory);
         } else {
             Platform.runLater(() -> gui.setCheckStageCategoryAndPlayerNames(catName, keyWord, playerNames));
@@ -181,14 +177,16 @@ public class Game {
 
         int pointsMade = 0;
         int playerInCat = numberOfPlayersInCatInCurrRound();
-        if (uuids.size() >= 1) {
-            pointsMade = 1;
-        }
-        if (playerInCat == 1) {
+        int playersWithSameWord = uuids.size();
+
+        if (playerInCat == 1 && playersWithSameWord == 1) {
             pointsMade = 10;
         }
-        if (tempWords.keySet().size() > 1) {
+        if (playerInCat > 1) {
             pointsMade = 5;
+        }
+        if (playerInCat > 1 && playersWithSameWord > 1) {
+            pointsMade = 1;
         }
 
         for (UUID uuid : uuids) {
@@ -199,6 +197,21 @@ public class Game {
                 points.put(uuid, pointsMade);
             }
         }
+
+        incrementCorrPointers(tempWords);
+    }
+
+    public synchronized static void rejectCurrWord() {
+        incrementCorrPointers(getTempWords());
+    }
+
+    public synchronized static void incrementCorrPointers(LinkedHashMap<String, Vector<UUID>> tempWords) {
+        if ((tempWords.size()-1) <= wordPointer) {
+            wordPointer = 0;
+            catPointer++;
+        } else {
+            wordPointer++;
+        }
     }
 
     private static int numberOfPlayersInCatInCurrRound() {
@@ -207,6 +220,9 @@ public class Game {
         LinkedHashMap<String, Vector<UUID>> tempWords = getTempWords();
         Set<String> keyWord =  tempWords.keySet();
         for (String str : keyWord) {
+            if (Objects.equals(str, "~")) {
+                continue;
+            }
             playerCount += tempWords.get(str).size();
         }
         return playerCount;

@@ -505,6 +505,7 @@ public class HostGUI extends Application {
         reject.setOnMouseReleased(mouseEvent -> reject.setStyle(accept.isHover() ? "-fx-background-color: #d08e83" : ""));
         reject.setOnAction(e -> {
             if (!Game.allWordsCorrected()) {
+                Game.rejectCurrWord();
                 Game.nextWordOrCategory();
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
